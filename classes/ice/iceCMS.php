@@ -1,17 +1,16 @@
 <?php
-
 //настройки фрэймворка
 class iceSettings {
-	public $db;
-	public $email;
-	public $sms;
-	public $template;
-	public $errors;
-	public $site;
-	public $cache;
-	public $path;
+    public $db;
+    public $email;
+    public $sms;
+    public $template;
+    public $errors;
+    public $site;
+    public $cache;
+    public $path;
 
-	public function __construct($setup)
+    public function __construct($setup)
     {
 
         $this->errors = new stdClass();
@@ -58,7 +57,7 @@ class iceSettings {
 
                     if(!isset($setup[$paramname]) && !is_array($setup[$paramname]))
                     {
-                        throw new Exception("Ошибка файла настроек - нет необходимого поля либо оно не является массивом: ".$paramname);
+                        throw new Exception('Ошибка файла настроек - нет необходимого поля либо оно не является массивом: '.$paramname);
                     }
 
                     $this->$paramname = new stdClass();
@@ -71,7 +70,7 @@ class iceSettings {
                         {
                             if(!isset($setup[$paramname][$paramname2]))
                             {
-                                throw new Exception("Ошибка файла настроек - нет необходимого поля: ".$paramname.'-'.$paramname2);
+                                throw new Exception('Ошибка файла настроек - нет необходимого поля: '.$paramname.'-'.$paramname2);
                             }
                         }
 
@@ -88,7 +87,7 @@ class iceSettings {
                     {
                         if(!isset($setup[$paramname]))
                         {
-                            throw new Exception("Ошибка файла настроек - нет необходимого поля: ".$paramname);
+                            throw new Exception('Ошибка файла настроек - нет необходимого поля: '.$paramname);
                         }
                     }
 
@@ -191,10 +190,7 @@ class iceDB {
         {
             return true;
         }
-        else
-        {
-            return false;
-        }
+        return false;
 
     }
 
@@ -219,55 +215,48 @@ class iceDB {
                         $this->warning->text[]='Ошибка выполнения запроса: '.$query;
                         return false;
                     }
-                    else
+
+                    //есди запрос - select show WITH RECURSIVE
+                    if(preg_match("/^select/i", trim($query)) || preg_match("/^show/i", trim($query)) || preg_match("/^with recursive/i", trim($query)))
                     {
-                        //есди запрос - select show WITH RECURSIVE
-                        if(preg_match("/^select/i", trim($query)) || preg_match("/^show/i", trim($query)) || preg_match("/^with recursive/i", trim($query)))
-                        {
-                            if(!$cnt){
-                                $result = array();
-                                while ($row = $res->fetch_assoc())
-                                {
-                                    $result[] = $row;
-                                }
-
-                                if($free)
-                                {
-                                    $res->free();
-                                }
-
-                                return($result);
+                        if(!$cnt){
+                            $result = array();
+                            while ($row = $res->fetch_assoc())
+                            {
+                                $result[] = $row;
                             }
-                            else {
 
-                                $result = $res->num_rows;
-
-                                if($free)
-                                {
-                                    $res->free();
-                                }
-
-                                return $result;
+                            if($free)
+                            {
+                                $res->free();
                             }
+                            return($result);
                         }
 
-                        /*if($free)
+                        $result = $res->num_rows;
+
+                        if($free)
                         {
                             $res->free();
-                        }*/
+                        }
+                        return $result;
 
-                        //прочие запросы
-                        return(true);
                     }
+
+                    /*if($free)
+                    {
+                        $res->free();
+                    }*/
+
+                    //прочие запросы
+                    return(true);
+
 
                     break;
             }
         }
-        else
-        {
-            return false;
-        }
 
+        return false;
     }
 }
 
@@ -428,11 +417,10 @@ class iceAuthorize {
 
             return true;
         }
-        else
-        {
-            $this->errors=array('Не верное сочетание логина и пароля');
-            return false;
-        }
+
+        $this->errors=array('Не верное сочетание логина и пароля');
+        return false;
+
     }
 
     public function deAuthorize()
@@ -461,14 +449,14 @@ class iceAuthorize {
 class iceCacher {
 
     private $redis;
-	public $key;
-	public $value;
-	public $expired;
-	private $status;
-	public $host;
-	public $port;
+    public $key;
+    public $value;
+    public $expired;
+    private $status;
+    public $host;
+    public $port;
 
-	public function __construct($host='localhost',$port=6379)
+    public function __construct($host='localhost',$port=6379)
     {
         $this->status=0;
 
@@ -488,10 +476,7 @@ class iceCacher {
             $this->key=$key;
             return($this->redis->has($key));
         }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
     public function findKeys($pattern = '*')
@@ -500,10 +485,7 @@ class iceCacher {
         {
             return($this->redis->findKeys($pattern));
         }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
     public function get($key, $decode=false)
@@ -518,16 +500,10 @@ class iceCacher {
             {
                 return(json_decode($this->value, true));
             }
-            else
-            {
-                return($this->value);
-            }
+            return($this->value);
 
         }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
     public function set($key, $value, $expired = null)
@@ -542,16 +518,9 @@ class iceCacher {
             {
                 return true;
             }
-            else
-            {
-                return false;
-            }
-
-        }
-        else
-        {
             return false;
         }
+        return false;
     }
 
     public function del($key)
@@ -563,15 +532,9 @@ class iceCacher {
             {
                 return true;
             }
-            else
-            {
-                return false;
-            }
-        }
-        else
-        {
             return false;
         }
+        return false;
     }
 
 }
@@ -712,7 +675,7 @@ class iceQueryBuilder {
                 //visualijop($col['Type']);
                 //visualijop($this->params[$col['Field']]);
 
-                //в зависимости от типа колонки, рисуем ковычки на значение
+                //в зависимости от типа колонки, рисуем кавычки на значение
                 if(mb_stripos($col['Type'], 'char', 0, 'UTF-8') !== false || mb_stripos($col['Type'], 'text', 0, 'UTF-8') !== false || mb_stripos($col['Type'], 'enum', 0, 'UTF-8') !== false)
                 {
 
@@ -844,10 +807,7 @@ class iObject {
 
             return $this->id;
         }
-        else
-        {
-            return false;
-        }
+        return false;
 
     }
 
@@ -873,14 +833,11 @@ class iObject {
             $this->uncacheRecord();
             return true;
         }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
     //удаление записи
-	public function deleteRecord($id){
+    public function deleteRecord($id){
         $this->id=$id;
 
         $query='DELETE FROM '.$this->dbtable.' WHERE id = '.$this->values->id;
@@ -891,24 +848,17 @@ class iObject {
             $this->params=false;
             return true;
         }
-        else
-        {
-            return false;
-        }
-	}
+        return false;
+    }
 
-	private function getCacheKey($id=null)
+    private function getCacheKey($id=null)
     {
         if(is_null($id))
         {
             $this->cacheKey = $this->DB->settings->name.'_record_'.$this->dbtable.'_'.$this->id;
             return $this->cacheKey;
         }
-        else
-        {
-            $cacheKey=$this->DB->settings->name.'_record_'.$this->dbtable.'_'.$id;
-            return $cacheKey;
-        }
+        return $this->DB->settings->name.'_record_'.$this->dbtable.'_'.$id;
 
     }
 
@@ -925,17 +875,17 @@ class iObject {
     //получение данных обхекта
     public function getRecord($id = null){
 
-	    $this->params=false;
+        $this->params=false;
 
-	    if(!is_null($id)){
+        if(!is_null($id)){
             $this->id=$id;
         }
 
         if(is_null($this->id)){
-	        return false;
+            return false;
         }
 
-	    //проверяем наличае записи в кэше
+        //проверяем наличае записи в кэше
         $this->getCacheKey();
 
         if(!$this->cacher->has($this->cacheKey) || $this->params != $this->cacher->get($this->cacheKey, true))
@@ -951,14 +901,10 @@ class iObject {
                     $this->cacheRecord();
                 }
             }
-            else {
-                return false;
-            }
+            return false;
         }
 
-        $out=$this->params;
-
-        return $out;
+        return $this->params;
 
     }
 
@@ -1063,8 +1009,7 @@ class iObjectList {
 
     //функция для расширения в списках по конкретным объектам
     public function moreQuery(){
-        $query='';
-        return $query;
+        return '';
     }
 
     public function getCacheKey($query)
@@ -1718,10 +1663,7 @@ class iceImageCache extends iObject {
             //получаем и возвращаем идентификатор записи
             return true;
         }
-        else
-        {
-            return false;
-        }
+        return false;
 
     }
 
@@ -2002,16 +1944,10 @@ class iceUser extends iObject {
 
                         return($this->id);
                     }
-                    else
-                    {
-                        return false;
-                    }
+                    return false;
                 }
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
     }
 
@@ -2322,10 +2258,7 @@ class iceFile extends iObject {
         {
             return('');
         }
-        else
-        {
-            return $path_info['extension'];
-        }
+        return $path_info['extension'];
     }
 
     public function upload($paramName, $type = 'file', $private = false, $userId, $materialConnect = false){
@@ -2475,9 +2408,7 @@ class iceFile extends iObject {
         if($this->params['extension'] != ''){
             return $this->settings->path.$this->params['url'].$this->id.'.'.$this->params['extension'];
         }
-        else {
-            return $this->settings->path.$this->params['url'].$this->id;
-        }
+        return $this->settings->path.$this->params['url'].$this->id;
 
     }
 
@@ -2495,9 +2426,7 @@ class iceFile extends iObject {
         if($this->params['extension'] != ''){
             return $this->settings->path.$this->params['url'].$folder.'/'.$this->id.'.'.$this->params['extension'];
         }
-        else {
-            return $this->settings->path.$this->params['url'].$folder.'/'.$this->id;
-        }
+        return $this->settings->path.$this->params['url'].$folder.'/'.$this->id;
 
     }
 
@@ -2507,9 +2436,7 @@ class iceFile extends iObject {
         if($this->params['extension'] != ''){
             return $dirpatch.'/'.$this->id.'.'.$this->params['extension'];
         }
-        else {
-            return $dirpatch.'/'.$this->id;
-        }
+        return $dirpatch.'/'.$this->id;
     }
 
     public function getFileUrl(){
@@ -2517,9 +2444,7 @@ class iceFile extends iObject {
         if($this->params['extension'] != ''){
             return $dirpatch.'/'.$this->id.'.'.$this->params['extension'];
         }
-        else {
-            return $dirpatch.'/'.$this->id;
-        }
+        return $dirpatch.'/'.$this->id;
     }
 
     public function SaveImageSize($newx, $newy, $extension, $crop = 0, $watermark = 0, $wx = 0, $wy = 0)
@@ -2719,24 +2644,16 @@ class iceTextFunctions {
         {
             return false;
         }
-        else
+
+        if (preg_match("/([0-9]+)/", $this->text))
         {
-            if (preg_match("/([0-9]+)/", $this->text))
+            if (preg_match("/([a-zA-Z]+)/", $this->text))
             {
-                if (preg_match("/([a-zA-Z]+)/", $this->text))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return true;
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
+        return false;
     }
 
     //проверка e-mail адреса по маске
@@ -3090,16 +3007,16 @@ class iceRender {
 
     public $settings; //настройки
     public $DB; //объект БД
-	public $headers; //заголовки вывода
+    public $headers; //заголовки вывода
     public $moduleData; //данные, подготовленные модулем
-	public $body; //тело вывода
-	public $seo; //ключевые слова, описания и прочая дрянь
-	public $jscripts; //jsскрипты вывода (массив с перечислением подгружаемых скриптов)
+    public $body; //тело вывода
+    public $seo; //ключевые слова, описания и прочая дрянь
+    public $jscripts; //jsскрипты вывода (массив с перечислением подгружаемых скриптов)
     public $jsready; //js тело для document.ready
-	public $styles; //стили css (массив с перечислением подгружаемых стилей)
-	public $errors; //ошибки
-	public $warnings; //важные уведомления
-	public $sitemessages; //сообщение от сайта пользователю (например результат какой-либо обработки)
+    public $styles; //стили css (массив с перечислением подгружаемых стилей)
+    public $errors; //ошибки
+    public $warnings; //важные уведомления
+    public $sitemessages; //сообщение от сайта пользователю (например результат какой-либо обработки)
     public $module; //активный модуль для вывода
     public $language; //выбранный язык отображения
     public $path_info;//результат разбора строки
@@ -3113,7 +3030,7 @@ class iceRender {
 
     public function moduleAccess(){
         if($this->authorize->autorized){
-            return true;
+            //return true;
             if($this->authorize->user->params['role']['secure'] === 1){
                 return true;
             }
@@ -3335,13 +3252,11 @@ class iceRender {
         if($this->cacher->has($key)){
             return $parser->getMTTCache($key);
         }
-        else {
-            $materialTypes = new iceMatTypeList($this->DB, null, null, 1, null, 0, null);
-            $materialTypes = $materialTypes->getRecordsTree('all');
-            $parser->setMTTCache($key,$materialTypes,1*24*60*60);
-            return $materialTypes;
-        }
 
+        $materialTypes = new iceMatTypeList($this->DB, null, null, 1, null, 0, null);
+        $materialTypes = $materialTypes->getRecordsTree('all');
+        $parser->setMTTCache($key,$materialTypes,1*24*60*60);
+        return $materialTypes;
 
     }
 
