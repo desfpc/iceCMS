@@ -1,0 +1,39 @@
+a.good, a.good:hover {
+    color: #212529;
+    text-decoration: none;
+    display: block;
+    border-radius: 5px;
+    background: #ffffff;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ffffff;
+}
+a.good:hover {
+    border: 1px solid #f1f2ff;
+}
+.good__img {
+    display: block;
+    margin: 0 auto;
+    width: 188px;
+}
+.good__name {
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: bold;
+    height: 38px;
+    display: block;
+    padding: 0;
+    margin: 0 0 10px;
+}
+.good__anons {
+    text-decoration: none;
+    font-size: 13px;
+    height: 38px;
+    display: block;
+    padding: 0;
+    margin: 0 0 10px;
+}
+.good__price {
+    font-weight: bold;
+    text-align: right;
+}
