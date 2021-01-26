@@ -12,11 +12,11 @@ ini_set('display_errors', 1);
 
 
 //подключаем нужные классы
-require_once ('./classes/redka/redka.php');//класс для работы с redis
+require_once ('./classes/redka_remote/redka.php');//класс для работы с redis
 require_once('./classes/ice/iceCMS.php');//класс CMS
 
 // Призываем библиотеку визуализации Visualijoper
-require_once('./classes/visualijoper/visualijoper.php');
+require_once('./classes/visualijoper_remote/visualijoper.php');
 
 //подключаем настройки
 $settings_path='./settings/settings.php';
