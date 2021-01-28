@@ -5,13 +5,13 @@
  Source Server Type    : MySQL
  Source Server Version : 80018
  Source Host           : localhost:3306
- Source Schema         : i1d
+ Source Schema         : ice
 
  Target Server Type    : MySQL
  Target Server Version : 80018
  File Encoding         : 65001
 
- Date: 28/01/2021 07:08:29
+ Date: 28/01/2021 09:12:49
 */
 
 SET NAMES utf8mb4;
@@ -37,6 +37,7 @@ CREATE TABLE `files`  (
   `image_width` smallint(6) NULL DEFAULT NULL,
   `image_height` smallint(6) NULL DEFAULT NULL,
   `private` tinyint(1) NULL DEFAULT NULL,
+  `date_event` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `fil_user_idx`(`user_id`) USING BTREE,
   INDEX `fil_status_idx`(`status_id`) USING BTREE,
@@ -47,20 +48,20 @@ CREATE TABLE `files`  (
 -- ----------------------------
 -- Records of files
 -- ----------------------------
-INSERT INTO `files` VALUES (21, 'thrustmaster-t300rs-gt1.jpg', 'thrustmaster-t300rs-gt1.jpg', '', '2020-05-27 06:14:11', '2020-05-27 06:14:11', 9, 2, 'image', 'jpg', '/files/202005/', 156492, 1100, 1000, 2);
-INSERT INTO `files` VALUES (22, 'thrustmaster-t300rs-gt2.jpg', 'thrustmaster-t300rs-gt2.jpg', '', '2020-05-27 06:14:16', '2020-05-27 06:14:16', 9, 2, 'image', 'jpg', '/files/202005/', 265261, 1100, 1000, 2);
-INSERT INTO `files` VALUES (23, 'thrustmaster-t300rs-gt3.jpg', 'thrustmaster-t300rs-gt3.jpg', '', '2020-05-27 06:14:21', '2020-05-27 06:14:21', 9, 2, 'image', 'jpg', '/files/202005/', 253507, 1100, 1000, 2);
-INSERT INTO `files` VALUES (24, 'thrustmaster-t300rs-gt4.jpg', 'thrustmaster-t300rs-gt4.jpg', '', '2020-05-27 06:14:26', '2020-05-27 06:14:26', 9, 2, 'image', 'jpg', '/files/202005/', 139243, 1100, 1000, 2);
-INSERT INTO `files` VALUES (25, 'thrustmaster-t300rs-gt5.jpg', 'thrustmaster-t300rs-gt5.jpg', '', '2020-05-27 06:14:31', '2020-05-27 06:14:31', 9, 2, 'image', 'jpg', '/files/202005/', 131027, 1100, 1000, 2);
-INSERT INTO `files` VALUES (26, 'thrustmaster-t300rs-gt6.jpg', 'thrustmaster-t300rs-gt6.jpg', '', '2020-05-27 06:14:38', '2020-05-27 06:14:38', 9, 2, 'image', 'jpg', '/files/202005/', 235202, 1100, 782, 2);
-INSERT INTO `files` VALUES (27, 'thrustmaster-t300rs-gt8.jpg', 'thrustmaster-t300rs-gt8.jpg', '', '2020-05-27 06:14:44', '2020-05-27 06:14:44', 9, 2, 'image', 'jpg', '/files/202005/', 247480, 1100, 1000, 2);
-INSERT INTO `files` VALUES (28, 'T300RS-2.jpg', 'T300RS-2.jpg', '', '2020-05-27 06:20:59', '2020-05-27 06:20:59', 9, 2, 'image', 'jpg', '/files/202005/', 2375336, 2480, 2783, 2);
-INSERT INTO `files` VALUES (29, 'tspcracer_f488challenge_1_(1).jpg', 'tspcracer_f488challenge_1_(1).jpg', '', '2020-05-27 06:29:32', '2020-05-27 06:29:32', 9, 2, 'image', 'jpg', '/files/202005/', 949916, 1795, 1613, 2);
-INSERT INTO `files` VALUES (30, 'tspcracer_f488challenge_3.jpg', 'tspcracer_f488challenge_3.jpg', '', '2020-05-27 06:29:38', '2020-05-27 06:29:38', 9, 2, 'image', 'jpg', '/files/202005/', 1468274, 1772, 1726, 2);
-INSERT INTO `files` VALUES (31, 'tspcracer_f488challenge_4.jpg', 'tspcracer_f488challenge_4.jpg', '', '2020-05-27 06:29:44', '2020-05-27 06:29:44', 9, 2, 'image', 'jpg', '/files/202005/', 1875120, 2362, 2082, 2);
-INSERT INTO `files` VALUES (32, 'tspcracer_f488challenge_wheelfront.jpg', 'tspcracer_f488challenge_wheelfront.jpg', '', '2020-05-27 06:29:50', '2020-05-27 06:29:50', 9, 2, 'image', 'jpg', '/files/202005/', 1541746, 2362, 2022, 2);
-INSERT INTO `files` VALUES (33, 'front_tspcracer_f488challenge.jpg', 'front_tspcracer_f488challenge.jpg', '', '2020-05-27 06:29:57', '2020-05-27 06:29:57', 9, 2, 'image', 'jpg', '/files/202005/', 2007864, 2362, 1439, 2);
-INSERT INTO `files` VALUES (34, '317012_10150316893950946_189614985945_8529710_1767473142_n.jpg', '317012_10150316893950946_189614985945_8529710_1767473142_n.jpg', '', '2020-05-27 08:37:39', '2020-05-27 08:37:39', 9, 2, 'image', 'jpg', '/files/202005/', 110233, 960, 640, 2);
+INSERT INTO `files` VALUES (21, 'thrustmaster-t300rs-gt1.jpg', 'thrustmaster-t300rs-gt1.jpg', '', '2020-05-27 06:14:11', '2020-05-27 06:14:11', 9, 2, 'image', 'jpg', '/files/202005/', 156492, 1100, 1000, 2, NULL);
+INSERT INTO `files` VALUES (22, 'thrustmaster-t300rs-gt2.jpg', 'thrustmaster-t300rs-gt2.jpg', '', '2020-05-27 06:14:16', '2020-05-27 06:14:16', 9, 2, 'image', 'jpg', '/files/202005/', 265261, 1100, 1000, 2, NULL);
+INSERT INTO `files` VALUES (23, 'thrustmaster-t300rs-gt3.jpg', 'thrustmaster-t300rs-gt3.jpg', '', '2020-05-27 06:14:21', '2020-05-27 06:14:21', 9, 2, 'image', 'jpg', '/files/202005/', 253507, 1100, 1000, 2, NULL);
+INSERT INTO `files` VALUES (24, 'thrustmaster-t300rs-gt4.jpg', 'thrustmaster-t300rs-gt4.jpg', '', '2020-05-27 06:14:26', '2020-05-27 06:14:26', 9, 2, 'image', 'jpg', '/files/202005/', 139243, 1100, 1000, 2, NULL);
+INSERT INTO `files` VALUES (25, 'thrustmaster-t300rs-gt5.jpg', 'thrustmaster-t300rs-gt5.jpg', '', '2020-05-27 06:14:31', '2020-05-27 06:14:31', 9, 2, 'image', 'jpg', '/files/202005/', 131027, 1100, 1000, 2, NULL);
+INSERT INTO `files` VALUES (26, 'thrustmaster-t300rs-gt6.jpg', 'thrustmaster-t300rs-gt6.jpg', '', '2020-05-27 06:14:38', '2020-05-27 06:14:38', 9, 2, 'image', 'jpg', '/files/202005/', 235202, 1100, 782, 2, NULL);
+INSERT INTO `files` VALUES (27, 'thrustmaster-t300rs-gt8.jpg', 'thrustmaster-t300rs-gt8.jpg', '', '2020-05-27 06:14:44', '2020-05-27 06:14:44', 9, 2, 'image', 'jpg', '/files/202005/', 247480, 1100, 1000, 2, NULL);
+INSERT INTO `files` VALUES (28, 'T300RS-2.jpg', 'T300RS-2.jpg', '', '2020-05-27 06:20:59', '2020-05-27 06:20:59', 9, 2, 'image', 'jpg', '/files/202005/', 2375336, 2480, 2783, 2, NULL);
+INSERT INTO `files` VALUES (29, 'tspcracer_f488challenge_1_(1).jpg', 'tspcracer_f488challenge_1_(1).jpg', '', '2020-05-27 06:29:32', '2020-05-27 06:29:32', 9, 2, 'image', 'jpg', '/files/202005/', 949916, 1795, 1613, 2, NULL);
+INSERT INTO `files` VALUES (30, 'tspcracer_f488challenge_3.jpg', 'tspcracer_f488challenge_3.jpg', '', '2020-05-27 06:29:38', '2020-05-27 06:29:38', 9, 2, 'image', 'jpg', '/files/202005/', 1468274, 1772, 1726, 2, NULL);
+INSERT INTO `files` VALUES (31, 'tspcracer_f488challenge_4.jpg', 'tspcracer_f488challenge_4.jpg', '', '2020-05-27 06:29:44', '2020-05-27 06:29:44', 9, 2, 'image', 'jpg', '/files/202005/', 1875120, 2362, 2082, 2, NULL);
+INSERT INTO `files` VALUES (32, 'tspcracer_f488challenge_wheelfront.jpg', 'tspcracer_f488challenge_wheelfront.jpg', '', '2020-05-27 06:29:50', '2020-05-27 06:29:50', 9, 2, 'image', 'jpg', '/files/202005/', 1541746, 2362, 2022, 2, NULL);
+INSERT INTO `files` VALUES (33, 'front_tspcracer_f488challenge.jpg', 'front_tspcracer_f488challenge.jpg', '', '2020-05-27 06:29:57', '2020-05-27 06:29:57', 9, 2, 'image', 'jpg', '/files/202005/', 2007864, 2362, 1439, 2, NULL);
+INSERT INTO `files` VALUES (34, '317012_10150316893950946_189614985945_8529710_1767473142_n.jpg', '317012_10150316893950946_189614985945_8529710_1767473142_n.jpg', '', '2020-05-27 08:37:39', '2020-05-27 08:37:39', 9, 2, 'image', 'jpg', '/files/202005/', 110233, 960, 640, 2, NULL);
 
 -- ----------------------------
 -- Table structure for image_caches
@@ -285,7 +286,7 @@ CREATE TABLE `materials`  (
   INDEX `mat_parent_fk`(`parent_id`) USING BTREE,
   CONSTRAINT `mat_lang_fk` FOREIGN KEY (`language`) REFERENCES `languages` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `mat_type_fk` FOREIGN KEY (`material_type_id`) REFERENCES `material_types` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of materials
@@ -435,6 +436,6 @@ CREATE TABLE `users`  (
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES (9, 'desfpc@gmail.com', '', '', 'Пешалов Сергей', NULL, 1, '$2y$10$hQZLdAWuLxoy3HZWWoz6P.2SHTjWLdnkd7ZXrk65B.hKpbYdEe6We', '2018-07-24 19:17:43', NULL, NULL, 2, NULL);
+INSERT INTO `users` VALUES (10, 'admin@admin.local', '01', 'admin', 'Site administrator', NULL, 1, '$2y$10$/8iSwC.kqQfag6IXv0TCWuCCcnfuR4q3FitKw.JtQ8Z4OCZyWvl.a', '2021-01-28 08:30:02', NULL, NULL, 2, NULL);
 
 SET FOREIGN_KEY_CHECKS = 1;
