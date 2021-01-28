@@ -28,8 +28,8 @@ $template_scripts=array(
 $this->jscripts->addScripts($template_scripts);
 
 //подключение css и js от Visualijoper-а TODO подключать только при включенном дебаге
-$this->styles->addStyle('/classes/visualijoper/visualijoper.css');
-$this->jscripts->addScript('/classes/visualijoper/jquery.visualijoper.js');
+$this->styles->addStyle('/classes/visualijoper_remote/visualijoper.css');
+$this->jscripts->addScript('/classes/visualijoper_remote/jquery.visualijoper.js');
 
 //js document.load
 $js_docload='';
