@@ -46,3 +46,11 @@ $setup['cache']=Array();
 $setup['cache']['use_redis']=true;
 $setup['cache']['redis_host']='0.0.0.0';
 $setup['cache']['redis_port']=6379;
+
+//режим разработки (если работаем на Win64)
+if(strpos($_SERVER['SERVER_SOFTWARE'],'Win64') !== false){
+    $setup['path']='E:\work\Ampps\www\iceCMS';
+    $setup['db']['login']='root';
+    $setup['db']['pass']='mysql';
+    $setup['dev']=true;
+}
