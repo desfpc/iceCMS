@@ -897,6 +897,7 @@ class iObject {
         if(!$this->cacher->has($this->cacheKey) || $this->params != $this->cacher->get($this->cacheKey, true))
         {
             $query='SELECT * FROM '.$this->dbtable.' WHERE id = '.$this->id;
+
             if($res = $this->DB->query($query))
             {
                 if(count($res) > 0)
@@ -905,13 +906,12 @@ class iObject {
                     $this->fullRecord();
 
                     $this->cacheRecord();
+
+                    return $this->params;
                 }
             }
-            return false;
         }
-
-        return $this->params;
-
+        return false;
     }
 
     //кэширование записи
@@ -969,6 +969,7 @@ class iObject {
 
     public function doConstruct(iceDB $DB, $dtable, $id=null, iceSettings $settings=null)
     {
+
         $this->errors = [];
         $this->settings=$settings;
 
@@ -983,6 +984,7 @@ class iObject {
 
         $this->DB = $DB;
         $this->dbtable = $dtable;
+
         $this->id = $id;
         $this->params=false;
 
@@ -3037,7 +3039,7 @@ class iceRender {
     public function moduleAccess(){
         if($this->authorize->autorized){
             //return true;
-            if($this->authorize->user->params['role']['secure'] === 1){
+            if((int)$this->authorize->user->params['role']['secure'] === 1){
                 return true;
             }
         }
@@ -3153,6 +3155,7 @@ class iceRender {
         {
             //проверяем наличае файла модуля
             $modulePatch=$this->settings->path.'/modules/'.$this->module['name'].'.php';
+
             if(!file_exists($modulePatch))
             {
                 $this->errors[]='Нет файла подключаемого модуля '.$modulePatch;
