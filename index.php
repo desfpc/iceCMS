@@ -1,6 +1,6 @@
 <?php
 /**
- * Created by Peshalov Sergey https://github.com/desfpc
+ * Created by Sergey Peshalov https://github.com/desfpc
  * iceCMS - PHP framework and CMS based on it
  * https://github.com/desfpc/iceCMS
  */
