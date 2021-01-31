@@ -3,8 +3,9 @@
  * Created by Sergey Peshalov https://github.com/desfpc
  * PHP framework and CMS based on it.
  * https://github.com/desfpc/iceCMS
- * @var \iceRender $this
+ * @var ice\iceRender $this
  */
+
 $this->jsready='
 
 if ($(".main-menu").html()) {

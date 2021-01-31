@@ -3,8 +3,12 @@
  * Created by Sergey Peshalov https://github.com/desfpc
  * PHP framework and CMS based on it.
  * https://github.com/desfpc/iceCMS
- * @var \iceRender $this
+ * @var ice\iceRender $this
  */
+
+use ice\iceWidget;
+use ice\iceMat;
+
 $material = $this->moduleData->material->params; ?><div class="row">
     <div class="col-sm-12">
         <div class="newsItem__date"><?=iceMat::formatDate($material['date_event'])?></div>

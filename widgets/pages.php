@@ -1,4 +1,10 @@
 <?php
+/**
+ * Created by Sergey Peshalov https://github.com/desfpc
+ * PHP framework and CMS based on it.
+ * https://github.com/desfpc/iceCMS
+ * @var ice\iceWidget $this
+ */
 
 function changeURL($url, $page, $oldpage){
 

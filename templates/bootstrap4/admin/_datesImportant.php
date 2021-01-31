@@ -1,4 +1,14 @@
-<div class="form-group row">
+<?php
+/**
+ * Created by Sergey Peshalov https://github.com/desfpc
+ * PHP framework and CMS based on it.
+ * https://github.com/desfpc/iceCMS
+ * @var ice\iceRender $this
+ */
+
+use ice\iceMat;
+
+?><div class="form-group row">
     <div class="col-sm-9">
         <div class="input-group">
             <div class="input-group-prepend">

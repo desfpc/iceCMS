@@ -3,8 +3,12 @@
  * Created by Sergey Peshalov https://github.com/desfpc
  * PHP framework and CMS based on it.
  * https://github.com/desfpc/iceCMS
- * @var \iceRender $this
+ * @var ice\iceRender $this
  */
+
+use ice\iceWidget;
+use ice\iceMat;
+
 $material = $this->moduleData->material->params; ?><div class="row">
     <div class="col-lg-3" style="min-width: 200px;">
         <?php

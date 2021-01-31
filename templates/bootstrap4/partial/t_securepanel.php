@@ -3,8 +3,9 @@
  * Created by Sergey Peshalov https://github.com/desfpc
  * PHP framework and CMS based on it.
  * https://github.com/desfpc/iceCMS
- * @var \iceRender $this
+ * @var ice\iceRender $this
  */
+
 ?><nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top" id="securepanel">
     <a class="navbar-brand" href="/?menu=iceFW">iceFW</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#adminBar" aria-controls="adminBar" aria-expanded="false" aria-label="Toggle navigation">

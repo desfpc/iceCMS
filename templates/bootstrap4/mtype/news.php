@@ -3,8 +3,11 @@
  * Created by Sergey Peshalov https://github.com/desfpc
  * PHP framework and CMS based on it.
  * https://github.com/desfpc/iceCMS
- * @var \iceRender $this
+ * @var ice\iceRender $this
  */
+
+use ice\iceFile;
+use ice\iceMat;
 
 //выводим список материалов
 if(isset($this->moduleData->mlist) && is_array($this->moduleData->mlist) && count($this->moduleData->mlist) > 0){

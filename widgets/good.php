@@ -1,5 +1,14 @@
 <?php
+/**
+ * Created by Sergey Peshalov https://github.com/desfpc
+ * PHP framework and CMS based on it.
+ * https://github.com/desfpc/iceCMS
+ * @var ice\iceWidget $this
+ */
 
+use ice\iceMatType;
+use ice\iceFile;
+use ice\iceMat;
 
 $mtype = new iceMatType($this->DB, $this->params['material_type_id']);
 $mtype->getRecord();
