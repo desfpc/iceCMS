@@ -4,3 +4,6 @@
 [submodule "classes/visualijoper_remote"]
 	path = classes/visualijoper_remote
 	url = https://github.com/desfpc/Visualijoper.git
+[submodule "classes/pechkin_remote"]
+	path = classes/pechkin_remote
+	url = https://github.com/desfpc/Pechkin.git
