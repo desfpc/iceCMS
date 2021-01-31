@@ -11,7 +11,7 @@
 
 namespace ice;
 
-class iceMatExtraParams extends iObject {
+class iceMatExtraParams extends iceObject {
 
     //подменяем создание объекта - прописываем железно целевую таблицу
     public function __construct(iceDB $DB, $id=null, $settings=null)

@@ -276,7 +276,7 @@ class iceRender {
         $this->styles = new iceStylesBuilder();
         $this->jscripts = new iceJScriptBuilder();
         $this->errors=Array();
-        $this->values = new stdClass();
+        $this->values = new \stdClass();
         $this->textfunctions = new iceTextFunctions();
         $this->authorize = new iceAuthorize($this->DB);
 

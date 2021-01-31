@@ -30,7 +30,7 @@ class iceCacher {
         $this->host=$host;
         $this->port=$port;
 
-        //создаем объект yampeeredis
+        //создаем объект redis
         $this->redis = new redka($this->host, $this->port);
         $this->redis->connect();
         $this->status=1;
