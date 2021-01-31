@@ -3,8 +3,15 @@
  * Created by Sergey Peshalov https://github.com/desfpc
  * PHP framework and CMS based on it.
  * https://github.com/desfpc/iceCMS
- * @var \iceRender $this
+ * @var ice\iceRender $this
+ *
+ * Module for Files administration
+ *
  */
+
+use ice\iceMatTypeList;
+use ice\iceFile;
+use ice\iceFileList;
 
 //секурность
 if(!$this->moduleAccess())

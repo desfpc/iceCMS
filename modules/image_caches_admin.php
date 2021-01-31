@@ -3,8 +3,14 @@
  * Created by Sergey Peshalov https://github.com/desfpc
  * PHP framework and CMS based on it.
  * https://github.com/desfpc/iceCMS
- * @var \iceRender $this
+ * @var ice\iceRender $this
+ *
+ * Module for Image Caches administration
+ *
  */
+
+use ice\iceImageCache;
+use ice\iceImageCacheList;
 
 //секурность
 if(!$this->moduleAccess())

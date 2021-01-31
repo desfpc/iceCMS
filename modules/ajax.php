@@ -3,8 +3,13 @@
  * Created by Sergey Peshalov https://github.com/desfpc
  * PHP framework and CMS based on it.
  * https://github.com/desfpc/iceCMS
- * @var \iceRender $this
+ * @var ice\iceRender $this
+ *
+ * Module for processing Ajax requests
+ *
  */
+
+use ice\iceHeaderBuilder;
 
 $this->headers = new iceHeaderBuilder();
 $this->headers->standartHeaders();
@@ -82,4 +87,5 @@ if(!isset($this->moduleData->res))
     $this->moduleData->res=false;
 }
 
+//выводим результат без подключениыя шаблонов
 die(json_encode($this->moduleData->res));

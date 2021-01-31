@@ -3,8 +3,13 @@
  * Created by Sergey Peshalov https://github.com/desfpc
  * PHP framework and CMS based on it.
  * https://github.com/desfpc/iceCMS
- * @var \iceRender $this
+ * @var ice\iceRender $this
+ *
+ * 500 Error module
+ *
  */
+
+use ice\iceHeaderBuilder;
 
 $this->headers = new iceHeaderBuilder();
 $this->headers->standartHeaders();

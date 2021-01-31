@@ -3,8 +3,11 @@
  * Created by Sergey Peshalov https://github.com/desfpc
  * PHP framework and CMS based on it.
  * https://github.com/desfpc/iceCMS
- * @var \iceRender $this
+ * @var ice\iceRender $this
  */
+
+use ice\iceWidget;
+
 ?><!doctype html>
 <html lang="en">
 <head>

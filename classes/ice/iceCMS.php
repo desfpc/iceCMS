@@ -4,6 +4,9 @@
  * Created by Sergey Peshalov https://github.com/desfpc
  * PHP framework and CMS based on it.
  * https://github.com/desfpc/iceCMS
+ *
+ * Class is Deprecated, please don't use this
+ *
  */
 //настройки фрэймворка
 class iceSettings {

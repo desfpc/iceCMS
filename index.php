@@ -1,6 +1,6 @@
 <?php
 /**
- * Created by Sergey Peshalov https://github.com/desfpc
+ * Created by Peshalov Sergey https://github.com/desfpc
  * iceCMS - PHP framework and CMS based on it
  * https://github.com/desfpc/iceCMS
  */
@@ -10,17 +10,18 @@ $gstarttime = microtime(true);
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-
 //подключаем нужные классы
 require_once ('./classes/redka_remote/redka.php');//класс для работы с redis
-require_once('./classes/ice/iceCMS.php');//класс CMS
-
-// Призываем библиотеку визуализации Visualijoper
-require_once('./classes/visualijoper_remote/visualijoper.php');
+require_once('./classes/visualijoper_remote/visualijoper.php');//призываем библиотеку визуализации Visualijoper
+$iceDir = './classes/ice';//директория с классами CMS
+$modelsDir = './models';//директория пользовательских моделей
+require_once('bootstrap.php');//подключение классов ice CMS
 
 //подключаем настройки
 $settings_path='./settings/settings.php';
 include_once ($settings_path);
+
+use ice\iceRender;
 
 //сессия
 session_start();
