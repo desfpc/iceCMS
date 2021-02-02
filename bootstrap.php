@@ -29,6 +29,7 @@ $iceClasses = [
     'MatList',
     'MatType',
     'MatTypeList',
+    'Message',
     'ParseModule',
     'PathParser',
     'QueryBuilder',

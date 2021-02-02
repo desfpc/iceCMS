@@ -62,7 +62,10 @@ class iceMessage {
             $this->settings->email->smtp,
             $this->settings->email->port,
             $this->settings->email->mail,
-            $this->settings->email->pass
+            $this->settings->email->pass,
+            'ssl',
+            60,
+            false
         );
 
         if(is_array($attachments) && count($attachments) > 0){
