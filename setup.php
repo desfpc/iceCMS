@@ -87,30 +87,60 @@ header('X-Content-Type-Options: nosniff');
         'redis_host' => 'Хост Redis-а',
         'redis_port' => 'Порт Redis-а'
     ];
-    foreach ($setup as $key => $arr) {
-        echo '<br>&nbsp;';
-        //если список значений - выводим заголовок и перебираем значения
-        if(is_array($arr)){
 
-        }
-        else{
+    function echoParam($parentKey, $array, $names){
 
-            if(key_exists($key, $names)){
-                $name = $names[$key];
-            }
-            else {
-               $name = $key;
-            }
+        if(is_array($array) && count($array) > 0){
 
-            echo '<div class="form-group row">';
-            echo '
-    <label for="name" class="col-sm-2 col-form-label text-right"><strong>'.$name.'</strong></label>
+            foreach ($array as $key => $value){
+
+                if(key_exists($key, $names)){
+                    $name = $names[$key];
+                }
+                else {
+                    $name = $key;
+                }
+
+                if(is_array($value)){
+                    echo '<div class="form-group row">';
+                    echo '
+                <label for="name" class="col-sm-12 col-form-label text-left"><strong>'.$name.'</strong></label>';
+                    echo '</div>';
+
+                    echoParam($key, $value, $names);
+
+                }
+                else{
+
+                    if($parentKey){
+                        $paramName = $parentKey.'_'.$key;
+                    }
+                    else {
+                        $paramName = $key;
+                    }
+
+                    if($value === true){
+                        $value = 'true';
+                    }
+                    if($value === false){
+                        $value = 'false';
+                    }
+
+                    echo '<div class="form-group row">';
+                    echo '
+    <label for="name" class="col-sm-2 col-form-label text-right">'.$name.'</label>
     <div class="col-sm-10">
-        <input type="text" class="form-control" id="'.$key.'" name="'.$key.'" aria-describedby="'.$key.'Help" placeholder="'.$name.'" required value="'.$arr.'">
+        <input type="text" class="form-control" id="'.$paramName.'" name="'.$paramName.'" aria-describedby="'.$paramName.'Help" placeholder="'.$name.'" required value="'.$value.'">
     </div>';
-            echo '</div>';
+                    echo '</div>';
+                }
+            }
+
         }
+
     }
+
+    echoParam(false, $setup, $names);
     ?>
     </form>
 </div>
