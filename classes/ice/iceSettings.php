@@ -32,7 +32,7 @@ class iceSettings {
         try
         {
 
-            $settingsvalues=array();
+            $settingsvalues=[];
 
             $settingsvalues['path']=1;
             $settingsvalues['template']=1;
