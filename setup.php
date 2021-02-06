@@ -94,8 +94,20 @@ header('X-Content-Type-Options: nosniff');
 
         }
         else{
-            echo '<div class="form-group row">';
 
+            if(key_exists($key, $names)){
+                $name = $names[$key];
+            }
+            else {
+               $name = $key;
+            }
+
+            echo '<div class="form-group row">';
+            echo '
+    <label for="name" class="col-sm-2 col-form-label text-right"><strong>'.$name.'</strong></label>
+    <div class="col-sm-10">
+        <input type="text" class="form-control" id="'.$key.'" name="'.$key.'" aria-describedby="'.$key.'Help" placeholder="'.$name.'" required value="'.$arr.'">
+    </div>';
             echo '</div>';
         }
     }
