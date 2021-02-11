@@ -16,7 +16,8 @@ class iceDB {
     public $errors;
     public $warning;
     public $mysqli;
-    public $status;
+    public $status = 0;
+    public $connected = 0;
 
     public function __construct(iceSettings $settings)
     {
@@ -52,6 +53,7 @@ class iceDB {
                     }
                     else
                     {
+                        $this->connected = 1;
                         if (!$this->mysqli->select_db($this->settings->name))
                         {
                             $this->errors->flag=1;
@@ -95,9 +97,9 @@ class iceDB {
     }
 
     //выполнение запроса к БД
-    public function query($query, $free=true, $cnt=false){
+    public function query($query, $free=true, $cnt=false, $forced = false){
 
-        if($this->status->flag)
+        if($this->status->flag || $forced)
         {
             switch ($this->settings->type){
 
@@ -109,7 +111,7 @@ class iceDB {
 
                         if(!isset($this->warning->text))
                         {
-                            $this->warning->text=array();
+                            $this->warning->text=[];
                         }
 
                         $this->warning->text[]='Ошибка выполнения запроса: '.$query;
@@ -157,5 +159,36 @@ class iceDB {
         }
 
         return false;
+    }
+
+    //выполнение мультизапроса к БД
+    public function multiQuery($query){
+        if($this->status->flag)
+        {
+            switch ($this->settings->type){
+
+                //обработка запроса к мускулю
+                case 'mysql':
+
+                    if(!$res = $this->mysqli->multi_query($query)){
+                        $this->warning->flag=1;
+
+                        if(!isset($this->warning->text))
+                        {
+                            $this->warning->text=[];
+                        }
+
+                        $this->warning->text[]='Ошибка выполнения запроса: '.$query;
+                        return false;
+                    }
+
+                    while($this->mysqli->next_result()){;}//flush multi_queries
+
+                    return true;
+
+
+                    break;
+            }
+        }
     }
 }

@@ -43,8 +43,8 @@ else
 ?><div class="container-fluid header-topbar">
     <div class="row">
         <div class="col-sm">
-            <a href="mailto:support@ice4service.com"><i class="material-icons md-16 md-dark">mail_outline</i> support@ice4service.com</a>
-            &nbsp;&nbsp;<a href="tel:+79898283459"><i class="material-icons md-16 md-dark">local_phone</i> +7 (995) 005-52-08</a>
+            <a href="mailto:support@ice4service.com"><i class="material-icons md-16 md-dark">mail_outline</i> <?=$this->settings->email->mail?></a>
+            &nbsp;&nbsp;<a href="tel:+79898283459"><i class="material-icons md-16 md-dark">local_phone</i> +7 (000) 000-00-00</a>
         </div>
     </div>
 </div>

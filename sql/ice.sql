@@ -1,19 +1,3 @@
-/*
- Navicat Premium Data Transfer
-
- Source Server         : local_serv
- Source Server Type    : MySQL
- Source Server Version : 80018
- Source Host           : localhost:3306
- Source Schema         : ice
-
- Target Server Type    : MySQL
- Target Server Version : 80018
- File Encoding         : 65001
-
- Date: 28/01/2021 09:12:49
-*/
-
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
@@ -43,25 +27,7 @@ CREATE TABLE `files`  (
   INDEX `fil_status_idx`(`status_id`) USING BTREE,
   INDEX `fil_type_idx`(`filetype`) USING BTREE,
   INDEX `fil_private_idx`(`private`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 35 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of files
--- ----------------------------
-INSERT INTO `files` VALUES (21, 'thrustmaster-t300rs-gt1.jpg', 'thrustmaster-t300rs-gt1.jpg', '', '2020-05-27 06:14:11', '2020-05-27 06:14:11', 9, 2, 'image', 'jpg', '/files/202005/', 156492, 1100, 1000, 2, NULL);
-INSERT INTO `files` VALUES (22, 'thrustmaster-t300rs-gt2.jpg', 'thrustmaster-t300rs-gt2.jpg', '', '2020-05-27 06:14:16', '2020-05-27 06:14:16', 9, 2, 'image', 'jpg', '/files/202005/', 265261, 1100, 1000, 2, NULL);
-INSERT INTO `files` VALUES (23, 'thrustmaster-t300rs-gt3.jpg', 'thrustmaster-t300rs-gt3.jpg', '', '2020-05-27 06:14:21', '2020-05-27 06:14:21', 9, 2, 'image', 'jpg', '/files/202005/', 253507, 1100, 1000, 2, NULL);
-INSERT INTO `files` VALUES (24, 'thrustmaster-t300rs-gt4.jpg', 'thrustmaster-t300rs-gt4.jpg', '', '2020-05-27 06:14:26', '2020-05-27 06:14:26', 9, 2, 'image', 'jpg', '/files/202005/', 139243, 1100, 1000, 2, NULL);
-INSERT INTO `files` VALUES (25, 'thrustmaster-t300rs-gt5.jpg', 'thrustmaster-t300rs-gt5.jpg', '', '2020-05-27 06:14:31', '2020-05-27 06:14:31', 9, 2, 'image', 'jpg', '/files/202005/', 131027, 1100, 1000, 2, NULL);
-INSERT INTO `files` VALUES (26, 'thrustmaster-t300rs-gt6.jpg', 'thrustmaster-t300rs-gt6.jpg', '', '2020-05-27 06:14:38', '2020-05-27 06:14:38', 9, 2, 'image', 'jpg', '/files/202005/', 235202, 1100, 782, 2, NULL);
-INSERT INTO `files` VALUES (27, 'thrustmaster-t300rs-gt8.jpg', 'thrustmaster-t300rs-gt8.jpg', '', '2020-05-27 06:14:44', '2020-05-27 06:14:44', 9, 2, 'image', 'jpg', '/files/202005/', 247480, 1100, 1000, 2, NULL);
-INSERT INTO `files` VALUES (28, 'T300RS-2.jpg', 'T300RS-2.jpg', '', '2020-05-27 06:20:59', '2020-05-27 06:20:59', 9, 2, 'image', 'jpg', '/files/202005/', 2375336, 2480, 2783, 2, NULL);
-INSERT INTO `files` VALUES (29, 'tspcracer_f488challenge_1_(1).jpg', 'tspcracer_f488challenge_1_(1).jpg', '', '2020-05-27 06:29:32', '2020-05-27 06:29:32', 9, 2, 'image', 'jpg', '/files/202005/', 949916, 1795, 1613, 2, NULL);
-INSERT INTO `files` VALUES (30, 'tspcracer_f488challenge_3.jpg', 'tspcracer_f488challenge_3.jpg', '', '2020-05-27 06:29:38', '2020-05-27 06:29:38', 9, 2, 'image', 'jpg', '/files/202005/', 1468274, 1772, 1726, 2, NULL);
-INSERT INTO `files` VALUES (31, 'tspcracer_f488challenge_4.jpg', 'tspcracer_f488challenge_4.jpg', '', '2020-05-27 06:29:44', '2020-05-27 06:29:44', 9, 2, 'image', 'jpg', '/files/202005/', 1875120, 2362, 2082, 2, NULL);
-INSERT INTO `files` VALUES (32, 'tspcracer_f488challenge_wheelfront.jpg', 'tspcracer_f488challenge_wheelfront.jpg', '', '2020-05-27 06:29:50', '2020-05-27 06:29:50', 9, 2, 'image', 'jpg', '/files/202005/', 1541746, 2362, 2022, 2, NULL);
-INSERT INTO `files` VALUES (33, 'front_tspcracer_f488challenge.jpg', 'front_tspcracer_f488challenge.jpg', '', '2020-05-27 06:29:57', '2020-05-27 06:29:57', 9, 2, 'image', 'jpg', '/files/202005/', 2007864, 2362, 1439, 2, NULL);
-INSERT INTO `files` VALUES (34, '317012_10150316893950946_189614985945_8529710_1767473142_n.jpg', '317012_10150316893950946_189614985945_8529710_1767473142_n.jpg', '', '2020-05-27 08:37:39', '2020-05-27 08:37:39', 9, 2, 'image', 'jpg', '/files/202005/', 110233, 960, 640, 2, NULL);
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for image_caches
@@ -117,15 +83,8 @@ CREATE TABLE `material_extra_params`  (
   `value_mtype` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `mep_mtype_idx`(`mtype_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
--- ----------------------------
--- Records of material_extra_params
--- ----------------------------
-INSERT INTO `material_extra_params` VALUES (1, 'Производитель', 12, 'value_mat', 17);
-INSERT INTO `material_extra_params` VALUES (2, 'Производитель', 10, 'value_mat', 17);
-INSERT INTO `material_extra_params` VALUES (3, 'Производитель', 11, 'value_mat', 17);
-INSERT INTO `material_extra_params` VALUES (4, 'Производитель', 15, 'value_mat', 17);
 
 -- ----------------------------
 -- Table structure for material_extra_values
@@ -148,11 +107,6 @@ CREATE TABLE `material_extra_values`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of material_extra_values
--- ----------------------------
-INSERT INTO `material_extra_values` VALUES (5, 1, NULL, NULL, 8, NULL, NULL);
-
--- ----------------------------
 -- Table structure for material_files
 -- ----------------------------
 DROP TABLE IF EXISTS `material_files`;
@@ -165,24 +119,6 @@ CREATE TABLE `material_files`  (
   INDEX `filmat_mat_idx`(`material_id`) USING BTREE,
   CONSTRAINT `filmat_fil_fk` FOREIGN KEY (`file_id`) REFERENCES `files` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of material_files
--- ----------------------------
-INSERT INTO `material_files` VALUES (21, 4, NULL);
-INSERT INTO `material_files` VALUES (22, 4, NULL);
-INSERT INTO `material_files` VALUES (23, 4, NULL);
-INSERT INTO `material_files` VALUES (24, 4, NULL);
-INSERT INTO `material_files` VALUES (25, 4, NULL);
-INSERT INTO `material_files` VALUES (26, 4, NULL);
-INSERT INTO `material_files` VALUES (27, 4, NULL);
-INSERT INTO `material_files` VALUES (28, 4, NULL);
-INSERT INTO `material_files` VALUES (29, 5, NULL);
-INSERT INTO `material_files` VALUES (30, 5, NULL);
-INSERT INTO `material_files` VALUES (31, 5, NULL);
-INSERT INTO `material_files` VALUES (32, 5, NULL);
-INSERT INTO `material_files` VALUES (33, 5, NULL);
-INSERT INTO `material_files` VALUES (34, 6, NULL);
 
 -- ----------------------------
 -- Table structure for material_materials
@@ -230,7 +166,7 @@ CREATE TABLE `material_types`  (
   CONSTRAINT `mt_temp_admin_fk` FOREIGN KEY (`template_admin`) REFERENCES `templates` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `mt_temp_item_fk` FOREIGN KEY (`template_item`) REFERENCES `templates` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `mt_temp_list_fk` FOREIGN KEY (`template_list`) REFERENCES `templates` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of material_types
@@ -241,15 +177,7 @@ INSERT INTO `material_types` VALUES (3, 'Технический раздел', 0
 INSERT INTO `material_types` VALUES (4, 'Документация', 3, 'documentation', 1, NULL, NULL, NULL, NULL, NULL, NULL, 20, NULL, NULL, 'Documentation', 'Dokumentation');
 INSERT INTO `material_types` VALUES (5, 'Изображения', 3, 'images', 1, NULL, NULL, NULL, NULL, NULL, NULL, 10, NULL, NULL, 'Images', 'Bilder');
 INSERT INTO `material_types` VALUES (6, 'Для разработки', 3, 'for-development', 100, NULL, NULL, NULL, 5, NULL, NULL, 10, 1, NULL, 'For development', 'Zu entwickeln');
-INSERT INTO `material_types` VALUES (9, 'Каталог', 0, 'catalog', 2, 1, 6, 7, 5, 1, 1, 20, NULL, NULL, 'Catalog', 'Katalog');
-INSERT INTO `material_types` VALUES (10, 'Стойки для игрового руля', 9, 'steering-racks', 1, 1, 6, 7, 5, 1, 1, 10, NULL, NULL, 'Steering racks', 'Lenkgetriebe');
-INSERT INTO `material_types` VALUES (11, 'Кресла для автосимуляторов', 9, 'chairs-for-car-simulators', 2, 1, 6, 7, 5, NULL, NULL, 10, NULL, NULL, 'Chairs for car simulators', 'Stühle für Autosimulatoren');
-INSERT INTO `material_types` VALUES (12, 'Рули для автосимуляторов', 9, 'steering-wheels-for-car-simulators', NULL, 1, 6, 7, 5, 1, 1, 15, NULL, NULL, 'Steering wheels for car simulators', 'Lenkräder für Autosimulatoren');
-INSERT INTO `material_types` VALUES (13, 'Оплата и доставка', 0, 'payment-and-delivery', 3, 1, 8, NULL, NULL, NULL, NULL, 10, NULL, NULL, 'Payment and delivery', 'Zahlungs-und Lieferbedingungen');
-INSERT INTO `material_types` VALUES (14, 'Контакты', 0, 'contacts', 4, 1, 8, NULL, NULL, NULL, NULL, 10, NULL, NULL, 'Contacts', 'Kontakte');
-INSERT INTO `material_types` VALUES (15, 'Кресла для авиасимуляторов', 9, 'chairs-for-flight-simulators', 4, 1, 6, 7, 5, NULL, NULL, 10, NULL, NULL, 'Chairs for flight simulators', 'Stühle für Flugsimulatoren');
-INSERT INTO `material_types` VALUES (16, 'Новости', 0, 'news', 5, 1, 2, 3, 4, 1, 1, 10, NULL, NULL, 'News', 'Nachrichten');
-INSERT INTO `material_types` VALUES (17, 'Производители', 3, 'manufacturers', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 10, NULL, NULL, 'Manufacturers', 'Hersteller');
+INSERT INTO `material_types` VALUES (7, 'Каталог', 0, 'catalog', 2, 1, 6, 7, 5, 1, 1, 20, NULL, NULL, 'Catalog', 'Katalog');
 
 -- ----------------------------
 -- Table structure for materials
@@ -286,24 +214,14 @@ CREATE TABLE `materials`  (
   INDEX `mat_parent_fk`(`parent_id`) USING BTREE,
   CONSTRAINT `mat_lang_fk` FOREIGN KEY (`language`) REFERENCES `languages` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `mat_type_fk` FOREIGN KEY (`material_type_id`) REFERENCES `material_types` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of materials
--- ----------------------------
-INSERT INTO `materials` VALUES (4, 'Thrustmaster T300RS GT', 'Thrustmaster-T300RS-GT', 12, 1, 'Съемный гоночный руль в стиле GT', '&lt;h2&gt;СЪЕМНЫЙ ГОНОЧНЫЙ РУЛЬ В СТИЛЕ GT&lt;/h2&gt;\r\n&lt;p&gt;Съемный реалистичный руль диаметром 28 см с усиленным текстурированным прорезиненным покрытием по всей поверхности. Официальный логотип GT в центре перемычки&lt;br /&gt;Разнообразные гоночные регуляторы: 13 функциональных кнопок (в том числе 2 на базе ) + 1 многопозиционная кнопка.&lt;br /&gt;Официальные кнопки PlayStation&amp;reg;4 (PS, SHARE, OPTIONS) &amp;mdash; доступ к новым функциям общения моментальным переключением между игрой и системой в любой момент времени.&lt;/p&gt;\r\n&lt;p&gt;&amp;nbsp;&lt;/p&gt;\r\n&lt;h3&gt;2 больших секвенционных переключателя-лепестка на руле&lt;/h3&gt;\r\n&lt;p&gt;Секвенционное переключение передач обеспечивается двумя большими (величиной 13 см) полностью металлическими лепестковыми переключателями, закрепленными на руле, и выококлассной тактовой кнопкой (жизненный цикл более 10 миллионов включений).&lt;/p&gt;\r\n&lt;p&gt;&amp;nbsp;&lt;/p&gt;\r\n&lt;h3&gt;T3PA &amp;mdash; ПЕДАЛЬНЫЙ БЛОК GT EDITION&lt;/h3&gt;\r\n&lt;p&gt;Для еще большего повышения реалистичности игры, этот специальный выпуск комплекта GT EDITION предлагает педальный блок T3PA в стиле GT с 3 педалями и полностью металлической конструкцией. Регулируемая высота и расстояние между педалями газа и сцепления. Педаль тормоза поставляется вместе с модулем Conical Rubber Brake Mod и обеспечивает прогрессивное сопротивление.&lt;/p&gt;\r\n&lt;p&gt;&amp;nbsp;&lt;/p&gt;\r\n&lt;h3&gt;Бесщеточный сервомотор промышленного класса&lt;/h3&gt;\r\n&lt;p&gt;Под кожухом этой системы &amp;mdash; фирменный бесщеточный сервомотор промышленного класса с силовой обратной связью (без эффекта трения), который обеспечивает суперплавный ход и эффективную обратную связь. Тихая работа мотора позволяет геймерам полностью сосредоточиться на главном &amp;mdash; превосходных гоночных показателях.&lt;br /&gt;Суперчувствительные и реалистичные силовые эффекты без задержки.&lt;/p&gt;\r\n&lt;p&gt;&amp;nbsp;&lt;/p&gt;\r\n&lt;h3&gt;Новая двухременная система&lt;/h3&gt;\r\n&lt;p&gt;Новая двухременная система с углом 1080&amp;deg; обеспечивает суперплавный ход и тихую обратную связь исключительного отклика, а также реалистичные силовые эффекты, так что геймер чувствует дорогу, а не механизм рулевой системы.&lt;/p&gt;\r\n&lt;p&gt;&amp;nbsp;&lt;/p&gt;\r\n&lt;h3&gt;H.E.A.R.T. HallEffect AccuRate Technology&amp;reg;&lt;/h3&gt;\r\n&lt;p&gt;Разработчики из Thrustmaster дополнили внушительные характеристики мотора повышенной точностью работы благодаря внедрению технологии H.E.A.R.T HallEffect AccuRate Technology&amp;reg; с бесконтактным магнитным датчиком, обеспечивающим 16-битное разрешение и 65 536 значений на поворот.&lt;/p&gt;\r\n&lt;p&gt;&amp;nbsp;&lt;/p&gt;\r\n&lt;h3&gt;СОВМЕСТИМОСТЬ С ДРУГИМИ ПРОДУКТАМИ СЕРИИ&lt;/h3&gt;\r\n&lt;p&gt;Совместимость на системах&amp;nbsp; PS4&amp;trade;, PS3&amp;trade; и ПК со съемными рулями Thrustmaster** (599XX EVO 30 Wheel Add-On Alcantara Edition, TM Leather 28 GT Wheel Add-On, Ferrari F1 Wheel Add-On, Ferrari GTE Wheel Add-On и пр.)&lt;br /&gt;Совместимость на системах PS4&amp;trade;, PS3&amp;trade; и ПК с рулями Thrustmaster и 3-педальным блоком T3PA-PRO**.&amp;nbsp;&lt;br /&gt;Совместимость на системах PS4&amp;trade;, PS3&amp;trade; и ПК с коробкой передач TH8A** (TH8A &amp;mdash; Thrustmaster TH8 Add-on)&lt;br /&gt;** Приобретается отдельно.&lt;/p&gt;\r\n&lt;p&gt;&amp;nbsp;&lt;/p&gt;\r\n&lt;h3&gt;Система быстрого крепления Thrustmaster Quick Release&lt;/h3&gt;\r\n&lt;p&gt;Система быстрого крепления Thrustmaster Quick Release позволяет без проблем менять один руль на другой за считанные секунды. Эта инновационная концепция позволяет владельцам базы отдельно приобретать съемные рули Thrustmaster и использовать их с имеющейся базой. Оптимальная реалистичность на всех типах гонок!&lt;/p&gt;', NULL, '2020-05-27 06:11:20', '2020-05-27 06:25:26', '2020-05-27 06:11:20', '2020-05-27 06:11:20', 9, 1, NULL, 43990.00, NULL, NULL, NULL, NULL);
-INSERT INTO `materials` VALUES (5, 'Thrustmaster TS-PC RACER FERRARI 488 Challenge ,PC', 'Thrustmaster-TS-PC-RACER-FERRARI-488-Challenge-PC', 12, 1, 'Рулевая система TS-PC RACER Ferrari 488 Challenge Edition', '&lt;h2&gt;Рулевая система TS-PC RACER Ferrari 488 Challenge Edition&lt;/h2&gt;\r\n&lt;p&gt;В честь 70-й годовщины самого знаменитого бренда спортивных автомобилей в мире, Ferrari, компания Thrustmaster с гордостью представляет рулевую систему TS-PC RACER Ferrari 488 Challenge Edition. Наслаждайтесь невероятно реалистичными гоночными ощущениями благодаря системе, в которой передовые технологии Thrustmaster сервобазы TS-PC RACER, призванные повысить игровые показатели, сочетаются с репликой руля подлинного автомобиля Ferrari 488 Challenge (с официальной лицензией Ferrari).&lt;/p&gt;\r\n&lt;p&gt;Содержимое упаковки: гоночный руль, блок питания Turbo Power, система крепления, руководство пользователя и сведения о потребительской гарантии&lt;/p&gt;\r\n&lt;p&gt;&amp;nbsp;&lt;/p&gt;\r\n&lt;h3&gt;Кулак мощных технологий&lt;/h3&gt;\r\n&lt;p&gt;TS-PC RACER &amp;mdash; превосходный гоночный симулятор Thrustmaster для ПК. Он правдоподобно воспроизводит отклик автомобиля и условия трассы.&lt;/p&gt;\r\n&lt;p&gt;Система TS-PC RACER объединяет в себе целый спектр мощных технологий, призванных повысить игровые показатели и приблизить игровые впечатления к реальным для обеспечения полного погружения в игру.&lt;/p&gt;\r\n&lt;h3&gt;&lt;br /&gt;Сервобаза Thrustmaster TS-PC&lt;/h3&gt;\r\n&lt;p&gt;Металлическая верхняя панель.&lt;br /&gt;Угол поворота 270&amp;deg;&amp;mdash;1080&amp;deg;.&lt;br /&gt;Бесщеточный мотор промышленного класса 2-го поколения.&lt;br /&gt;Мотор системы TS-PC RACER предлагает бесщеточную силовую обратную связь 40 Вт.&lt;br /&gt;Встроенная система охлаждения Motor Cooling Embedded&lt;br /&gt;Алгоритм Field Oriented Control&lt;br /&gt;Внешний блок питания Turbo Power&lt;/p&gt;\r\n&lt;p&gt;&amp;nbsp;&lt;/p&gt;\r\n&lt;h3&gt;Реалистичный дизайн руля для соревнований&lt;/h3&gt;\r\n&lt;p&gt;Руль представляет собой реплику 9:10 (32 см в диаметре) руля подлинного автомобиля Ferrari 488 Challenge. Он имеет официальную лицензию Ferrari и предлагает в общей сложности 25 программируемых функций.&lt;br /&gt;Центральная пластина и 2 лепестковых секвенционных переключателя из черного анодированного металла с шероховатой поверхностью.&lt;br /&gt;15 встроенных* индикаторов для функции тахометра (об./мин.).&lt;br /&gt;2 многопозиционных переключателя (с функцией нажимной кнопки).&lt;br /&gt;2 поворотных переключателя с нажимными кнопками и 8 функциональных кнопок.&lt;br /&gt;Дизайн с простроченным вручную покрытием из того же итальянского материала Alcantara, что и покрытие на оригинальных рулях Ferrari.&lt;/p&gt;\r\n&lt;p&gt;&amp;nbsp;&lt;/p&gt;\r\n&lt;h3&gt;Бесщеточная технология сервомотора (40 Вт)&lt;/h3&gt;\r\n&lt;p&gt;Компания Thrustmaster разработала сервобазу TS-PC, чтобы предложить взыскательным ПК-геймерам высокий уровень производительности, точности и комфорта.&lt;br /&gt;Бесщеточный мотор промышленного класса 2-го поколения обеспечивает 50% повышение динамичности отклика и 4-кратное увеличение момента при заторможенном моторе по сравнению с предыдущим поколением моторов. Крутящий момент в 1,6 раза выше по сравнению с показателями баз рулевых систем TX и T300 RS.&lt;/p&gt;\r\n&lt;p&gt;&amp;nbsp;&lt;/p&gt;\r\n&lt;h3&gt;Динамический крутящий момент&lt;/h3&gt;\r\n&lt;p&gt;40-Вт мотор с высоким уровнем отклика обеспечивает мощные динамические эффекты и оптимизированную обратную связь. Мотор системы TS-PC RACER обеспечивает мощную бесщеточную силовую обратную связь 40 Вт и потрясающий вектор скорости (динамический крутящий момент) как на длинных виражах при заторможенном двигателе (режим STALL), так и в суперточных зигзагах (режим DYNAMIC).&lt;/p&gt;\r\n&lt;p&gt;&amp;nbsp;&lt;/p&gt;\r\n&lt;h3&gt;Встроенная система охлаждения мотора Motor Cooling Embedded (подана заявка на патент)&lt;/h3&gt;\r\n&lt;p&gt;Обеспечивает динамику нового мотора, защищая его от перегрева, и не создает лишнего шума. Дает 50% повышение динамичности отклика и 4-кратное увеличение момента при заторможенном моторе по сравнению с базами систем TX и T300 RS плюс теплоотвод путем монофазного охлаждения.&lt;/p&gt;\r\n&lt;p&gt;&amp;nbsp;&lt;/p&gt;\r\n&lt;h3&gt;H.E.A.R.T (HallEffect AccuRate Technology) + F.O.C.&lt;/h3&gt;\r\n&lt;p&gt;Алгоритм Field Oriented Control: технология H.E.A.R.T (HallEffect AccuRate Technology) предлагает 16-битное разрешение (65 536 значений), а новый алгоритм F.O.C. динамически оптимизирует уровень отклика при высоких требованиях к крутящему моменту. В ответ на повышение требований к крутящему моменту мотор реагирует динамически, компенсируя потери мощности.&lt;/p&gt;\r\n&lt;p&gt;&amp;nbsp;&lt;/p&gt;\r\n&lt;h3&gt;Внешний блок питания Turbo Power&lt;/h3&gt;\r\n&lt;p&gt;Внешний блок питания Turbo Power обеспечивает постоянное питание и высокую пиковую мощность, что гарантирует моментальный отклик на самые быстрые команды от игры. Тороидальная конструкция дает, благодаря отсутствию ребер, оптимизированную энергоэффективность. Пиковая мощность: 400 Вт!&lt;/p&gt;\r\n&lt;p&gt;&amp;nbsp;&lt;/p&gt;\r\n&lt;h3&gt;Полная совместимость с экосистемой Thrustmaster&lt;/h3&gt;\r\n&lt;p&gt;Совместимость на ПК с дополнительными гоночными рулями Thrustmaster* (Ferrari F1 Wheel Add-On, Ferrari GTE Wheel Add-On, 599XX EVO 30 Wheel Add-On Alcantara Edition, TM Leather 28 GT Wheel Add-On, TM Rally Wheel Add-On Sparco 383 Mod) и экосистемой гоночных продуктов Thrustmaster: педальными блоками с 3 педалями Thrustmaster T3PA* и T3PA-PRO* и переключателем передач TH8A*.&lt;br /&gt;* Приобретается отдельно&lt;/p&gt;', NULL, '2020-05-27 06:28:34', '2020-06-02 00:00:22', '2020-05-27 06:28:34', '2020-05-27 06:28:34', 9, 1, NULL, 65990.00, NULL, NULL, NULL, NULL);
-INSERT INTO `materials` VALUES (6, 'Открытие сайта', 'Otkrytie-sajta', 16, 1, 'Сегодня запустили сайт simracingseat.ru!', '&lt;p&gt;Мы предоставляем любителям гоночных симуляторов только высококачественные продукты для улучшения водительского мастерства и удобства вождения виртуальных болидов. Наши продукты &amp;nbsp;созданы из лучших материалов и их можно использовать как дома, так и в любых коммерческих помещениях. Красивый дизайн отлично будет смотрится в любом интерьере, а&amp;nbsp;продуманная до мелочей эргономика позволит управлять виртуальным болидом без усталости.&lt;br /&gt;&lt;br /&gt;Также наши игровые кресла идеально подходят для проведения турниров по автосимуляторам, а также для различных презентаций и выставок.&lt;br /&gt;&lt;br /&gt;Наши продукты используют не только дома, но и на разнообразных мероприятиях, связанных с игровым миром автосимуляторов.&amp;nbsp;&lt;br /&gt;&lt;br /&gt;Мы подходим индивидуально к каждому клиенту и поможем сделать правильный выбор не только в наших продуктах, а также в продукции сторонних производителей. Мы посоветуем только лучшее, так как мы лучшие специалисты своего дела.&lt;br /&gt;&amp;nbsp;&amp;nbsp;&lt;br /&gt;Мы предлагаем только лучшие подставки, игровые кресла и рули для автосимуляторов. Никаких компромиссов.&lt;/p&gt;', NULL, '2020-05-27 08:34:31', '2020-05-27 08:37:48', '2020-05-27 08:34:31', '2020-05-27 08:34:31', 9, 1, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `materials` VALUES (7, 'Производитель 1', 'Proizvoditel-1', 17, 1, NULL, NULL, NULL, '2020-06-01 22:53:18', '2020-06-01 22:53:23', '2020-06-01 22:53:18', '2020-06-01 22:53:18', 9, 1, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `materials` VALUES (8, 'Производитель 2', 'Proizvoditel-2', 17, 1, NULL, NULL, NULL, '2020-06-01 22:53:41', '2020-06-01 22:53:47', '2020-06-01 22:53:41', '2020-06-01 22:53:41', 9, 1, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `materials` VALUES (9, 'Производитель 3', 'Proizvoditel-3', 17, 1, NULL, NULL, NULL, '2020-06-01 22:53:58', '2020-06-02 09:34:21', '2020-06-01 22:53:58', '2020-06-01 22:53:58', 9, 1, NULL, NULL, NULL, NULL, NULL, NULL);
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for modules
 -- ----------------------------
 DROP TABLE IF EXISTS `modules`;
 CREATE TABLE `modules`  (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `content` varchar(1025) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `secure` tinyint(1) NULL DEFAULT NULL,
@@ -313,7 +231,7 @@ CREATE TABLE `modules`  (
   `parent_id` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `modules_name_idx`(`name`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of modules

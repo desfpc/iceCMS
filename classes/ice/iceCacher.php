@@ -19,9 +19,10 @@ class iceCacher {
     public $key;
     public $value;
     public $expired;
-    private $status;
+    public $status;
     public $host;
     public $port;
+    public $errors = [];
 
     public function __construct($host='localhost',$port=6379)
     {
@@ -33,7 +34,19 @@ class iceCacher {
         //создаем объект redis
         $this->redis = new redka($this->host, $this->port);
         $this->redis->connect();
-        $this->status=1;
+
+        //visualijop($this->redis);
+
+        if($this->redis->connect()){
+            if($this->redis->status == 1){
+                $this->status=1;
+                return true;
+            }
+        }
+
+        $this->errors[]='Не получилось соединиться с Redis';
+        return false;
+
     }
 
     public function has($key)

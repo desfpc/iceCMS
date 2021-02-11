@@ -18,8 +18,13 @@ $iceDir = './classes/ice';//директория с классами CMS
 $modelsDir = './models';//директория пользовательских моделей
 require_once('bootstrap.php');//подключение классов ice CMS
 
-//подключаем настройки
+//подключаем настройки, если их нет - редиректим на setup.php
 $settings_path='./settings/settings.php';
+if(!file_exists($settings_path)){
+    echo 'Сайт не настроен';
+    header('Location: /setup.php');
+    exit;
+}
 include_once ($settings_path);
 
 use ice\iceRender;

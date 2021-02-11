@@ -27,16 +27,16 @@ $setup['db']['encoding']='UTF8';
 
 //настройки системы рассылки
 $setup['email']=[];
-$setup['email']['mail']='noreply@ice4service.ru';
+$setup['email']['mail']='noreply@ice.cms';
 $setup['email']['port']='120';
-$setup['email']['signature']='Система рассылки ice4service.ru';
+$setup['email']['signature']='Система рассылки ice.cms';
 $setup['email']['pass']='password';
 $setup['email']['smtp']='smtp.server';
 
 //настройки сайта
 $setup['site']=[];
-$setup['site']['title']='cms.ice4service.ru';
-$setup['site']['primary_domain'] = 'cms.ice4service.ru';
+$setup['site']['title']='ice.cms';
+$setup['site']['primary_domain'] = 'ice.cms';
 $setup['site']['redirect_to_primary_domain'] = false;
 $setup['site']['language_subdomain'] = true;
 

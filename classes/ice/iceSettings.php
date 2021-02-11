@@ -22,6 +22,82 @@ class iceSettings {
     public $cache;
     public $path;
 
+    public function save(){
+
+        $filePath = $this->path.'/settings/settings.php';
+
+
+        //boolean значения
+        if($this->site->redirect_to_primary_domain === true){
+            $redirect_to_primary_domain = 'true';
+        }
+        else {
+            $redirect_to_primary_domain = 'false';
+        }
+        if($this->site->language_subdomain === true){
+            $language_subdomain = 'true';
+        }
+        else {
+            $language_subdomain = 'false';
+        }
+        if($this->cache->use_redis === true){
+            $use_redis = 'true';
+        }
+        else {
+            $use_redis = 'false';
+        }
+
+
+        $fileContent = "<?php
+\$setup=[];
+
+//общие настройки
+\$setup['path']='".$this->path."';
+
+//настройки шаблонизатора (папка с шаблонами)
+\$setup['template']='".$this->template."';
+
+//настройка релиз/разработка
+\$setup['dev']=1;
+
+//настройки БД
+\$setup['db']=[];
+\$setup['db']['type']='".$this->db->type."';
+\$setup['db']['name']='".$this->db->name."';
+\$setup['db']['host']='".$this->db->host."';
+\$setup['db']['port']='".$this->db->port."';
+\$setup['db']['login']='".$this->db->login."';
+\$setup['db']['pass']='".$this->db->pass."';
+\$setup['db']['encoding']='".$this->db->encoding."';
+
+//настройки системы рассылки
+\$setup['email']=[];
+\$setup['email']['mail']='".$this->email->mail."';
+\$setup['email']['port']='".$this->email->port."';
+\$setup['email']['signature']='".$this->email->signature."';
+\$setup['email']['pass']='".$this->email->pass."';
+\$setup['email']['smtp']='".$this->email->smtp."';
+
+//настройки сайта
+\$setup['site']=[];
+\$setup['site']['title']='".$this->site->title."';
+\$setup['site']['primary_domain'] = '".$this->site->primary_domain."';
+\$setup['site']['redirect_to_primary_domain'] = $redirect_to_primary_domain;
+\$setup['site']['language_subdomain'] = $language_subdomain;
+
+//настройки кэширования
+\$setup['cache']=[];
+\$setup['cache']['use_redis']=$use_redis;
+\$setup['cache']['redis_host']='".$this->cache->redis_host."';
+\$setup['cache']['redis_port']=".$this->cache->redis_port.";";
+
+        if(file_put_contents($filePath, $fileContent)){
+            return true;
+        }
+
+        return false;
+    }
+
     public function __construct($setup)
     {
 
