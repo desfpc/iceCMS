@@ -340,4 +340,3 @@ header('X-Content-Type-Options: nosniff');
 <script src="/classes/visualijoper_remote/jquery.visualijoper.js"></script>
 </body>
 </html>
-
