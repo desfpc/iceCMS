@@ -21,26 +21,28 @@ echo '<div class="hMenu">';
 //TODO при необходимости сделать вложенные разделы
 if(isset($this->params) && count($this->params) > 0){
 
-    $menuTypes = $childs[$parent];
+    if(isset($childs[$parent]) && count($childs[$parent]) > 0){
 
-    foreach ($menuTypes as $mtype){
+        $menuTypes = $childs[$parent];
 
-        if($mtype['sitemenu'] == 1){
+        foreach ($menuTypes as $mtype){
 
-            if($active == $mtype['id_char']){
-                $activeClass = ' hMenu_link_active';
+            if($mtype['sitemenu'] == 1){
+
+                if($active == $mtype['id_char']){
+                    $activeClass = ' hMenu_link_active';
+                }
+                else {
+                    $activeClass = '';
+                }
+
+                $url = $icePathParser->getMatTypeURL($mtype['id']);
+                echo '<a class="hMenu_link'.$activeClass.'" href="'.$url.'">'.$mtype['name'].'</a>';
+
             }
-            else {
-                $activeClass = '';
-            }
-
-            $url = $icePathParser->getMatTypeURL($mtype['id']);
-            echo '<a class="hMenu_link'.$activeClass.'" href="'.$url.'">'.$mtype['name'].'</a>';
 
         }
-
     }
-
 }
 
 echo '</div>';

@@ -60,8 +60,10 @@ $goods = $goods->getRecords();
     <div class="col-md-3">
         <?php
 
+        $catalogId = 7; //main catalog id
+
         $navigation = new iceWidget($this->DB, 'horizontalMenu', $this->settings);
-        $navigation->show(['types' => $this->materialTypes, 'parent' => 9, 'active' => $this->moduleData->mtype->params['id_char']]);
+        $navigation->show(['types' => $this->materialTypes, 'parent' => $catalogId, 'active' => $this->moduleData->mtype->params['id_char']]);
 
         ?>
     </div>
