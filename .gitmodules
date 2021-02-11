@@ -1,6 +1,3 @@
-[submodule "classes/redka_remote"]
-	path = classes/redka_remote
-	url = https://github.com/desfpc/Redka.git
 [submodule "classes/visualijoper_remote"]
 	path = classes/visualijoper_remote
 	url = https://github.com/desfpc/Visualijoper.git
