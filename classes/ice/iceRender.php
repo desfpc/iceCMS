@@ -37,9 +37,9 @@ class iceRender {
     public $parser;
 
     public function moduleAccess(){
+
         if($this->authorize->autorized){
-            //return true;
-            if($this->authorize->user->params['role']['secure'] === 1){
+            if((int)$this->authorize->user->params['role']['secure'] === 1){
                 return true;
             }
         }
