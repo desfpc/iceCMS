@@ -318,9 +318,7 @@ header('X-Content-Type-Options: nosniff');
                     echo '</div>';
                 }
             }
-
         }
-
     }
 
     echoParam(false, $setup, $names, $errorValues);
