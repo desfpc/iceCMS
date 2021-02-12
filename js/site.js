@@ -6,8 +6,26 @@ $(function () {
         $(this).ekkoLightbox();
     });
 
-    //  <a href="https://unsplash.it/1200/768.jpg?image=251" data-toggle="lightbox">
-    //  <img src="https://unsplash.it/600.jpg?image=251" class="img-fluid">
-    //  </a>
+    $('.person-round').click(function () {
+
+        var round = $(this);
+        if(round.hasClass('passive')){
+            round.children('.person-info').show(300, function() {
+                round.removeClass('passive');
+                round.addClass('active');
+            });
+        }
+    });
+
+    $('.person-info .close').click(function () {
+
+        var round = $(this).parent().parent();
+        if(round.hasClass('active')){
+            round.children('.person-info').hide(300, function () {
+                round.removeClass('active');
+                round.addClass('passive');
+            });
+        }
+    });
 
 })

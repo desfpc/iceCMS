@@ -316,20 +316,32 @@ ul.slimmenu>li {
 .person-info {
     display: none;
     position: absolute;
-    width: 200px;
+    width: 300px;
     height: auto;
     top: -1px;
-    right: -80px;
+    right: -10px;
     border-radius: 5px;
     box-shadow: 0 3px 25px 0 rgba(47,56,68,0.22);
     z-index: 100;
     background: #fff;
-    padding: 5px;
+    padding: 18px 22px;
     text-align: left;
+    cursor: default;
+}
+.person-info .close {
+    display: block;
+    position: absolute;
+    top: 2px;
+    right: 2px;
 }
 
-.person-round:hover .person-info {
+
+/*.person-round:hover .person-info {
     display: block;
+}*/
+
+.person-round {
+    cursor: pointer;
 }
 
 .user-name-block .photo {

@@ -20,10 +20,7 @@
 
             foreach ($this->moduleData->material->files as $file) {
 
-                /*{ title: 'My page 1', value: 'http://www.tinymce.com' },
-            { title: 'My page 2', value: 'http://www.moxiecode.com' }*/
-
-                $iconArr = iceFile::formatIcon($this->DB, $file, true, true);
+                $iconArr = ice\iceFile::formatIcon($this->DB, $file, true, true);
                 $fileIcon = $iconArr['icon'];
                 $fileLink = $iconArr['link'];
 
@@ -39,8 +36,8 @@
                                 <td>'.$fileIcon.'</td>
                                 <td>'.$file['name'].'</td>
                                 <td>'.$file['filename'].'</td>
-                                <td>'.iceFile::formatDate($file['date_add']).'</td>
-                                <td>'.iceFile::formateSize($file['size']).'</td>
+                                <td>'.ice\iceFile::formatDate($file['date_add']).'</td>
+                                <td>'.ice\iceFile::formateSize($file['size']).'</td>
                                 <td></td>
                             </tr>';
             }

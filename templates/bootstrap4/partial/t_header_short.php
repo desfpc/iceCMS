@@ -63,9 +63,10 @@ else
             <div class="normalblock border rounded-circle header-round">
                 <i class="material-icons md-24 md-dark">search</i>
             </div>
-            <div class="normalblock border rounded-circle header-round person-round">
+            <div class="normalblock border rounded-circle header-round person-round passive">
                 <i class="material-icons md-24 md-dark">person</i>
                 <div class="person-info">
+                    <i class="close material-icons md-24 md-grey">close</i>
                     <?php
                     //выводим инфо пользователя, ссылки на личный кабинет и выход
                     if($this->authorize->autorized)
