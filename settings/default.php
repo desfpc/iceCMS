@@ -43,7 +43,7 @@ $setup['site']['language_subdomain'] = true;
 //настройки кэширования
 $setup['cache']=[];
 $setup['cache']['use_redis']=true;
-$setup['cache']['redis_host']='0.0.0.0';
+$setup['cache']['redis_host']='127.0.0.1';
 $setup['cache']['redis_port']=6379;
 
 //режим разработки (если работаем на Win64)

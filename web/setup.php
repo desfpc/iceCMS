@@ -8,9 +8,10 @@
 ini_set('max_execution_time', '360');
 
 //проверяем файл найтроек settings.php - если он есть, то переходим в index.php
-$defaultDir = __DIR__;
+$defaultDir = dirname(__DIR__);
+//удаляем
 
-if(file_exists($defaultDir.'/../settings/settings.php')){
+if(file_exists($defaultDir.'/settings/settings.php')){
     //echo 'Настройка выполнена';
     header('Location: /');
     exit;
@@ -21,13 +22,13 @@ $errors = [];
 $errorValues=[];
 
 //подключение дефолтного файла настроек
-require_once($defaultDir.'/../settings/default.php');
+require_once($defaultDir.'/settings/default.php');
 
 //заменяем путь по умолчанию на $defaultDir
 $setup['path'] = $defaultDir;
 
 //визуализатор переменных для отладки
-require_once($defaultDir.'/../classes/visualijoper_remote/visualijoper.php');
+require_once($defaultDir.'/classes/visualijoper_remote/visualijoper.php');
 
 //обработка формы настроек
 if(isset($_POST['doSetup'])){
