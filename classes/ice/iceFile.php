@@ -135,7 +135,7 @@ class iceFile extends iceObject {
                 }
 
                 $url.=date('Ym').'/';
-                $dirpatch = $this->settings->path.$url;
+                $dirpatch = $this->settings->path.'/web'.$url;
                 //visualijop($dirpatch);
 
 
@@ -226,9 +226,9 @@ class iceFile extends iceObject {
     public function getFilePath(){
 
         if($this->params['extension'] != ''){
-            return $this->settings->path.$this->params['url'].$this->id.'.'.$this->params['extension'];
+            return $this->settings->path.'/web'.$this->params['url'].$this->id.'.'.$this->params['extension'];
         }
-        return $this->settings->path.$this->params['url'].$this->id;
+        return $this->settings->path.'/web'.$this->params['url'].$this->id;
 
     }
 
@@ -236,7 +236,7 @@ class iceFile extends iceObject {
 
         $folder=$x.'x'.$y;
 
-        $dirpatch = $this->settings->path.$this->params['url'].$folder.'/';
+        $dirpatch = $this->settings->path.'/web'.$this->params['url'].$folder.'/';
         //visualijop($dirpatch);
 
         if(!is_dir($dirpatch)){
@@ -244,9 +244,9 @@ class iceFile extends iceObject {
         }
 
         if($this->params['extension'] != ''){
-            return $this->settings->path.$this->params['url'].$folder.'/'.$this->id.'.'.$this->params['extension'];
+            return $this->settings->path.'/web'.$this->params['url'].$folder.'/'.$this->id.'.'.$this->params['extension'];
         }
-        return $this->settings->path.$this->params['url'].$folder.'/'.$this->id;
+        return $this->settings->path.'/web'.$this->params['url'].$folder.'/'.$this->id;
 
     }
 

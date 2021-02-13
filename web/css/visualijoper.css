@@ -1,0 +1,123 @@
+.visualijoper {
+    width: 100%;
+    overflow: hidden;
+    padding: 0;
+    margin: 5px 0;
+    border: 1px solid #2a3746;
+    border-radius: 5px;
+}
+.visualijoper__header {
+    border-bottom: 1px solid #2a3746;
+    border-radius: 5px 5px 0 0;
+    padding: 5px;
+    background: #43b9e1;
+}
+.vj-header_clickable {
+    cursor: pointer;
+    position: relative;
+}
+.vj-header_clickable .vj-header__type {
+    padding-left: 20px;
+}
+.vj-header_clickable .vj-header__type:before {
+    content: '';
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    left: 6px;
+    bottom: 5px;
+    background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='iso-8859-1'%3F%3E%3Csvg version='1.1' id='Capa_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 512 512' style='enable-background:new 0 0 512 512;' xml:space='preserve'%3E%3Cg%3E%3Cg%3E%3Cg%3E%3Cpath d='M128,32V0H16C7.163,0,0,7.163,0,16v112h32V54.56L180.64,203.2l22.56-22.56L54.56,32H128z'/%3E%3Cpath d='M496,0H384v32h73.44L308.8,180.64l22.56,22.56L480,54.56V128h32V16C512,7.163,504.837,0,496,0z'/%3E%3Cpath d='M480,457.44L331.36,308.8l-22.56,22.56L457.44,480H384v32h112c8.837,0,16-7.163,16-16V384h-32V457.44z'/%3E%3Cpath d='M180.64,308.64L32,457.44V384H0v112c0,8.837,7.163,16,16,16h112v-32H54.56L203.2,331.36L180.64,308.64z'/%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.vj-header__name {
+    font-size: 12px;
+    font-weight: bold;
+    color: #0E0E0E;
+    padding: 0;
+    margin: 0;
+}
+.vj-header__type {
+    font-style: italic;
+    font-size: 11px;
+    font-weight: normal;
+}
+.vj-header__value {
+    font-size: 11px;
+    font-weight: bold;
+}
+.vj-header__size {
+    font-weight: normal;
+}
+.visualijoper__footer {
+    background: #2a3746;
+    padding: 5px;
+    color: #bec6ce;
+    font-size: 10px;
+}
+.visualijoper__footer strong {
+    color: #ffffff;
+}
+.visualijoper__footer a {
+    font-size: 10px;
+    color: #ffffff;
+    float: right;
+}
+.visualijoper__footer a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+.vj-body {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    position: relative;
+}
+.vj-body__content {
+    width: 100%;
+    display: none;
+}
+.vj-body__content_string {
+    padding: 5px;
+    overflow-x: scroll;
+    background: #ffffff;
+}
+.visualijoper__row {
+    margin: 1px 0 0 5px;
+    border-left: 2px solid transparent;
+    background: #c3e8f4;
+}
+.visualijoper__row_clickable {
+    border-left: 2px solid #2a3746;
+}
+.visualijoper__row_level1 {
+    background: #c3d5f4;
+}
+.visualijoper__row_level2 {
+    background: #d7c3f4;
+}
+.visualijoper__row_level3 {
+    background: #f4c3e6;
+}
+.visualijoper__row_level4 {
+    background: #f4c3c3;
+}
+.visualijoper__row_level5 {
+    background: #f4e2c3;
+}
+.vj-row__header {
+    width: 100%;
+    margin: 0;
+    padding: 5px;
+}
+.vj-row__type {
+    font-style: italic;
+}
+.vj-row__key {
+    font-weight: bold;
+}
+.visualijoper__row_clickable > .vj-row__header:hover {
+    background: #afddec;
+    cursor: pointer;
+}
+.vj-row__header .vj-row__value {
+    font-weight: bold;
+}

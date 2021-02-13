@@ -6,6 +6,8 @@
  * @var ice\iceRender $this
  */
 
+use ice\iceFile;
+
 $template_folder=$this->settings->path.'/templates/'.$this->settings->template.'';
 
 //подключаем стили и скрипты

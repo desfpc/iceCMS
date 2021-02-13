@@ -11,15 +11,15 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 //подключаем нужные классы
-require_once ('./classes/redka_remote/redka.php');//класс для работы с redis
-require_once('./classes/visualijoper_remote/visualijoper.php');//призываем библиотеку визуализации Visualijoper
-require_once('./classes/pechkin_remote/pechkin.php');//класс для отправки email
-$iceDir = './classes/ice';//директория с классами CMS
-$modelsDir = './models';//директория пользовательских моделей
-require_once('bootstrap.php');//подключение классов ice CMS
+require_once ('../classes/redka_remote/redka.php');//класс для работы с redis
+require_once('../classes/visualijoper_remote/visualijoper.php');//призываем библиотеку визуализации Visualijoper
+require_once('../classes/pechkin_remote/pechkin.php');//класс для отправки email
+$iceDir = '../classes/ice';//директория с классами CMS
+$modelsDir = '../models';//директория пользовательских моделей
+require_once('../bootstrap.php');//подключение классов ice CMS
 
 //подключаем настройки, если их нет - редиректим на setup.php
-$settings_path='./settings/settings.php';
+$settings_path='../settings/settings.php';
 if(!file_exists($settings_path)){
     echo 'Сайт не настроен';
     header('Location: /setup.php');
