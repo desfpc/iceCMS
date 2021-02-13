@@ -136,6 +136,20 @@ if(isset($_POST['doSetup'])){
 
     }
 
+    //разворачиваем директории для загрузки файлов
+    $filesDir = $defaultDir.'/web/files';
+    if(!is_dir($filesDir)){
+        //пробуем создать директорию с файлами
+        try{
+            if(mkdir($filesDir)){
+                mkdir($filesDir.'/private', 0600);
+            }
+        }
+        catch (Throwable $e){
+            $errors[] = 'Не получилось создать директорию для загружаемых файлов '.$filesDir.'. Дайте доступ на запись файлов, либо создайте ее вручную.';
+        }
+    }
+
     //Разворачивание SQL
     if(count($errors) == 0){
         if($sqlFile = file_get_contents($defaultDir.'/sql/ice.sql')){
