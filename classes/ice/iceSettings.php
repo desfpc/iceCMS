@@ -21,6 +21,7 @@ class iceSettings {
     public $site;
     public $cache;
     public $path;
+    public $routes;
 
     public function save(){
 
@@ -137,6 +138,8 @@ class iceSettings {
             $settingsvalues['cache']['redis_host']=1;
             $settingsvalues['cache']['redis_port']=1;
 
+            $settingsvalues['routes']=[];
+
             foreach ($settingsvalues as $key => $value)
             {
                 if(is_array($value))
@@ -154,13 +157,13 @@ class iceSettings {
                     {
                         $paramname2=$key2;
 
-                        if($value2 == 1)
+                        /*if($value2 == 1)
                         {
                             if(!isset($setup[$paramname][$paramname2]))
                             {
                                 throw new \Exception('Ошибка файла настроек - нет необходимого поля: '.$paramname.'-'.$paramname2);
                             }
-                        }
+                        }*/
 
                         $this->$paramname->$paramname2 = $setup[$paramname][$paramname2];
 

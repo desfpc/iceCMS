@@ -46,6 +46,9 @@ $setup['cache']['use_redis']=true;
 $setup['cache']['redis_host']='127.0.0.1';
 $setup['cache']['redis_port']=6379;
 
+//TODO - роутинг (пользовательский роутинг для модулей)
+$setup['routes'] = [];
+
 //режим разработки (если работаем на Win64)
 /*if(strpos($_SERVER['SERVER_SOFTWARE'],'Win64') !== false){
     $setup['path']='E:\work\Ampps\www\iceCMS';
