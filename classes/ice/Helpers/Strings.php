@@ -5,17 +5,15 @@
  * PHP framework and CMS based on it.
  * https://github.com/desfpc/iceCMS
  *
- * Text Functions Class
+ * TODO Helpers - Strings Class
  *
  */
 
-namespace ice;
+namespace ice\Helpers;
 
-class iceTextFunctions {
+class Strings {
 
-    public $text;
-
-    public static function mb_transliterate($string)
+    public static function Transliterate($string)
     {
         $table = array(
             'А' => 'A', 'Б' => 'B', 'В' => 'V', 'Г' => 'G', 'Д' => 'D',
@@ -40,7 +38,6 @@ class iceTextFunctions {
             array_values($table),$string
         );
 
-        // таеже те символы что неизвестны
         $output = preg_replace('/[^-a-z0-9._\[\]\'"]/i', ' ', $output);
         $output = preg_replace('/ +/', '-', $output);
 
@@ -50,7 +47,7 @@ class iceTextFunctions {
     //формирование char_id из текста
     public static function makeCharId($text){
 
-        $id_char = iceTextFunctions::mb_transliterate($text);
+        $id_char = Strings::Transliterate($text);
         $id_char = str_replace('"', '-quot-', $id_char);
         $id_char = trim(preg_replace('/-{2,}/', '-', $id_char), '-');
         $id_char = str_replace(' ','_',$id_char);
@@ -60,16 +57,16 @@ class iceTextFunctions {
     }
 
     //проверка сложности пароля
-    public function checkSecurePass()
+    public static function checkSecurePass($text)
     {
-        if(mb_strlen($this->text, 'utf8') < 6)
+        if(mb_strlen($text, 'utf8') < 6)
         {
             return false;
         }
 
-        if (preg_match("/([0-9]+)/", $this->text))
+        if (preg_match("/([0-9]+)/", $text))
         {
-            if (preg_match("/([a-zA-Z]+)/", $this->text))
+            if (preg_match("/([a-zA-Z]+)/", $text))
             {
                 return true;
             }
@@ -78,17 +75,11 @@ class iceTextFunctions {
         return false;
     }
 
-    //проверка e-mail адреса по маске
-    public function checkEmail()
+    public static function checkEmail($text)
     {
         $pattern = '/^[a-z0-9_.\-]+@[a-z0-9_.\-]+\.[a-z0-9_.\-]+$/i';
-        $res = preg_match($pattern, $this->text);
+        $res = preg_match($pattern, $text);
         return (bool)$res;
-    }
-
-    public function __construct($text=null)
-    {
-        $this->text=$text;
     }
 
 }

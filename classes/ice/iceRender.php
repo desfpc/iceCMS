@@ -31,7 +31,6 @@ class iceRender {
     public $authorize;//авторизация пользюка
     public $values;//переменные
     public $materialTypes;//типы материалов
-    public $textfunctions;
     public $version;
     public $cacher;
     public $parser;
@@ -249,7 +248,6 @@ class iceRender {
         unset($this->path_info); //результат разбора строки
         unset($this->authorize); //авторизация пользюка
         unset($this->values); //переменные
-        unset($this->textfunctions);
     }
 
     public function getMaterialTypesTree(){
@@ -277,7 +275,6 @@ class iceRender {
         $this->jscripts = new iceJScriptBuilder();
         $this->errors=Array();
         $this->values = new \stdClass();
-        $this->textfunctions = new iceTextFunctions();
         $this->authorize = new iceAuthorize($this->DB);
 
         if(is_object($this->settings) && isset($this->settings->cache->host) && isset($this->settings->cache->port))

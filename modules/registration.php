@@ -10,6 +10,7 @@
  */
 
 use ice\iceUser;
+use ice\Helpers\Strings;
 
 $this->moduleData=new stdClass();
 
@@ -38,7 +39,7 @@ switch ($this->values->action)
             $this->moduleData->errors[]='Введенные пароли не совпадают';
         }
         //корректность email
-        elseif($this->values->regEmail != '' && $this->textfunctions->checkEmail($this->values->regEmail))
+        elseif($this->values->regEmail != '' && Strings::checkEmail($this->values->regEmail))
         {
             $this->moduleData->errors[]='Введен не верный адрес электронной почты';
         }

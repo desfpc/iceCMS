@@ -11,6 +11,8 @@
 
 namespace ice;
 
+use ice\Helpers\Strings;
+
 class iceMat extends iceObject {
 
     public $files = [];
@@ -173,7 +175,7 @@ class iceMat extends iceObject {
                 else {
                     switch ($valueName){
                         case 'id_char':
-                            $params[$col['Field']] = iceTextFunctions::makeCharId($values->name);
+                            $params[$col['Field']] = Strings::makeCharId($values->name);
                             break;
                         default:
                             if(!isset($params[$col['Field']])){

@@ -4,7 +4,6 @@ if(!isset($iceDir)){
     $iceDir = './classes/ice';
 }
 
-
 //Загрузка файлов CMS в нужном порядке
 $iceClasses = [
     'Authorize',
@@ -39,7 +38,6 @@ $iceClasses = [
     'StylesBuilder',
     'Template',
     'TemplateList',
-    'TextFunctions',
     'Translator',
     'User',
     'UserList',
@@ -49,6 +47,17 @@ $iceClasses = [
 
 foreach ($iceClasses as $iceClass) {
     include_once($iceDir .'/ice'. $iceClass.'.php');
+}
+
+//Загрузка хэлперов
+$helpersDir = $iceDir.'/Helpers';
+$files = scandir($helpersDir);
+if(is_array($files) && count($files) > 0){
+    foreach($files as $file){
+        if(($file !== '.') && ($file !== '..')){
+            include_once($helpersDir .'/'. $file);
+        }
+    }
 }
 
 //Загрузка пользовательских классов
