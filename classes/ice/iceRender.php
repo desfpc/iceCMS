@@ -109,7 +109,7 @@ class iceRender {
     //функция разбора юрла
     public function parseURL()
     {
-        $path = array();
+        $path = [];
         if (isset($_SERVER['REQUEST_URI'])) {
             $request_path = explode('?', $_SERVER['REQUEST_URI']);
 
@@ -143,8 +143,8 @@ class iceRender {
         }
         $this->path_info=$path;
 
-        $this->module=new iceParseModule($this->DB, $path);
-        $this->module=$this->module->module;
+        $this->module = new iceParseModule($this->settings, $this->DB, $path);
+        $this->module = $this->module->module;
     }
 
     //функция загрузки модуля

@@ -90,7 +90,17 @@ class iceSettings {
 \$setup['cache']=[];
 \$setup['cache']['use_redis']=$use_redis;
 \$setup['cache']['redis_host']='".$this->cache->redis_host."';
-\$setup['cache']['redis_port']=".$this->cache->redis_port.";";
+\$setup['cache']['redis_port']=".$this->cache->redis_port.";
+
+//роутинг (пользовательский роутинг для модулей)
+\$setup['routes'] = [];";
+
+        if(count($this->routes) > 0){
+            foreach ($this->routes as $key=>$value){
+                $fileContent.="
+\$setup['routes']['$key'] = '$value';";
+            }
+        }
 
         if(file_put_contents($filePath, $fileContent)){
             return true;
@@ -145,27 +155,34 @@ class iceSettings {
                 if(is_array($value))
                 {
                     $paramname=$key;
+                    if(count($value) > 0){
 
-                    if(!isset($setup[$paramname]) && !is_array($setup[$paramname]))
-                    {
-                        throw new \Exception('Ошибка файла настроек - нет необходимого поля либо оно не является массивом: '.$paramname);
-                    }
-
-                    $this->$paramname = new \stdClass();
-
-                    foreach ($setup[$paramname] as $key2 => $value2)
-                    {
-                        $paramname2=$key2;
-
-                        /*if($value2 == 1)
+                        if(!isset($setup[$paramname]) && !is_array($setup[$paramname]))
                         {
-                            if(!isset($setup[$paramname][$paramname2]))
-                            {
-                                throw new \Exception('Ошибка файла настроек - нет необходимого поля: '.$paramname.'-'.$paramname2);
-                            }
-                        }*/
+                            throw new \Exception('Ошибка файла настроек - нет необходимого поля либо оно не является массивом: '.$paramname);
+                        }
 
-                        $this->$paramname->$paramname2 = $setup[$paramname][$paramname2];
+                        $this->$paramname = new \stdClass();
+
+                        foreach ($setup[$paramname] as $key2 => $value2)
+                        {
+                            $paramname2=$key2;
+
+                            /*if($value2 == 1)
+                            {
+                                if(!isset($setup[$paramname][$paramname2]))
+                                {
+                                    throw new \Exception('Ошибка файла настроек - нет необходимого поля: '.$paramname.'-'.$paramname2);
+                                }
+                            }*/
+
+                            $this->$paramname->$paramname2 = $setup[$paramname][$paramname2];
+
+                        }
+                    }
+                    else {
+
+                        $this->$paramname = $setup[$paramname];
 
                     }
 

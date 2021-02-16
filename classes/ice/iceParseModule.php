@@ -13,55 +13,75 @@ namespace ice;
 
 class iceParseModule {
 
+    public $settings;
     public $path_info;
     public $DB;
     public $module;
 
-    public function getModule()
-    {
-        if($this->DB->errors->flag)
-        {
+    public function getModule() {
+        $menu='';
+
+        //visualijop($this->settings);
+        //visualijop($_REQUEST);
+
+        if($this->DB->errors->flag) {
             return false;
         }
 
         //определяем модуль
-        if(isset($_REQUEST['menu']))
-        {
+        if(isset($_REQUEST['menu']) && $_REQUEST['menu'] != '') {
             $menu=$_REQUEST['menu'];
         }
-        else
-        {
-            $menu='materials';
-        }
+        else {
+            //проверяем роуты
+            if(is_array($this->settings->routes) && count($this->settings->routes) > 0) {
 
-        $findmodule=false;
-        //проверка на наличае модуля в базе
-        $query='SELECT * FROM modules WHERE name = '."'".$this->DB->mysqli->real_escape_string($menu)."'";
-        if($res=$this->DB->query($query))
-        {
-            if(count($res) > 0)
-            {
-                $this->module=$res[0];
-                $findmodule=true;
+                if(is_array($this->path_info['call_parts']) && count($this->path_info['call_parts']) > 0){
+                    $callRoute = mb_strtolower(implode('/',$this->path_info['call_parts']), 'UTF8');
+                    //удаляем последний / в роуте
+                    if(mb_substr($callRoute, -1, 1, 'UTF8') == '/'){
+                        $callRoute=mb_substr($callRoute,0,-1, 'UTF8');
+                    }
+                    if(key_exists($callRoute, $this->settings->routes)){
+                        $menu=$this->settings->routes[$callRoute];
+                    }
+                }
+                //visualijop($this->path_info);
+
+            }
+
+            //принудительно выставляем модуль в materials для рендеринга CMS сайта
+            if($menu == '') {
+                $menu='materials';
             }
         }
 
-        if(!$findmodule)
-        {
-            $arr=array();
-            $arr['id'] = 9;
-            $arr['name'] = '404';
-            $arr['content']='Ошибка 404';
-
-            $this->module=$arr;
+        //проверка на наличае модуля в базе
+        $query='SELECT * FROM modules WHERE name = '."'".$this->DB->mysqli->real_escape_string($menu)."'";
+        if($res=$this->DB->query($query)) {
+            if(count($res) > 0)
+            {
+                $this->module=$res[0];
+                return $this->module;
+            }
         }
+
+        //ничего не нашли, выводим 404
+        $arr=[];
+        $arr['id']=9;
+        $arr['name']='404';
+        $arr['content']='Ошибка 404';
+        $this->module=$arr;
+
+        return $this->module;
 
     }
 
-    public function __construct(iceDB $DB, $path_info)
+    public function __construct(iceSettings $settings, iceDB $DB, $path_info)
     {
-        $this->DB=$DB;
-        $this->path_info=$path_info;
+        $this->settings = $settings;
+        $this->DB = $DB;
+        $this->path_info = $path_info;
 
         $this->getModule();
 

@@ -46,8 +46,11 @@ $setup['cache']['use_redis']=true;
 $setup['cache']['redis_host']='127.0.0.1';
 $setup['cache']['redis_port']=6379;
 
-//TODO - роутинг (пользовательский роутинг для модулей)
+//роутинг (пользовательский роутинг для модулей) TODO добавить все готовые модули
 $setup['routes'] = [];
+$setup['routes']['admin/icefw'] = 'iceFW';
+$setup['routes']['admin/users'] = 'users_admin';
+$setup['routes']['admin/shop'] = 'shop';
 
 //режим разработки (если работаем на Win64)
 /*if(strpos($_SERVER['SERVER_SOFTWARE'],'Win64') !== false){
