@@ -88,6 +88,10 @@ class icePathParser {
                 }
             }
 
+            if(!$finded){
+                $redirect = new iceRedirect('/404',302);
+            }
+
         }
 
         $this->mtypes = $mtypes;
