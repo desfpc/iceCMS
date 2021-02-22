@@ -7,7 +7,7 @@
  */
 
 ?>
-<form id="matTypeAddForm" action="/?menu=material_types_admin&mode=add" method="post">
+<form id="matTypeAddForm" action="/admin/material_types_admin/?mode=add" method="post">
     <div class="form-group row">
         <label for="name" class="col-sm-2 col-form-label">Наименование</label>
         <div class="col-sm-10">
@@ -169,7 +169,7 @@ $this->jsready.="
         })
         .ajaxSelectPicker({
         ajax: {
-            url: '/?menu=ajax&action=getmattype',
+            url: '/ajax/?action=getmattype',
             data: function () {
                 var params = {
                     query: '{{{q}}}'

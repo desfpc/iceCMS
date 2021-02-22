@@ -29,12 +29,12 @@ function printTypes($arr, $id, $size){
     <br>'.$type['template_item_name'].'
     <br>'.$type['template_admin_name'].'</small></td>
     <td>'.$type['ordernum'].'</td>
-    <td><a href="/?menu=material_types_admin&mode=edit&id='.$type['id'].'">
+    <td><a href="/admin/material_types_admin/?mode=edit&id='.$type['id'].'">
             <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Редактировать">
                 <i class="material-icons md-16 md-light">edit</i>
             </button>
         </a><!--
-        --><a href="/?menu=material_types_admin&mode=delete&id='.$type['id'].'">
+        --><a href="/admin/material_types_admin/?mode=delete&id='.$type['id'].'">
             <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Удалить">
                 <i class="material-icons md-16 md-light">delete</i>
             </button>
@@ -85,6 +85,6 @@ function printTypes($arr, $id, $size){
 </div>
 <div class="row">
     <div class="col">
-        <a href="/?menu=material_types_admin&mode=add"><button type="button" class="btn btn-primary"><i class="material-icons md-24 md-light">add_box</i> Создать новый</button></a>
+        <a href="/admin/material_types_admin/?mode=add"><button type="button" class="btn btn-primary"><i class="material-icons md-24 md-light">add_box</i> Создать новый</button></a>
     </div>
 </div>

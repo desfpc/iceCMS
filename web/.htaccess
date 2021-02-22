@@ -38,5 +38,5 @@ RewriteRule ^(.*)$ /index.php [L]
 RewriteCond %{REQUEST_METHOD} ^TRACE
 RewriteRule .* - [F]
 
-ErrorDocument 404 /?menu=404
-ErrorDocument 500 /index.php?menu=500
+ErrorDocument 404 /404
+ErrorDocument 500 /500

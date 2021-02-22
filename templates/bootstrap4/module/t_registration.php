@@ -27,7 +27,7 @@ include_once ($template_folder.'/partial/t_header.php');
 if($this->authorize->autorized)
 {
     $showform=false;
-    $this->moduleData->errors[]='Для регистрации нужно <a href="/?menu=exit">выйти</a> из текущей учетной записи';
+    $this->moduleData->errors[]='Для регистрации нужно <a href="/exit">выйти</a> из текущей учетной записи';
 }
 else
 {
@@ -45,7 +45,7 @@ else
             </div>
         </div>
         <?php if($showform){ ?>
-        <form id="regForm" action="/?menu=registration" method="post">
+        <form id="regForm" action="/registration" method="post">
             <div class="form-group">
                 <label for="regEmail">Email адрес</label>
                 <input type="email" class="form-control" id="regEmail" name="regEmail" aria-describedby="regEmailHelp" placeholder="Введите email" required value="<?= $this->values->regEmail; ?>">

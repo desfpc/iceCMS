@@ -48,7 +48,7 @@ switch ($this->values->mode){
                 $this->moduleData->success[] = 'Кэш изображения <strong>'.$this->values->width.'x'.$this->values->height.'</strong> успешно создан.';
                 $this->setFlash('success',['Кэш изображения <strong>'.$this->values->width.'x'.$this->values->height.'</strong> успешно создан']);
                 $this->unsetValues();
-                $this->redirect('/?menu=image_caches_admin');
+                $this->redirect('/admin/image_caches_admin');
             }
             else {
                 $this->moduleData->errors[] = 'Не удалось сохранить кэш изображения';

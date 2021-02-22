@@ -5,7 +5,7 @@
  * https://github.com/desfpc/iceCMS
  * @var ice\iceRender $this
  */
-?><form id="matTypeAddForm" action="/?menu=material_types_admin&mode=edit&id=<?= $this->moduleData->matType->params['id'] ?>" method="post"><input type="hidden" name="id" value="<?= $this->moduleData->matType->params['id'] ?>">
+?><form id="matTypeAddForm" action="/admin/material_types_admin/?mode=edit&id=<?= $this->moduleData->matType->params['id'] ?>" method="post"><input type="hidden" name="id" value="<?= $this->moduleData->matType->params['id'] ?>">
     <div class="form-group row">
         <label for="name" class="col-sm-2 col-form-label">Наименование</label>
         <div class="col-sm-10">
@@ -194,7 +194,7 @@
                 </tbody>
             </table>
             <h3>Создать новое поле:</h3>
-            <form method="post" action="/?menu=material_types_admin&mode=addExtraParam&mtype_id=<?= $this->moduleData->matType->params['id'] ?>">
+            <form method="post" action="/admin/material_types_admin/?mode=addExtraParam&mtype_id=<?= $this->moduleData->matType->params['id'] ?>">
                 <input type="hidden" name="mtype_id" value="<?= $this->moduleData->matType->params['id'] ?>">
                 <input type="hidden" name="mode" value="addExtraParam">
                 <div class="form-group row">
@@ -238,7 +238,7 @@ $this->jsready.="
         })
         .ajaxSelectPicker({
         ajax: {
-            url: '/?menu=ajax&action=getmattype',
+            url: '/ajax/?action=getmattype',
             data: function () {
                 var params = {
                     query: '{{{q}}}'

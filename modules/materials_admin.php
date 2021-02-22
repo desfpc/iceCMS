@@ -100,7 +100,7 @@ switch ($this->values->mode){
                 $this->moduleData->success[] = 'Материал <strong>'.$this->values->name.'</strong> успешно создан.';
                 $this->unsetValues();
                 $this->setFlash('success',['Материал <strong>'.$this->values->name.'</strong> успешно создан']);
-                $this->redirect('/?menu=materials_admin&mode=edit&id='.$material->id);
+                $this->redirect('/admin/materials_admin/?mode=edit&id='.$material->id);
             }
             else {
                 $this->moduleData->errors[] = 'Не удалось сохранить материал';
@@ -238,7 +238,7 @@ switch ($this->values->mode){
                         $this->moduleData->success[] = $stext;
                         $this->setFlash('success',[$stext]);
                         $this->unsetValues();
-                        $this->redirect('/?menu=materials_admin&mode=edit&id='.$material->params['id']);
+                        $this->redirect('/admin/materials_admin/?mode=edit&id='.$material->params['id']);
                     }
                     else{
                         $this->moduleData->errors = $file->errors;

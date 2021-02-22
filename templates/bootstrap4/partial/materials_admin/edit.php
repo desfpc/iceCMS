@@ -24,14 +24,14 @@ $tmImageList = '[]';
         <small>Автор: <strong><?=$this->moduleData->material->params['user_name']?></strong> &nbsp;|&nbsp;
             Создано: <strong><?=iceMat::formatDate($this->moduleData->material->params['date_add'])?></strong> &nbsp;|&nbsp;
             Статус: <strong><?=iceMat::statusIcon($this->moduleData->material->params['status_id'])?> <?=iceMat::statusName($this->moduleData->material->params['status_id'])?></strong> &nbsp;|&nbsp;
-            Тип материала: <strong><a href="/?menu=material_types_admin&mode=edit&id=<?=$this->moduleData->material->params['material_type_id']?>"><?=$this->moduleData->material->params['material_type_name']?></a></strong> &nbsp;|&nbsp;
-            <a href="/?menu=materials_admin&mode=edit&id=<?=$this->moduleData->material->params['id']?>&action=clearcache">Очистить кэш</a>  &nbsp;|&nbsp;
+            Тип материала: <strong><a href="/admin/material_types_admin/?mode=edit&id=<?=$this->moduleData->material->params['material_type_id']?>"><?=$this->moduleData->material->params['material_type_name']?></a></strong> &nbsp;|&nbsp;
+            <a href="/admin/materials_admin/?mode=edit&id=<?=$this->moduleData->material->params['id']?>&action=clearcache">Очистить кэш</a>  &nbsp;|&nbsp;
             TODO - Посмотреть на сайте
         </small>
         <br /><hr /><br />
     </div>
 </div>
-    <form id="matEditForm" action="/?menu=materials_admin&mode=edit&id=<?= $this->moduleData->material->params['id'] ?>" method="post"><input type="hidden" name="id" value="<?= $this->moduleData->material->params['id'] ?>"><input type="hidden" name="mode" value="edit">
+    <form id="matEditForm" action="/admin/materials_admin/?mode=edit&id=<?= $this->moduleData->material->params['id'] ?>" method="post"><input type="hidden" name="id" value="<?= $this->moduleData->material->params['id'] ?>"><input type="hidden" name="mode" value="edit">
         <input type="hidden" name="action" value="edit">
     <div class="form-group row">
         <label for="name" class="col-sm-2 col-form-label text-right"><strong>Наименование</strong></label>
@@ -125,7 +125,7 @@ if(isset($selecterIDs) && is_array($selecterIDs) && count($selecterIDs) > 0){
         })
         .ajaxSelectPicker({
         ajax: {
-            url: '/?menu=ajax&action=getmats&type=".$selecterID['type']."',
+            url: '/ajax/?action=getmats&type=".$selecterID['type']."',
             data: function () {
                 var params = {
                     query: '{{{q}}}'
@@ -172,7 +172,7 @@ $this->jsready.="
         })
         .ajaxSelectPicker({
         ajax: {
-            url: '/?menu=ajax&action=getmattype',
+            url: '/ajax/?action=getmattype',
             data: function () {
                 var params = {
                     query: '{{{q}}}'

@@ -51,7 +51,7 @@
 </table>
 <br />
 <h3>Загрузить файл:</h3>
-<form method="post" enctype="multipart/form-data" action="/?menu=materials_admin&mode=edit&id=<?=$this->moduleData->material->params['id']?>">
+<form method="post" enctype="multipart/form-data" action="/admin/materials_admin/?mode=edit&id=<?=$this->moduleData->material->params['id']?>">
     <input type="hidden" name="menu" value="materials_admin">
     <input type="hidden" name="mode" value="edit">
     <input type="hidden" name="id" value="<?=$this->moduleData->material->params['id']?>">

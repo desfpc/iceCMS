@@ -56,12 +56,12 @@ use ice\iceMat;
                                 <td>'.$material['name'].'</td>
                                 <td>'.$material['material_type_name'].'</td>
                                 <td><small>'.iceMat::formatDate($material['date_add']).'</small></td>
-                                <td><a href="/?menu=materials_admin&mode=edit&id='.$material['id'].'">
+                                <td><a href="/admin/materials_admin/?mode=edit&id='.$material['id'].'">
             <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Редактировать">
                 <i class="material-icons md-16 md-light">edit</i>
             </button>
         </a><!--
-        --><a href="/?menu=materials_admin&mode=delete&id='.$material['id'].'">
+        --><a href="/admin/materials_admin/?mode=delete&id='.$material['id'].'">
             <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Удалить">
                 <i class="material-icons md-16 md-light">delete</i>
             </button>

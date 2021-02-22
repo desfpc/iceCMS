@@ -27,7 +27,7 @@ include_once ($template_folder.'/partial/t_header.php');
 if($this->authorize->autorized)
 {
     $showform=false;
-    //$this->moduleData->errors[]='Вы уже авторизированы';
+    $this->moduleData->success[]='Вы уже авторизированы';
 }
 else
 {
@@ -45,7 +45,7 @@ else
             </div>
         </div>
         <?php if($showform){ ?>
-        <form id="regForm" action="/?menu=authorize" method="post">
+        <form id="regForm" action="/authorize" method="post">
             <div class="form-group">
                 <label for="auEmail">Email адрес</label>
                 <input type="email" class="form-control" id="auEmail" name="auEmail" aria-describedby="auEmailHelp" placeholder="Введите email" required value="<?= $this->values->auEmail; ?>">

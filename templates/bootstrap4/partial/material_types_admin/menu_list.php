@@ -34,7 +34,7 @@ function printTypesMenu($obj, $arr, $id, $size){
                 $class = 'active';
             }
 
-            echo '<li class="'.$menuclass.' '.$class.'"><a href="./?menu='.$menu.'&mtype='.$type['id'].'&page=1">'.$type['name'].'</a>';
+            echo '<li class="'.$menuclass.' '.$class.'"><a href="/admin/'.$menu.'/?mtype='.$type['id'].'&page=1">'.$type['name'].'</a>';
 
             //проверяем, есть ли у типа подразделы
             printTypesMenu($obj, $arr, $type['id'], ($size+1));
@@ -63,7 +63,7 @@ if(isset($this->moduleData->materialTypes) && is_array($this->moduleData->materi
     }
 
     $menu = $this->module['name'];
-    echo '<p class="'.$menuclass.' '.$class.'"><a href="./?menu='.$menu.'&mtype=all&page=1">Все</a></p>';
+    echo '<p class="'.$menuclass.' '.$class.'"><a href="/admin/'.$menu.'/?mtype=all&page=1">Все</a></p>';
 
 }
 echo '</div>';

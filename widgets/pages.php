@@ -30,15 +30,6 @@ function printPage($url, $page, $apage){
     return '<li class="page-item"><a class="page-link" href="'.$url.'">'.$page.'</a></li>';
 }
 
-/*$test = [
-    'count' => 531,
-    'perpage' => 20,
-    'page' => 25,
-    'url' => '/?menu=materials_admin&mtype=all&page=25'
-];
-
-$this->params = $test;*/
-
 $page = (int)$this->params['page'];
 if($page == 0){
     $page = 1;

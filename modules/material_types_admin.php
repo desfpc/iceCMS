@@ -83,7 +83,7 @@ switch($this->values->mode){
 
         $id = $this->values->mtype_id;
         $this->unsetValues();
-        $this->redirect('/?menu=material_types_admin&mode=edit&id='.$id);
+        $this->redirect('/admin/material_types_admin/?mode=edit&id='.$id);
 
         break;
 
@@ -102,7 +102,7 @@ switch($this->values->mode){
                 $this->moduleData->success[] = 'Тип материала <strong>'.$this->values->name.'</strong> успешно создан.';
                 $this->unsetValues();
                 $this->setFlash('success',['Тип материала <strong>'.$this->values->name.'</strong> успешно создан']);
-                $this->redirect('/?menu=material_types_admin&mode=edit&id='.$matType->id);
+                $this->redirect('/admin/material_types_admin/?mode=edit&id='.$matType->id);
             }
             else {
                 $this->moduleData->errors[] = 'Не удалось сохранить тип материала';

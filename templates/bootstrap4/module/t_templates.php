@@ -38,7 +38,7 @@ include_once ($template_folder.'/partial/t_header.php');
             <div class="row">
                 <div class="col">
                     <h2>Изменить шаблон:</h2>
-                    <form method="post" action="/?menu=templates">
+                    <form method="post" action="/admin/templates">
                         <input type="hidden" name="menu" value="templates" />
                         <input type="hidden" name="mode" value="edit" />
                         <input type="hidden" name="id" value="<?=$params['id']?>" />
@@ -139,7 +139,7 @@ include_once ($template_folder.'/partial/t_header.php');
                             <td>'.$template['type_name'].'</td>
                             <td>'.$mat_types.'</td>
                             <td>'.$template['content'].'</td>
-                            <td><a href="/?menu=templates&mode=edit&id='.$template['id'].'">
+                            <td><a href="/admin/templates/?mode=edit&id='.$template['id'].'">
             <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Редактировать">
                 <i class="material-icons md-16 md-light">edit</i>
             </button>
@@ -157,7 +157,7 @@ include_once ($template_folder.'/partial/t_header.php');
         <div class="row">
             <div class="col">
                 <h2>Добавить шаблон:</h2>
-                <form method="post" action="/?menu=templates">
+                <form method="post" action="/admin/templates">
                     <input type="hidden" name="menu" value="templates" />
                     <input type="hidden" name="mode" value="add" />
                     <div class="form-group row">

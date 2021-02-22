@@ -10,7 +10,7 @@
 include_once ($template_folder.'/partial/t_alert.php');
 
 ?>
-<form id="matTypeAddForm" action="/?menu=materials_admin&mode=add" method="post">
+<form id="matTypeAddForm" action="/admin/materials_admin/?mode=add" method="post"><input type="hidden" name="mode" value="add">
     <div class="form-group row">
         <label for="name" class="col-sm-2 col-form-label">Наименование</label>
         <div class="col-sm-10">
@@ -43,7 +43,7 @@ $this->jsready.="
         })
         .ajaxSelectPicker({
         ajax: {
-            url: '/?menu=ajax&action=getmattype',
+            url: '/ajax/?action=getmattype',
             data: function () {
                 var params = {
                     query: '{{{q}}}'

@@ -80,18 +80,18 @@ else
                             </div>
                         </div>
                         <div class="links">
-                            <p><a href="/?menu=account-profile">Личный кабинет</a></p>
-                            <p><a href="/?menu=orderlist">Список заказов</a></p>
-                            <p><a href="/?menu=wishlist">Список желаний</a></p>
+                            <p><a href="/account-profile">Личный кабинет</a></p>
+                            <p><a href="/orderlist">Список заказов</a></p>
+                            <p><a href="/wishlist">Список желаний</a></p>
                             <hr>
-                            <p><a href="/?menu=exit">Выход</a></p>
+                            <p><a href="/exit">Выход</a></p>
                         </div>
                         <?php
                     }
                     //выводим форму авторизации и ссылки на регистрацию
                     else
                     {
-                        ?><form id="smallRegForm" action="/?menu=authorize" method="post">
+                        ?><form id="smallRegForm" action="/authorize" method="post">
                             <input type="email" class="form-control" id="auEmail" name="auEmail" aria-describedby="auEmailHelp" placeholder="Введите email" required="" value="">
                             <input type="password" class="form-control" id="auPass" name="auPass" placeholder="введите Пароль" required="">
                             <input type="hidden" name="action" value="login">

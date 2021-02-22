@@ -97,9 +97,6 @@ SELECT * FROM amodules ORDER BY name ASC';
                         $row['parent_id']=0;
                     }
                     $menuarr[$row['parent_id']][]=$row;
-                    //echo '<li class="nav-item"><a class="nav-link" href="./?menu='.$row['name'].'">'.$row['content'].'</a>';
-
-                    //echo '</li>';
                 }
 
                 //krumo($menuarr);
