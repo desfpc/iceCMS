@@ -311,6 +311,20 @@ CREATE TABLE `translates`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Table structure for user_files
+-- ----------------------------
+DROP TABLE IF EXISTS `user_files`;
+CREATE TABLE `user_files`  (
+  `file_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `ordernum` int(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`file_id`, `user_id`) USING BTREE,
+  INDEX `usermat_fil_idx`(`file_id`) USING BTREE,
+  INDEX `usermat_user_idx`(`user_id`) USING BTREE,
+  CONSTRAINT `user_files_ibfk_1` FOREIGN KEY (`file_id`) REFERENCES `files` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
 -- Table structure for user_roles
 -- ----------------------------
 DROP TABLE IF EXISTS `user_roles`;

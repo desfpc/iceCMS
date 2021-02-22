@@ -31,29 +31,29 @@ include_once ($template_folder.'/partial/t_header.php');
         </div>
         <?php
 
-        /*switch($this->values->mode){
+        switch($this->values->mode){
 
             //форма добавления
             case 'add':
-                include_once ($template_folder.'/partial/material_types_admin/add.php');
+                include_once ($template_folder.'/partial/users_admin/add.php');
                 break;
 
             //форма изменения
             case 'edit':
-                include_once ($template_folder.'/partial/material_types_admin/edit.php');
+                include_once ($template_folder.'/partial/users_admin/edit.php');
                 break;
 
             //удаление
             case 'delete':
-                include_once ($template_folder.'/partial/material_types_admin/delete.php');
+                include_once ($template_folder.'/partial/users_admin/delete.php');
                 break;
 
             //списвок структуры материалов
             default:
-                include_once ($template_folder.'/partial/material_types_admin/list.php');
+                include_once ($template_folder.'/partial/users_admin/list.php');
                 break;
 
-        }*/
+        }
 
         ?>
     </div>

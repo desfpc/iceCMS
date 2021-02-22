@@ -30,8 +30,8 @@ $this->moduleData->H1='Материалы администрирование';
 //получение переменных
 $this->getRequestValues(['mtype','action','mode','page']);
 
-$this->moduleData->errors=array();
-$this->moduleData->success=array();
+$this->moduleData->errors=[];
+$this->moduleData->success=[];
 
 //получаем дерево типов материалов (всех)
 $materialTypes = new iceMatTypeList($this->DB, null, null, 1, null, 0, null);
