@@ -92,7 +92,7 @@ class iceSettings {
 \$setup['cache']['redis_host']='".$this->cache->redis_host."';
 \$setup['cache']['redis_port']=".$this->cache->redis_port.";
 
-//роутинг (пользовательский роутинг для модулей)
+//роутинг для ЧПУ модулей //TODO сделать возможность передачи ЧПУ переменных
 \$setup['routes'] = [];";
 
         //автоматическая генерация роутов для модулей
@@ -105,15 +105,18 @@ class iceSettings {
         $query = 'SELECT name, secure FROM modules ORDER BY secure ASC, name ASC';
         if($res = $connection->query($query)){
             foreach ($res as $row){
+
+                $lowerName = mb_strtolower($row['name'], 'UTF8');
+
                 //административные модули
                 if($row['secure'] == 1){
                     $fileContent.='
-$setup[\'routes\'][\''.$adminPath.'/'.$row['name'].'\'] = \''.$row['name'].'\';';
+$setup[\'routes\'][\''.$adminPath.'/'.$lowerName.'\'] = \''.$row['name'].'\';';
                 }
                 //открытые модули кроме materials
                 elseif($row['name'] != 'materials') {
                     $fileContent.='
-$setup[\'routes\'][\''.$row['name'].'\'] = \''.$row['name'].'\';';
+$setup[\'routes\'][\''.$lowerName.'\'] = \''.$row['name'].'\';';
                 }
             }
         }
