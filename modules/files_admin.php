@@ -61,7 +61,7 @@ switch ($this->values->action){
             $this->moduleData->success[] = $stext;
             $this->setFlash('success',[$stext]);
             $this->unsetValues();
-            $this->redirect('/?menu=files_admin&page=1&mtype='.$this->values->mtype);
+            $this->redirect('/admin/files/?page=1&mtype='.$this->values->mtype);
         }
         else{
             $this->moduleData->errors = $file->errors;

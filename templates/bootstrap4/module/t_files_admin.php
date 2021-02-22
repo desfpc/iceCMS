@@ -71,7 +71,7 @@ include_once ($template_folder.'/partial/t_header.php');
                 </table>
                 <hr />
                 <h2>Загрузить файл:</h2>
-                <form method="post" enctype="multipart/form-data" action="/?menu=files_admin">
+                <form method="post" enctype="multipart/form-data" action="/admin/files">
                     <input type="hidden" name="menu" value="files_admin">
                     <input type="hidden" name="mtype" value="<?=$this->values->mtype?>">
                     <input type="hidden" name="page" value="1">

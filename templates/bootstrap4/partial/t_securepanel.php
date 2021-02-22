@@ -7,7 +7,7 @@
  */
 
 ?><nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top" id="securepanel">
-    <a class="navbar-brand" href="/?menu=iceFW">iceFW</a>
+    <a class="navbar-brand" href="/admin/iceFW">iceFW</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#adminBar" aria-controls="adminBar" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -17,6 +17,10 @@
         //функция вывода меню древовидно
         function bootstrapMenuPrint($subraaray, $level, $menuarr)
         {
+
+            //как формировать меню
+            $adminAsDir = true;
+            $adminDir = 'admin';
 
             //выводим ul
             if($level == 0)
@@ -30,11 +34,20 @@
 
             foreach ($subraaray as $item)
                 {
+
+                    if($adminAsDir){
+                        $link='/admin/'.$item['name'];
+                    }
+                    else {
+                        $link='/?menu='.$item['name'];
+                    }
+
+                    //костыль iceFW пунктом, что бы не смотреть подразделы
                     if($item['name'] != 'iceFW')
                     {
                         if(isset($menuarr[$item['id']]))
                         {
-                            echo '<li class="dropdown-submenu"><a class="dropdown-item" href="/?menu='.$item['name'].'">'.$item['content'].'</a><div class="dropdown-submenu-treug">▼</div>';
+                            echo '<li class="dropdown-submenu"><a class="dropdown-item" href="'.$link.'">'.$item['content'].'</a><div class="dropdown-submenu-treug">▼</div>';
 
                             bootstrapMenuPrint($menuarr[$item['id']],($level+1),$menuarr);
 
@@ -42,7 +55,7 @@
                         }
                         else
                         {
-                            echo '<li><a class="dropdown-item" href="/?menu='.$item['name'].'">'.$item['content'].'</a></li>';
+                            echo '<li><a class="dropdown-item" href="'.$link.'">'.$item['content'].'</a></li>';
                         }
                     }
                 }

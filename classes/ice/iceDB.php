@@ -122,7 +122,7 @@ class iceDB {
                     if(preg_match("/^select/i", trim($query)) || preg_match("/^show/i", trim($query)) || preg_match("/^with recursive/i", trim($query)))
                     {
                         if(!$cnt){
-                            $result = array();
+                            $result = [];
                             while ($row = $res->fetch_assoc())
                             {
                                 $result[] = $row;

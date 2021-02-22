@@ -23,7 +23,7 @@ class iceSettings {
     public $path;
     public $routes;
 
-    public function save(){
+    public function save($adminPath = 'admin'){
 
         $filePath = $this->path.'/settings/settings.php';
 
@@ -95,6 +95,30 @@ class iceSettings {
 //роутинг (пользовательский роутинг для модулей)
 \$setup['routes'] = [];";
 
+        //автоматическая генерация роутов для модулей
+        $connection = new iceDB($this);
+        if(isset($connection->errors) && $connection->errors->flag == 1)
+        {
+            return false;
+        }
+
+        $query = 'SELECT name, secure FROM modules ORDER BY secure ASC, name ASC';
+        if($res = $connection->query($query)){
+            foreach ($res as $row){
+                //административные модули
+                if($row['secure'] == 1){
+                    $fileContent.='
+$setup[\'routes\'][\''.$adminPath.'/'.$row['name'].'\'] = \''.$row['name'].'\';';
+                }
+                //открытые модули кроме materials
+                elseif($row['name'] != 'materials') {
+                    $fileContent.='
+$setup[\'routes\'][\''.$row['name'].'\'] = \''.$row['name'].'\';';
+                }
+            }
+        }
+
+        //заносим текущие роуты
         if(count($this->routes) > 0){
             foreach ($this->routes as $key=>$value){
                 $fileContent.="
