@@ -17,7 +17,7 @@ use ice\iceMat;
         include_once ($template_folder.'/partial/material_types_admin/menu_list.php');
         ?>
         <hr>
-        <a href="/?menu=materials_admin&mode=add&material_type_id=<?=$this->values->mtype?>"><button type="button" class="btn btn-primary"><i class="material-icons md-24 md-light">add_box</i> Создать</button></a>
+        <a href="/admin/materials_admin/?mode=add&material_type_id=<?=$this->values->mtype?>"><button type="button" class="btn btn-primary"><i class="material-icons md-24 md-light">add_box</i> Создать</button></a>
     </div>
     <div class="col-sm-10">
         <?php

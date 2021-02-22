@@ -78,8 +78,9 @@ switch ($this->values->mode){
 
         $matType = new iceMatType($this->DB, intval($this->values->material_type_id));
         if(!$matType->getRecord(intval($this->values->material_type_id))){
-            $this->module['name']='404';
-            $this->loadModule();
+            //$this->warnings[] = 'Для создания материала выберите тип';
+            $this->setFlash('errors',['Для создания материала выберите его тип']);
+            $this->redirect('/admin/materials_admin');
         }
 
         //TODO установка языка
