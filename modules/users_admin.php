@@ -25,7 +25,7 @@ $this->moduleData->errors=[];
 $this->moduleData->success=[];
 
 //получение переменных
-$this->getRequestValues(['mode','page','role']);
+$this->getRequestValues(['mode','page','role','status']);
 
 $this->moduleData->breadcrumbs = [];
 $this->moduleData->breadcrumbs[] = [
@@ -60,13 +60,44 @@ switch ($this->values->mode){
             ];
         }
 
+        //ограничиваем список в зависимости от переданного status
+        if($this->values->status == ''){
+            $this->values->status = 'all';
+        }
+        elseif ($this->values->status != 'all'){
+            $conditions[] = [
+                'string' => false,
+                'type' => '=',
+                'col' => 'status_id',
+                'val' => $this->values->status
+            ];
+        }
+
         //список материалов
         $users = new iceUserList($this->DB, $conditions, [['col' => 'id', 'sort' => 'DESC']], $page, $perpage);
+
+        //справочник ролей пользователя
+        $userRoles=[];
+        $query='SELECT * FROM user_roles ORDER BY id ASC';
+        if($res = $this->DB->query($query)){
+            if(count($res) > 0){
+                $userRoles = $res;
+            }
+        }
+
+        //справочник статусов пользователя
+        $userStatuses = [
+            ['id' => 1, 'name' => 'активный'],
+            ['id' => 2, 'name' => 'удаленный']
+        ];
+
+        //данные для шаблона
         $this->moduleData->page = $page;
         $this->moduleData->perpage = $perpage;
         $this->moduleData->usersCnt = $users->getCnt();
         $this->moduleData->users = $users->getRecords(null);
-
+        $this->moduleData->userRoles = $userRoles;
+        $this->moduleData->userStatuses = $userStatuses;
 
         break;
 }
