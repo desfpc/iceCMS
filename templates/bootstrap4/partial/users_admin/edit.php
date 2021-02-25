@@ -21,7 +21,7 @@ $this->jsready.='
         include_once ($template_folder.'/partial/t_alert.php');
 
         //выводим форму
-        $action = '/admin/users_admin/?mode=add';
+        $action = '/admin/users_admin/?mode=edit';
         include_once ($template_folder.'/partial/t_user_form.php');
 
         ?>

@@ -55,8 +55,7 @@ switch ($this->values->mode){
         if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
             //проверка на наличае данных
-            if(($this->values->regEmail == '' && $this->values->regTel == '') || $this->values->regPass == '' || $this->values->regPass2 == ''
-                || $this->values->regPD == '')
+            if(($this->values->regEmail == '' && $this->values->regTel == '') || $this->values->regPass == '' || $this->values->regPass2 == '')
             {
                 $this->moduleData->errors[]='Введены не все обязательные поля';
             }
@@ -104,6 +103,38 @@ switch ($this->values->mode){
 
             }
 
+        }
+
+        break;
+
+    case 'edit':
+
+        $this->getRequestValues(['action','regEmail','regLogin','regPass','regPass2','regNik','regTel','regFIO','regPD', 'id']);
+
+        //пробуем получить пользователя
+        if($this->values->id != ''){
+            $user = new iceUser($this->DB, (int)$this->values->id);
+            if(!$user->getRecord()) {
+                new iceRedirect('/404');
+            }
+        }
+
+        $this->moduleData->breadcrumbs[] = [
+            'name' => $user->params['login_email'],
+            'param' => 'menu',
+            'value' => 'users_admin'
+        ];
+
+        //TODO обработка изменения пользователя
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+        }
+        else {
+            //заполняем поля данными пользователя для редактирования
+            $this->values->regEmail = $user->params['login_email'];
+            $this->values->regNik = $user->params['nik_name'];
+            $this->values->regTel = $user->params['login_phone'];
+            $this->values->regFIO = $user->params['full_name'];
         }
 
         break;
