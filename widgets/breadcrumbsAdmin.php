@@ -15,6 +15,7 @@
 $lastActive = false;
 $text = '';
 $url = '';
+$dirs = '/';
 
 if(is_array($this->params) && count($this->params) > 0){
     $i=0;
@@ -24,6 +25,10 @@ if(is_array($this->params) && count($this->params) > 0){
 
         if($i == $cnt){
             $text.='<li class="breadcrumb-item active" aria-current="page">'.$param['name'].'</li>';
+        }
+        elseif (isset($param['dir']) && $param['dir'] != ''){
+            $dirs .= $param['dir'].'/';
+            $text.='<li class="breadcrumb-item"><a href="'.$dirs.$url.'">'.$param['name'].'</a></li>';
         }
         else {
             if($url == ''){
@@ -38,7 +43,7 @@ if(is_array($this->params) && count($this->params) > 0){
                 $url .= '&'.$param['param2'].'='.$param['value2'];
             }
 
-            $text.='<li class="breadcrumb-item"><a href="/'.$url.'">'.$param['name'].'</a></li>';
+            $text.='<li class="breadcrumb-item"><a href="'.$dirs.$url.'">'.$param['name'].'</a></li>';
         }
     }
 }

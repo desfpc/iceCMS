@@ -50,7 +50,8 @@ $this->moduleData->breadcrumbs = [];
 $this->moduleData->breadcrumbs[] = [
     'name' => 'Материалы администрирование',
     'param' => 'menu',
-    'value' => 'materials_admin'
+    'value' => 'materials_admin',
+    'dir' => 'admin/materials_admin'
 ];
 
 switch ($this->values->mode){

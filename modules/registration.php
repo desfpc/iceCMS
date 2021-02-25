@@ -20,7 +20,7 @@ $this->moduleData->user=new iceUser($this->DB);
 $this->moduleData->errors=array();
 $this->moduleData->success=array();
 
-$this->getRequestValues(array('action','regEmail','regLogin','regPass','regPass2','regNik','regTel','regFIO','regPD'));
+$this->getRequestValues(['action','regEmail','regLogin','regPass','regPass2','regNik','regTel','regFIO','regPD']);
 
 switch ($this->values->action)
 {
@@ -39,7 +39,7 @@ switch ($this->values->action)
             $this->moduleData->errors[]='Введенные пароли не совпадают';
         }
         //корректность email
-        elseif($this->values->regEmail != '' && Strings::checkEmail($this->values->regEmail))
+        elseif($this->values->regEmail != '' && !Strings::checkEmail($this->values->regEmail))
         {
             $this->moduleData->errors[]='Введен не верный адрес электронной почты';
         }
@@ -51,7 +51,6 @@ switch ($this->values->action)
                 'login_email' => $this->values->regEmail,
                 'login_phone' => $this->values->regTel,
                 'nik_name' => $this->values->regNik,
-                'full_name' => $this->values->regFIO,
                 'full_name' => $this->values->regFIO,
                 'passcode' => null,
                 'status_id' => 1,

@@ -9,7 +9,10 @@
  *
  */
 
+use ice\iceUser;
 use ice\iceUserList;
+use ice\iceRedirect;
+use ice\Helpers\Strings;
 
 //секурность
 if(!$this->moduleAccess())
@@ -31,10 +34,79 @@ $this->moduleData->breadcrumbs = [];
 $this->moduleData->breadcrumbs[] = [
     'name' => 'Пользователи администрирование',
     'param' => 'menu',
-    'value' => 'users_admin'
+    'value' => 'users_admin',
+    'dir' => 'admin/users_admin'
 ];
 
 switch ($this->values->mode){
+
+    //форма создания пользователя
+    case 'add':
+
+        $this->moduleData->breadcrumbs[] = [
+            'name' => 'Создание пользователя',
+            'param' => 'menu',
+            'value' => 'users_admin'
+        ];
+
+        $this->getRequestValues(['action','regEmail','regLogin','regPass','regPass2','regNik','regTel','regFIO','regPD']);
+
+        //обработка заполнения формы на создание пользователя
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+            //проверка на наличае данных
+            if(($this->values->regEmail == '' && $this->values->regTel == '') || $this->values->regPass == '' || $this->values->regPass2 == ''
+                || $this->values->regPD == '')
+            {
+                $this->moduleData->errors[]='Введены не все обязательные поля';
+            }
+            //проверка паролей
+            elseif($this->values->regPass != $this->values->regPass2)
+            {
+                $this->moduleData->errors[]='Введенные пароли не совпадают';
+            }
+            //корректность email
+            elseif($this->values->regEmail != '' && !Strings::checkEmail($this->values->regEmail))
+            {
+                $this->moduleData->errors[]='Введен не верный адрес электронной почты';
+            }
+            else
+            {
+                //генерируем, распихиваем переданные параметры в свойство params, заносим пользюка
+                $params=array(
+                    'id' => null,
+                    'login_email' => $this->values->regEmail,
+                    'login_phone' => $this->values->regTel,
+                    'nik_name' => $this->values->regNik,
+                    'full_name' => $this->values->regFIO,
+                    'passcode' => null,
+                    'status_id' => 1,
+                    'password_input' => $this->values->regPass,
+                    'password' => null,
+                    'date_add' => null,
+                    'contacts' => null,
+                    'user_state' => null,
+                    'user_role' => 1,
+                    'sex' => null
+                );
+
+                $user = new iceUser($this->DB);
+                if($user->registerUser($params))
+                {
+                    //редиректим на форму редактирования пользователя
+                    $this->setFlash('success',['Пользователь успешно создан']);
+                    new iceRedirect('/admin/users_admin/?mode=edit&id='.$user->id);
+                }
+                else
+                {
+                    $this->moduleData->errors=$user->errors;
+                }
+
+            }
+
+        }
+
+        break;
 
     //список пользователей
     default:

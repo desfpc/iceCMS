@@ -127,5 +127,6 @@ $this->jsready.='
             'url' => $_SERVER['REQUEST_URI']
         ]);
         ?>
+        <a href="/admin/users_admin/?mode=add"><button type="button" class="btn btn-primary"><i class="material-icons md-24 md-light">add_box</i> Создать</button></a>
     </div>
 </div>
