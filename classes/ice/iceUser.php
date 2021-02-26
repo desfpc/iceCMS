@@ -14,8 +14,7 @@ namespace ice;
 class iceUser extends iceObject {
 
 
-    public function registerUser(array $params)
-    {
+    public function registerUser(array $params){
         //проверяем необходимые параметры
         if(isset($params['login_email']) && isset($params['password_input']))
         {
@@ -56,8 +55,7 @@ class iceUser extends iceObject {
 
     }
 
-    public function authorizeUser($pass, $email)
-    {
+    public function authorizeUser($pass, $email){
         if((is_null($pass) || $pass == '') && (is_null($email) || $email == ''))
         {
             //еси еть php сессия
@@ -66,49 +64,69 @@ class iceUser extends iceObject {
                 if($_SESSION['authorize'])
                 {
                     $this->id=$_SESSION['authorize'];
-                    $this->getRecord($this->id);
-                    return($this->id);
+                    if($this->getRecord($this->id))
+                        return($this->id);
                 }
             }
             else
             {
                 $_SESSION['authorize']=false;
             }
-        }
-        else
-        {
-            //проверяем запись пользователя
-            $query='SELECT * FROM users WHERE login_email = \''.$this->DB->mysqli->real_escape_string($email).'\'';
-
-            //visualijop($query);
-
-            if($res = $this->DB->query($query))
-            {
-                if(count($res) > 0)
-                {
-                    $user=$res[0];
-
-                    //проверяем пароль
-                    if($ver=password_verify($pass, $user['password']))
-                    {
-                        $this->id=$user['id'];
-                        $this->getRecord($this->id);
-
-                        $_SESSION['authorize']=$this->id;
-
-                        return($this->id);
-                    }
-                    return false;
-                }
-            }
             return false;
         }
+
+        //проверяем запись пользователя
+        $query='SELECT * FROM users WHERE status_id = 1 AND login_email = \''.$this->DB->mysqli->real_escape_string($email).'\'';
+
+        //visualijop($query);
+
+        if($res = $this->DB->query($query))
+        {
+            if(count($res) > 0)
+            {
+                $user=$res[0];
+
+                //проверяем пароль
+                if($ver=password_verify($pass, $user['password']))
+                {
+                    $this->id=$user['id'];
+                    $this->getRecord($this->id);
+
+                    $_SESSION['authorize']=$this->id;
+
+                    return($this->id);
+                }
+            }
+        }
+        return false;
     }
 
-    public function deauthorizeUser()
-    {
+    public function deauthorizeUser(){
         unset($_SESSION['authorize']);
         $this->id = null;
+        return true;
+    }
+
+    public function changeUserStatus($status){
+        if($this->isGotten){
+            $query = 'UPDATE users SET status_id = '.$status.' WHERE id = '.$this->params['id'];
+            if($res = $this->DB->query($query)){
+                $this->uncacheRecord();
+
+                //TODO удаление сессии пользователя при отключении
+
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function disableUser(){
+        return $this->changeUserStatus(2);
+    }
+
+    public function enableUser(){
+        return $this->changeUserStatus(1);
     }
 
     public function getRole(){

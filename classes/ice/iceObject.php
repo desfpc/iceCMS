@@ -23,6 +23,7 @@ class iceObject {
     private $cacheKey;
     public $settings;
     public $errors;
+    public $isGotten = false;
 
     public static function formatDate($date){
         return date('d.m.Y H:i',strtotime($date));
@@ -146,7 +147,7 @@ class iceObject {
 
     //метод для переработки в конкретном объекте
     public function fullUncacheRecord(){
-
+        //TODO удаление кэшей списков объектов
     }
 
     //получение данных обхекта
@@ -175,8 +176,9 @@ class iceObject {
                 {
                     $this->params=$res[0];
                     $this->fullRecord();
-
                     $this->cacheRecord();
+
+                    $this->isGotten = true;
 
                     return $this->params;
                 }
