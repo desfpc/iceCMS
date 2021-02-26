@@ -9,14 +9,16 @@
 use ice\iceWidget;
 use ice\iceUser;
 
+$patch = '/admin/users_admin';
+
 $this->jsready.='
         
     $("select#role").change(function(){
-        document.location.href="/admin/users_admin/?page=1&role="+$(this).val()+"&status="+$("select#status").val();
+        document.location.href="'.$patch.'/?page=1&role="+$(this).val()+"&status="+$("select#status").val();
     });
     
     $("select#status").change(function(){
-        document.location.href="/admin/users_admin/?page=1&status="+$(this).val()+"&role="+$("select#role").val();
+        document.location.href="'.$patch.'/?page=1&status="+$(this).val()+"&role="+$("select#role").val();
     });
     
     ';
@@ -97,11 +99,22 @@ $this->jsready.='
 
                         if($row['status_id'] == 1){
                             $stat = '<i class="material-icons md-24 md-green" title="активный">person</i>';
+                            $statBtn = '<a href="'.$patch.'/?mode=list&page='.$this->moduleData->page.'&id='.$row['id'].'&action=disable">
+            <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Отключить">
+                <i class="material-icons md-16 md-light">person_off</i>
+            </button>
+        </a>';
                         }
                         else {
-                            $stat = '<i class="material-icons md-24 md-red" title="удаленный">person_outline</i>';
+                            $stat = '<i class="material-icons md-24 md-red" title="отключенный">person_outline</i>';
+                            $statBtn = '<a href="'.$patch.'/?mode=list&page='.$this->moduleData->page.'&id='.$row['id'].'&action=enable">
+            <button type="button" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Включить">
+                <i class="material-icons md-16 md-light">person_add_alt</i>
+            </button>
+        </a>';
                         }
 
+                        //вывод строки-записи пользователя
                         echo '
 <tr>
     <td>'.$row['id'].'</td>
@@ -110,7 +123,12 @@ $this->jsready.='
     <td>'.$row['user_role_name'].'</td>
     <td>'.$stat.'</td>
     <td>'.iceUser::formatDate($row['date_add']).'</td>
-    <td></td>
+    <td><a href="'.$patch.'/?mode=edit&id='.$row['id'].'">
+            <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Редактировать">
+                <i class="material-icons md-16 md-light">edit</i>
+            </button>
+        </a><!--
+        -->'.$statBtn.'</td>
 </tr>';
                     }
                 }
@@ -127,6 +145,6 @@ $this->jsready.='
             'url' => $_SERVER['REQUEST_URI']
         ]);
         ?>
-        <a href="/admin/users_admin/?mode=add"><button type="button" class="btn btn-primary"><i class="material-icons md-24 md-light">add_box</i> Создать</button></a>
+        <a href="<?=$patch?>/?mode=add"><button type="button" class="btn btn-primary"><i class="material-icons md-24 md-light">person_add</i> Создать</button></a>
     </div>
 </div>

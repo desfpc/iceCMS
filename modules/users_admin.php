@@ -28,7 +28,7 @@ $this->moduleData->errors=[];
 $this->moduleData->success=[];
 
 //получение переменных
-$this->getRequestValues(['mode','page','role','status']);
+$this->getRequestValues(['mode']);
 
 $this->moduleData->breadcrumbs = [];
 $this->moduleData->breadcrumbs[] = [
@@ -142,11 +142,52 @@ switch ($this->values->mode){
     //список пользователей
     default:
 
+        $this->getRequestValues(['page','role','status','action','id']);
+
+        //действия (без формы редактирования)
+        if($this->values->action != '' && $this->values->id != ''){
+
+            //действия, требующие получения пользователя
+            $userActions = ['disable','enable'];
+
+            if(in_array($this->values->action,$userActions)){
+
+                $id = (int)$this->values->id;
+                $user = new iceUser($this->DB, $id);
+                if(!$user->getRecord()){
+                    new iceRedirect('/404');
+                }
+
+                switch ($this->values->action){
+                    //отключение пользователя
+                    case 'disable':
+                        if($user->disableUser()){
+                            $this->moduleData->success[]='Пользователь '.$user->params['login_email'].' отключен';
+                        }
+                        else{
+                            $this->moduleData->errors[]='Ошибка отключения пользователя '.$user->params['login_email'];
+                        }
+                        break;
+
+                    case 'enable':
+                        if($user->enableUser()){
+                            $this->moduleData->success[]='Пользователь '.$user->params['login_email'].' включен';
+                        }
+                        else{
+                            $this->moduleData->errors[]='Ошибка включения пользователя '.$user->params['login_email'];
+                        }
+                        break;
+                }
+
+            }
+        }
+
         //страницы
         $page = (int)$this->values->page;
         if($page < 1){
             $page = 1;
         }
+
         $perpage = 20;
 
         //ограничиваем список в зависимости от переданной role
@@ -191,7 +232,7 @@ switch ($this->values->mode){
         //справочник статусов пользователя
         $userStatuses = [
             ['id' => 1, 'name' => 'активный'],
-            ['id' => 2, 'name' => 'удаленный']
+            ['id' => 2, 'name' => 'отключенный']
         ];
 
         //данные для шаблона
