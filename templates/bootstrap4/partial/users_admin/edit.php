@@ -22,6 +22,8 @@ $this->jsready.='
 
         //выводим форму
         $action = '/admin/users_admin/?mode=edit';
+        $buttonText = 'Сохранить';
+        $buttonIcon = 'save';
         include_once ($template_folder.'/partial/t_user_form.php');
 
         ?>

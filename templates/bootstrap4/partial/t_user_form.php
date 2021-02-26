@@ -7,6 +7,17 @@
  * @var string $action
  */
 
+//проверка переменных для шаблона, заполнение их стандартными значениями
+if(!isset($buttonIcon)){
+    $buttonIcon = 'person_add';
+}
+if(!isset($buttonText)){
+    $buttonText = 'Создать';
+}
+if(!isset($buttonColor)){
+    $buttonColor = 'btn-success';
+}
+
 ?><form id="regForm" action="<?=$action?>" method="post">
     <div class="form-group">
         <label for="regEmail">Email адрес</label>
@@ -46,5 +57,5 @@
         <label class="form-check-label" for="regPD">Согласен с соглашением на обработку персональных данных</label>
     </div>
     <p>&nbsp;</p><input type="hidden" name="action" value="add">
-    <button type="submit" class="btn btn-success"><i class="material-icons md-24 md-light">person_add</i>Отправить</button>
+    <button type="submit" class="btn <?=$buttonColor?>"><i class="material-icons md-24 md-light"><?=$buttonIcon?></i><?=$buttonText?></button>
 </form>
