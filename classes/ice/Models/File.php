@@ -9,9 +9,12 @@
  *
  */
 
-namespace ice;
+namespace ice\Models;
 
-class iceFile extends iceObject {
+use ice\iceObject;
+use ice\iceDB;
+
+class File extends iceObject {
 
     //подменяем создание объекта - прописываем железно целевую таблицу
     public function __construct(iceDB $DB, $id=null, $settings=null)
@@ -21,7 +24,7 @@ class iceFile extends iceObject {
 
     public static function formatIcon($DB, $file, $link = false, $ifArray = false){
 
-        $fileObj = new iceFile($DB, $file['id']);
+        $fileObj = new File($DB, $file['id']);
         $fileObj->getRecord();
         $file = $fileObj->params;
 
@@ -88,7 +91,7 @@ class iceFile extends iceObject {
 
                 $tmp_name = $_FILES[$paramName]["tmp_name"];
                 $name = $_FILES[$paramName]['name'];
-                $extension = iceFile::getFileExtension($name);
+                $extension = File::getFileExtension($name);
                 $size = $_FILES[$paramName]['size'];
                 list($width, $height, $imgtype, $attr) = getimagesize($tmp_name);
 
@@ -333,7 +336,7 @@ class iceFile extends iceObject {
         //наносим watermark
         if($watermark > 0){
 
-            $wimg = new iceFile($this->DB, $watermark);
+            $wimg = new File($this->DB, $watermark);
             $stamp = imagecreatefrompng($wimg->getFilePath());
 
             $sx = imagesx($stamp);

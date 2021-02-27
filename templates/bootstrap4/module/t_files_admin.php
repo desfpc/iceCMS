@@ -6,7 +6,7 @@
  * @var ice\iceRender $this
  */
 
-use ice\iceFile;
+use ice\Models\File;
 
 $template_folder=$this->settings->path.'/templates/'.$this->settings->template.'';
 
@@ -55,11 +55,11 @@ include_once ($template_folder.'/partial/t_header.php');
                         foreach ($this->moduleData->files as $file) {
                             echo '<tr>
                                 <td>'.$file['id'].'</td>
-                                <td>'.iceFile::formatIcon($this->DB, $file, true).'</td>
+                                <td>'.File::formatIcon($this->DB, $file, true).'</td>
                                 <td>'.$file['name'].'</td>
                                 <td>'.$file['filename'].'</td>
-                                <td>'.iceFile::formatDate($file['date_add']).'</td>
-                                <td>'.iceFile::formateSize($file['size']).'</td>
+                                <td>'.File::formatDate($file['date_add']).'</td>
+                                <td>'.File::formateSize($file['size']).'</td>
                                 <td></td>
                                 <td></td>
                             </tr>';

@@ -7,7 +7,7 @@
 */
 
 use ice\iceWidget;
-use ice\iceFile;
+use ice\Models\File;
 use ice\Models\Mat;
 
 ?>
@@ -45,7 +45,7 @@ use ice\Models\Mat;
 
                     if($material['favicon'] != ''){
                         $file = ['id' => $material['favicon']];
-                        $favicon = iceFile::formatIcon($this->DB, $file, true);
+                        $favicon = File::formatIcon($this->DB, $file, true);
                     }
                     else {
                         $favicon = '';

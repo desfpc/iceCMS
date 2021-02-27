@@ -13,7 +13,7 @@ use ice\Models\matType;
 use ice\Models\matTypeList;
 use ice\Models\Mat;
 use ice\Models\matList;
-use ice\iceFile;
+use ice\Models\File;
 use ice\Models\languageList;
 
 //секурность
@@ -232,7 +232,7 @@ switch ($this->values->mode){
                 //загрузка нового файла к материалу
                 case 'addfile':
 
-                    $file = new iceFile($this->DB, null, $this->settings);
+                    $file = new File($this->DB, null, $this->settings);
                     if($file->upload('newFile', 'auto', false, $this->authorize->user->id, $material->params['id'])){
                         $material->uncacheRecord();
                         $stext = 'Файл <strong>'.$file->params['filename'].'</strong> успешно загружен.';

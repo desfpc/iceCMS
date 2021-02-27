@@ -10,8 +10,8 @@
  */
 
 use ice\Models\MatTypeList;
-use ice\iceFile;
-use ice\iceFileList;
+use ice\Models\File;
+use ice\Models\FileList;
 
 //секурность
 if(!$this->moduleAccess())
@@ -55,7 +55,7 @@ $this->moduleData->materialTypes[0][] = [
 switch ($this->values->action){
     case 'addfile':
 
-        $file = new iceFile($this->DB, null, $this->settings);
+        $file = new File($this->DB, null, $this->settings);
         if($file->upload('newFile', 'auto', false, $this->authorize->user->id)){
             $stext = 'Файл <strong>'.$file->params['filename'].'</strong> успешно загружен.';
             $this->moduleData->success[] = $stext;
@@ -100,5 +100,5 @@ elseif($this->values->mtype != 'all'){
 
 }
 
-$files = new iceFileList($this->DB, $conditions, [['col' => 'id', 'sort' => 'DESC']]);
+$files = new FileList($this->DB, $conditions, [['col' => 'id', 'sort' => 'DESC']]);
 $this->moduleData->files = $files->getRecords(null);

@@ -1,3 +1,8 @@
+<?php
+
+use ice\Models\File;
+
+?>
 <h2>Файлы:</h2>
 <table class="table">
     <thead class="thead-dark">
@@ -20,7 +25,7 @@
 
             foreach ($this->moduleData->material->files as $file) {
 
-                $iconArr = ice\iceFile::formatIcon($this->DB, $file, true, true);
+                $iconArr = File::formatIcon($this->DB, $file, true, true);
                 $fileIcon = $iconArr['icon'];
                 $fileLink = $iconArr['link'];
 
@@ -36,8 +41,8 @@
                                 <td>'.$fileIcon.'</td>
                                 <td>'.$file['name'].'</td>
                                 <td>'.$file['filename'].'</td>
-                                <td>'.ice\iceFile::formatDate($file['date_add']).'</td>
-                                <td>'.ice\iceFile::formateSize($file['size']).'</td>
+                                <td>'.File::formatDate($file['date_add']).'</td>
+                                <td>'.File::formateSize($file['size']).'</td>
                                 <td></td>
                             </tr>';
             }

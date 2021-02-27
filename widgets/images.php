@@ -6,7 +6,7 @@
  * @var ice\iceWidget $this
  */
 
-use ice\iceFile;
+use ice\Models\File;
 
 $images = [];
 
@@ -32,7 +32,7 @@ if(count($images) > 0) {
     foreach ($images as $image) {
         ++$i;
 
-        $fileObj = new iceFile($this->DB, $image['id']);
+        $fileObj = new File($this->DB, $image['id']);
         $fileObj->getRecord();
 
         //первая картинка

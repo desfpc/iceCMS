@@ -6,11 +6,11 @@
  * @var ice\iceWidget $this
  */
 
-use ice\Models\matType;
-use ice\iceFile;
+use ice\Models\MatType;
+use ice\Models\File;
 use ice\Models\Mat;
 
-$mtype = new matType($this->DB, $this->params['material_type_id']);
+$mtype = new MatType($this->DB, $this->params['material_type_id']);
 $mtype->getRecord();
 $mtype->getURL();
 
@@ -20,7 +20,7 @@ $url = $mtype->url.'/'.$this->params['id_char'];
 
 if(isset($this->params['favicon']) && $this->params['favicon'] != ''){
 
-    $fileObj = new iceFile($this->DB, $this->params['favicon']);
+    $fileObj = new File($this->DB, $this->params['favicon']);
     $fileObj->getRecord();
 
     $img='<img src="'.$fileObj->getFileCacheUrl(200,200).'" alt="'.$fileObj->params['name'].'" width="188" height="188" />';

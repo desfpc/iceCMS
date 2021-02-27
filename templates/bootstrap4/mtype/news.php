@@ -6,7 +6,7 @@
  * @var ice\iceRender $this
  */
 
-use ice\iceFile;
+use ice\Models\File;
 use ice\Models\Mat;
 
 //выводим список материалов
@@ -16,7 +16,7 @@ if(isset($this->moduleData->mlist) && is_array($this->moduleData->mlist) && coun
         $materialUrl = $this->moduleData->mtype->url.'/'.$material['id_char'];
 
         if(isset($material['favicon']) && !is_null($material['favicon']) && $material['favicon'] != ''){
-            $fileObj = new iceFile($this->DB, $material['favicon']);
+            $fileObj = new File($this->DB, $material['favicon']);
             $fileObj->getRecord();
             $img='<img src="'.$fileObj->getFileCacheUrl(150,150).'" alt="'.$fileObj->params['name'].'" class="rounded float-left" width="140" height="140">';
         }
