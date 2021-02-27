@@ -3,7 +3,7 @@
  * Created by Sergey Peshalov https://github.com/desfpc
  * PHP framework and CMS based on it.
  * https://github.com/desfpc/iceCMS
- * @var ice\iceRender $this
+ * @var ice\Web\Render $this
  */
 ?><form id="matTypeAddForm" action="/admin/material_types_admin/?mode=edit&id=<?= $this->moduleData->matType->params['id'] ?>" method="post"><input type="hidden" name="id" value="<?= $this->moduleData->matType->params['id'] ?>">
     <div class="form-group row">

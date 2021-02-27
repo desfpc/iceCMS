@@ -3,7 +3,7 @@
  * Created by Sergey Peshalov https://github.com/desfpc
  * PHP framework and CMS based on it.
  * https://github.com/desfpc/iceCMS
- * @var ice\iceRender $this
+ * @var ice\Web\Render $this
  */
 
 ?><nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top" id="securepanel">

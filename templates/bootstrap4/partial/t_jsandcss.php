@@ -3,7 +3,7 @@
  * Created by Sergey Peshalov https://github.com/desfpc
  * iceCMS - PHP framework and CMS based on it
  * https://github.com/desfpc/iceCMS
- * @var ice\iceRender $this
+ * @var ice\Web\Render $this
  */
 //подключаемые стили
 $template_styles=array(

@@ -9,12 +9,23 @@
  *
  */
 
-namespace ice;
+namespace ice\Web;
 
+use ice\iceFlashVars;
+use ice\iceRedirect;
+use ice\iceRequestValues;
+use ice\iceParseModule;
+use ice\icePathParser;
+use ice\iceCacher;
+use ice\iceAuthorize;
+use ice\iceSettings;
+use ice\iceStylesBuilder;
+use ice\iceJScriptBuilder;
 use ice\Models\MatTypeList;
+use ice\iceHeaderBuilder;
 use ice\DB\DB;
 
-class iceRender {
+class Render {
 
     public $settings; //настройки
     public $DB; //объект БД

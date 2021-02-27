@@ -42,7 +42,7 @@ $iceClasses = [
     'Models/User',
     'Models/UserList',
     'iceWidget',
-    'iceRender'
+    'Web/Render'
 ];
 
 foreach ($iceClasses as $iceClass) {

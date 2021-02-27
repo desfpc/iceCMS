@@ -27,13 +27,13 @@ if(!file_exists($settings_path)){
 }
 include_once ($settings_path);
 
-use ice\iceRender;
+use ice\Web\Render;
 
 //сессия
 session_start();
 
 //создаем сайт
-$site = new iceRender($setup, true);
+$site = new Render($setup, true);
 
 $sitetime=microtime(true)-$gstarttime;
 
