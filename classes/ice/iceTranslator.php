@@ -11,6 +11,8 @@
 
 namespace ice;
 
+use ice\DB\DB;
+
 class iceTranslator {
 
     public $text;
@@ -23,7 +25,7 @@ class iceTranslator {
 
     }
 
-    public function __construct(iceDB $DB, $text='', $language=2)
+    public function __construct(DB $DB, $text='', $language=2)
     {
         $this->text=$text;
         $this->language=$language;

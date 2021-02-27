@@ -13,6 +13,7 @@
 namespace ice;
 
 use ice\Models\User;
+use ice\DB\DB;
 
 class iceAuthorize {
 
@@ -48,7 +49,7 @@ class iceAuthorize {
         $this->autorized = false;
     }
 
-    public function __construct(iceDB $DB, $login = null, $pass = null)
+    public function __construct(DB $DB, $login = null, $pass = null)
     {
         $this->autorized = false;
         $this->user = null;

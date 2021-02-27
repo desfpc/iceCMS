@@ -8,7 +8,7 @@ if(!isset($iceDir)){
 $iceClasses = [
     'iceAuthorize',
     'iceCacher',
-    'iceDB',
+    'DB/DB',
     'iceObject',
     'iceObjectList',
     'Models/File',

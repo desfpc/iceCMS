@@ -11,9 +11,11 @@
 
 namespace ice;
 
+use ice\DB\DB;
+
 class iceImageCache extends iceObject {
     //подменяем создание объекта - прописываем железно целевую таблицу
-    public function __construct(iceDB $DB, $id=null, $settings=null)
+    public function __construct(DB $DB, $id=null, $settings=null)
     {
         $this->doConstruct($DB, 'image_caches', $id, $settings);
     }

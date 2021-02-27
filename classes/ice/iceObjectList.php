@@ -11,6 +11,8 @@
 
 namespace ice;
 
+use ice\DB\DB;
+
 class iceObjectList {
 
     public $dbtable;//таблица записей
@@ -202,7 +204,7 @@ class iceObjectList {
         }
     }
 
-    public function doConstruct(iceDB $DB, $dbtable, $conditions=null, $sort=null, $page=null, $perpage=null, $cachetime=0, $settings=null) {
+    public function doConstruct(DB $DB, $dbtable, $conditions=null, $sort=null, $page=null, $perpage=null, $cachetime=0, $settings=null) {
         $this->DB=$DB;
         $this->dbtable=$dbtable;
         $this->conditions=$conditions;
@@ -222,7 +224,7 @@ class iceObjectList {
         }
     }
 
-    public function __construct(iceDB $DB, $dbtable, $conditions=null, $sort=null, $page=1, $perpage=20, $cachetime=0, $settings=null)
+    public function __construct(DB $DB, $dbtable, $conditions=null, $sort=null, $page=1, $perpage=20, $cachetime=0, $settings=null)
     {
         $this->doConstruct($DB, $dbtable, $conditions, $sort, $page, $perpage, $cachetime, $settings);
     }

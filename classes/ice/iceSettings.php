@@ -11,6 +11,7 @@
 
 namespace ice;
 
+use ice\DB\DB;
 
 class iceSettings {
     public $db;
@@ -101,7 +102,7 @@ class iceSettings {
 \$setup['routes'] = [];";
 
         //автоматическая генерация роутов для модулей
-        $connection = new iceDB($this);
+        $connection = new DB($this);
         if(isset($connection->errors) && $connection->errors->flag == 1)
         {
             return false;

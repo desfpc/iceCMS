@@ -11,6 +11,8 @@
 
 namespace ice;
 
+use ice\DB\DB;
+
 class iceParseModule {
 
     public $settings;
@@ -77,7 +79,7 @@ class iceParseModule {
 
     }
 
-    public function __construct(iceSettings $settings, iceDB $DB, $path_info)
+    public function __construct(iceSettings $settings, DB $DB, $path_info)
     {
         $this->settings = $settings;
         $this->DB = $DB;

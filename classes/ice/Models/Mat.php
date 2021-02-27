@@ -11,7 +11,7 @@
 
 namespace ice\Models;
 
-use ice\iceDB;
+use ice\DB\DB;
 use ice\iceObject;
 use ice\Helpers\Strings;
 
@@ -157,7 +157,7 @@ class Mat extends iceObject {
     }
 
     //подменяем создание объекта - прописываем железно целевую таблицу
-    public function __construct(iceDB $DB, $id=null, $settings=null)
+    public function __construct(DB $DB, $id=null, $settings=null)
     {
         $this->doConstruct($DB, 'materials', $id, $settings);
     }

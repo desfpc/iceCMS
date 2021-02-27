@@ -12,7 +12,7 @@
 namespace ice\Models;
 
 use ice\iceObject;
-use ice\iceDB;
+use ice\DB\DB;
 
 class MatType extends iceObject {
 
@@ -163,7 +163,7 @@ SELECT * FROM ptypes WHERE id <> '.$this->id.';';
     //TODO расширяем стандартный метод кэширования - удаление кэшей связанных файлов и типов материалов
 
     //подменяем создание объекта - прописываем железно целевую таблицу
-    public function __construct(iceDB $DB, $id=null, $settings=null)
+    public function __construct(DB $DB, $id=null, $settings=null)
     {
         $this->doConstruct($DB, 'material_types', $id, $settings);
     }

@@ -11,6 +11,8 @@
 
 namespace ice;
 
+use ice\DB\DB;
+
 class iceWidget {
 
     public $name;
@@ -21,7 +23,7 @@ class iceWidget {
     public $styles;
     public $jscripts;
 
-    public function __construct(iceDB $DB, $name, $settings=null)
+    public function __construct(DB $DB, $name, $settings=null)
     {
         $this->DB = $DB;
         $this->name = $name;

@@ -12,11 +12,11 @@
 namespace ice\Models;
 
 use ice\iceObjectList;
-use ice\iceDB;
+use ice\DB\DB;
 
 class UserList extends iceObjectList {
 
-    public function __construct(iceDB $DB, $conditions=null, $sort=null, $page=1, $perpage=20, $cachetime=0, $settings=null)
+    public function __construct(DB $DB, $conditions=null, $sort=null, $page=1, $perpage=20, $cachetime=0, $settings=null)
     {
         $this->doConstruct($DB, 'users', $conditions, $sort, $page, $perpage, $cachetime, $settings);
     }

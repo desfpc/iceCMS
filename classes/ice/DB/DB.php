@@ -9,9 +9,11 @@
  *
  */
 
-namespace ice;
+namespace ice\DB;
 
-class iceDB {
+use ice\iceSettings;
+
+class DB {
     public $settings;
     public $errors;
     public $warning;

@@ -11,6 +11,8 @@
 
 namespace ice;
 
+use ice\DB\DB;
+
 class iceQueryBuilder {
 
     public $cols;
@@ -180,7 +182,7 @@ class iceQueryBuilder {
         return $out;
     }
 
-    public function __construct(iceDB $DB, $cols, $params, $table)
+    public function __construct(DB $DB, $cols, $params, $table)
     {
         $this->params=$params;
         $this->cols=$cols;

@@ -12,6 +12,7 @@
 namespace ice;
 
 use ice\Models\Mat;
+use ice\DB\DB;
 
 class icePathParser {
 
@@ -134,7 +135,7 @@ class icePathParser {
 
     }
 
-    public function __construct(iceDB $DB, $types, $settings=null)
+    public function __construct(DB $DB, $types, $settings=null)
     {
         $this->errors = [];
         $this->settings=$settings;

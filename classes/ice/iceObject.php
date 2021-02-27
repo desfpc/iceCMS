@@ -11,6 +11,7 @@
 
 namespace ice;
 
+use ice\DB\DB;
 
 class iceObject {
 
@@ -240,7 +241,7 @@ class iceObject {
         }
     }
 
-    public function doConstruct(iceDB $DB, $dtable, $id=null, iceSettings $settings=null)
+    public function doConstruct(DB $DB, $dtable, $id=null, iceSettings $settings=null)
     {
 
         $this->errors = [];
@@ -266,7 +267,7 @@ class iceObject {
 
     }
 
-    public function __construct(iceDB $DB, $dtable, $id=null, $settings=null)
+    public function __construct(DB $DB, $dtable, $id=null, $settings=null)
     {
         $this->doConstruct($DB, $dtable, $id, $settings);
     }

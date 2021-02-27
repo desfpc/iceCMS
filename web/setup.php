@@ -92,13 +92,13 @@ if(isset($_POST['doSetup'])){
 
     //подключаем нужные классы
     require_once($defaultDir.'/classes/ice/iceSettings.php');
-    require_once($defaultDir.'/classes/ice/iceDB.php');
+    require_once($defaultDir.'/classes/ice/DB/DB.php');
 
     $iceSetup = new ice\iceSettings($newSetup);
     //visualijop($iceSetup,'Класс настроек');
 
     //проверка и соединение с БД
-    $iceDB = new ice\iceDB($iceSetup);
+    $iceDB = new ice\DB\DB($iceSetup);
     //visualijop($iceDB,'Класс БД');
 
     if($iceDB->connected == 0){
@@ -112,7 +112,7 @@ if(isset($_POST['doSetup'])){
         //соединение с сервером есть, но невозможно выбрать БД - пробуем БД создать
         $dbName = $iceDB->mysqli->real_escape_string($newSetup['db']['name']);
         if($iceDB->query('CREATE DATABASE '.$dbName, true, false, true)){
-            $iceDB = new ice\iceDB($iceSetup);
+            $iceDB = new ice\DB\DB($iceSetup);
             if($iceDB->connected == 1 && $iceDB->status->flag == 0){
                 $errors[]='Нет БД "'.$dbName.'" и нет возможности ее создать!';
                 $errorValues['db']['name']=true;

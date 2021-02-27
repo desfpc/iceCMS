@@ -12,7 +12,7 @@
 namespace ice\Models;
 
 use ice\iceObject;
-use ice\iceDB;
+use ice\DB\DB;
 
 class MatExtraValues extends iceObject {
 
@@ -25,7 +25,7 @@ class MatExtraValues extends iceObject {
     }
 
     //подменяем создание объекта - прописываем железно целевую таблицу
-    public function __construct(iceDB $DB, $id=null, $settings=null)
+    public function __construct(DB $DB, $id=null, $settings=null)
     {
         $this->doConstruct($DB, 'material_extra_values', $id, $settings);
     }

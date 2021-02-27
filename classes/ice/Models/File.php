@@ -12,12 +12,12 @@
 namespace ice\Models;
 
 use ice\iceObject;
-use ice\iceDB;
+use ice\DB\DB;
 
 class File extends iceObject {
 
     //подменяем создание объекта - прописываем железно целевую таблицу
-    public function __construct(iceDB $DB, $id=null, $settings=null)
+    public function __construct(DB $DB, $id=null, $settings=null)
     {
         $this->doConstruct($DB, 'files', $id, $settings);
     }

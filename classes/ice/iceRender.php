@@ -12,6 +12,7 @@
 namespace ice;
 
 use ice\Models\MatTypeList;
+use ice\DB\DB;
 
 class iceRender {
 
@@ -272,7 +273,7 @@ class iceRender {
     {
         $this->version = '0.1';
         $this->settings = new iceSettings($setup);
-        $this->DB = new iceDB($this->settings);
+        $this->DB = new DB($this->settings);
         $this->styles = new iceStylesBuilder();
         $this->jscripts = new iceJScriptBuilder();
         $this->errors=Array();
