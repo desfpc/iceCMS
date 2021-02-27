@@ -12,17 +12,11 @@
 namespace ice\Web;
 
 use ice\iceFlashVars;
-use ice\iceRedirect;
-use ice\iceRequestValues;
 use ice\iceParseModule;
-use ice\icePathParser;
+use ice\Routes\PathParser;
 use ice\iceCacher;
-use ice\iceAuthorize;
 use ice\iceSettings;
-use ice\iceStylesBuilder;
-use ice\iceJScriptBuilder;
 use ice\Models\MatTypeList;
-use ice\iceHeaderBuilder;
 use ice\DB\DB;
 
 class Render {
@@ -71,14 +65,14 @@ class Render {
     }
 
     public function redirect($url, $code = null){
-        $redirect = new iceRedirect($url, $code);
+        $redirect = new Redirect($url, $code);
         die();
     }
 
     public function getRequestValue($valuename, $mode = 0)
     {
 
-        $rv = new iceRequestValues($this->values);
+        $rv = new RequestValues($this->values);
         $rv->getRequestValue($valuename, $mode);
 
         $this->values = $rv->returnValues();
@@ -88,7 +82,7 @@ class Render {
     public function getRequestValues($valuesnames, $mode = 0)
     {
 
-        $rv = new iceRequestValues($this->values);
+        $rv = new RequestValues($this->values);
         $rv->getRequestValues($valuesnames, $mode);
 
         $this->values = $rv->returnValues();
@@ -225,7 +219,7 @@ class Render {
             //выводим заголовки
             if(is_null($this->headers))
             {
-                $this->headers = new iceHeaderBuilder();
+                $this->headers = new HeaderBuilder();
                 $this->headers->standartHeaders();
             }
 
@@ -266,7 +260,7 @@ class Render {
 
     public function getMaterialTypesTree(){
 
-        $parser = new icePathParser($this->DB, [], $this->settings);
+        $parser = new PathParser($this->DB, [], $this->settings);
 
         $key = $parser->getMTTCacheKey();
         if($this->cacher->has($key)){
@@ -285,11 +279,11 @@ class Render {
         $this->version = '0.1';
         $this->settings = new iceSettings($setup);
         $this->DB = new DB($this->settings);
-        $this->styles = new iceStylesBuilder();
-        $this->jscripts = new iceJScriptBuilder();
+        $this->styles = new StylesBuilder();
+        $this->jscripts = new JScriptBuilder();
         $this->errors=Array();
         $this->values = new \stdClass();
-        $this->authorize = new iceAuthorize($this->DB);
+        $this->authorize = new Authorize($this->DB);
 
         if(is_object($this->settings) && isset($this->settings->cache->host) && isset($this->settings->cache->port))
         {
@@ -309,7 +303,7 @@ class Render {
         elseif ($makeMaterialTypes){
 
             $this->materialTypes = $this->getMaterialTypesTree();
-            $this->parser = new icePathParser($this->DB, $this->materialTypes, $this->settings);
+            $this->parser = new PathParser($this->DB, $this->materialTypes, $this->settings);
 
         }
 

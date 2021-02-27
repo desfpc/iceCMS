@@ -9,8 +9,8 @@
  *
  */
 
-namespace ice;
+namespace ice\Tools;
 
-class iceLogger {
+class Logger {
 
 }

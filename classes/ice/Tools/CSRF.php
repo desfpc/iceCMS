@@ -9,9 +9,11 @@
  *
  */
 
-namespace ice;
+namespace ice\Tools;
 
-class iceCSRF {
+use ice\iceSettings;
+
+class CSRF {
 
     private $token = null;
     private $key;

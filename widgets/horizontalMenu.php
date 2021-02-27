@@ -6,9 +6,9 @@
  * @var ice\iceWidget $this
  */
 
-use ice\icePathParser;
+use ice\Routes\PathParser;
 
-$icePathParser = new icePathParser($this->DB, $this->params, $this->settings);
+$PathParser = new PathParser($this->DB, $this->params, $this->settings);
 
 $childs = $this->params['types']['childs'];
 $parent = $this->params['parent'];
@@ -36,7 +36,7 @@ if(isset($this->params) && count($this->params) > 0){
                     $activeClass = '';
                 }
 
-                $url = $icePathParser->getMatTypeURL($mtype['id']);
+                $url = $PathParser->getMatTypeURL($mtype['id']);
                 echo '<a class="hMenu_link'.$activeClass.'" href="'.$url.'">'.$mtype['name'].'</a>';
 
             }

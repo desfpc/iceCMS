@@ -9,9 +9,9 @@
  *
  */
 
-use ice\iceHeaderBuilder;
+use ice\Web\HeaderBuilder;
 
-$this->headers = new iceHeaderBuilder();
+$this->headers = new HeaderBuilder();
 $this->headers->standartHeaders();
 $this->headers->addHeader('HTTP/1.0 404 Not Found');
 $this->headers->addHeader('Status: 404 Not Found');

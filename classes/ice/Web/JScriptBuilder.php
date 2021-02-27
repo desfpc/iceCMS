@@ -9,9 +9,9 @@
  *
  */
 
-namespace ice;
+namespace ice\Web;
 
-class iceJScriptBuilder {
+class JScriptBuilder {
 
     public $scripts;
 

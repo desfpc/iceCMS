@@ -9,9 +9,9 @@
  *
  */
 
-use ice\iceHeaderBuilder;
+use ice\Web\HeaderBuilder;
 
-$this->headers = new iceHeaderBuilder();
+$this->headers = new HeaderBuilder();
 $this->headers->standartHeaders();
 $this->headers->addHeader('HTTP/1.0 500 Internal Server Error');
 $this->headers->addHeader('Status: 500 Internal Server Error');

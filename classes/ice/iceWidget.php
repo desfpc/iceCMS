@@ -12,6 +12,8 @@
 namespace ice;
 
 use ice\DB\DB;
+use ice\Web\JScriptBuilder;
+use ice\Web\StylesBuilder;
 
 class iceWidget {
 
@@ -30,8 +32,8 @@ class iceWidget {
 
         $this->settings=$settings;
 
-        $this->jscripts = new iceJScriptBuilder();
-        $this->styles = new iceStylesBuilder();
+        $this->jscripts = new JScriptBuilder();
+        $this->styles = new StylesBuilder();
 
         //TODO раскомитить, если нужно будет кэширование для виджетов
         /*if(is_object($this->settings) && isset($this->settings->cache->host) && isset($this->settings->cache->port))

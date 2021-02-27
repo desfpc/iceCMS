@@ -13,7 +13,7 @@ use ice\Models\TemplateList;
 use ice\Models\MatExtraParams;
 use ice\Models\MatType;
 use ice\Models\MatTypeList;
-use ice\icePathParser;
+use ice\Routes\PathParser;
 
 //секурность
 if(!$this->moduleAccess())
@@ -137,7 +137,7 @@ switch($this->values->mode){
             if($matType->updateRecord($matType->paramsFromValues($this->values))){
 
                 //чистими кэши URL-ов типов материала
-                $parser = new icePathParser($this->DB, [], $this->settings);
+                $parser = new PathParser($this->DB, [], $this->settings);
 
                 $query = 'SELECT id FROM material_types';
                 if($res = $this->DB->query($query)){

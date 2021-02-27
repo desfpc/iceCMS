@@ -9,9 +9,9 @@
  *
  */
 
-namespace ice;
+namespace ice\Web;
 
-class iceStylesBuilder {
+class StylesBuilder {
 
     public $styles;
 

@@ -9,9 +9,9 @@
  *
  */
 
-namespace ice;
+namespace ice\Web;
 
-class iceHeaderBuilder {
+class HeaderBuilder {
     public $headers;
 
     public function printHeaders()

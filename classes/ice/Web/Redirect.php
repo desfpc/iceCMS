@@ -9,9 +9,9 @@
  *
  */
 
-namespace ice;
+namespace ice\Web;
 
-class iceRedirect {
+class Redirect {
 
     public function __construct($url,$code = null)
     {

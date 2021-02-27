@@ -11,7 +11,7 @@
 
 use ice\Models\User;
 use ice\Models\UserList;
-use ice\iceRedirect;
+use ice\Web\Redirect;
 use ice\Helpers\Strings;
 
 //секурность
@@ -94,7 +94,7 @@ switch ($this->values->mode){
                 {
                     //редиректим на форму редактирования пользователя
                     $this->setFlash('success',['Пользователь успешно создан']);
-                    new iceRedirect('/admin/users_admin/?mode=edit&id='.$user->id);
+                    new Redirect('/admin/users_admin/?mode=edit&id='.$user->id);
                 }
                 else
                 {
@@ -115,7 +115,7 @@ switch ($this->values->mode){
         if($this->values->id != ''){
             $user = new User($this->DB, (int)$this->values->id);
             if(!$user->getRecord()) {
-                new iceRedirect('/404');
+                new Redirect('/404');
             }
         }
 
@@ -155,7 +155,7 @@ switch ($this->values->mode){
                 $id = (int)$this->values->id;
                 $user = new User($this->DB, $id);
                 if(!$user->getRecord()){
-                    new iceRedirect('/404');
+                    new Redirect('/404');
                 }
 
                 switch ($this->values->action){

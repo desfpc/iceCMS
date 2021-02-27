@@ -9,9 +9,9 @@
  *
  */
 
-use ice\iceHeaderBuilder;
+use ice\Web\HeaderBuilder;
 
-$this->headers = new iceHeaderBuilder();
+$this->headers = new HeaderBuilder();
 $this->headers->addHeader('Location: /');
 
 $this->authorize->deAuthorize();

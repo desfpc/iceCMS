@@ -10,12 +10,12 @@
  *
  */
 
-namespace ice;
+namespace ice\Web;
 
 use ice\Models\User;
 use ice\DB\DB;
 
-class iceAuthorize {
+class Authorize {
 
     public $autorized;
     public $user;

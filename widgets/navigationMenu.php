@@ -6,9 +6,9 @@
  * @var ice\iceWidget $this
  */
 
-use ice\icePathParser;
+use ice\Routes\PathParser;
 
-$icePathParser = new icePathParser($this->DB, $this->params, $this->settings);
+$PathParser = new PathParser($this->DB, $this->params, $this->settings);
 
 echo '<div class="col-md"><ul id="navigation" class="slimmenu">';
 
@@ -20,7 +20,7 @@ if(isset($this->params) && count($this->params) > 0){
     foreach ($menuTypes as $mtype){
 
         if($mtype['sitemenu'] == 1){
-            mtTree($this->params, $mtype, $icePathParser);
+            mtTree($this->params, $mtype, $PathParser);
         }
 
     }
@@ -29,9 +29,9 @@ if(isset($this->params) && count($this->params) > 0){
 
 echo '</div>';
 
-function mtTree($alltypes, $mtype, $icePathParser){
+function mtTree($alltypes, $mtype, $PathParser){
 
-    $url = $icePathParser->getMatTypeURL($mtype['id']);
+    $url = $PathParser->getMatTypeURL($mtype['id']);
 
     if($mtype['name'] != 'Главная'){
         echo '<li><a href="'.$url.'">'.$mtype['name'].'</a>';
@@ -42,7 +42,7 @@ function mtTree($alltypes, $mtype, $icePathParser){
             echo '<ul>';
             foreach ($alltypes['childs'][$mtype['id']] as $item) {
                 if($item['sitemenu'] == 1){
-                    mtTree($alltypes, $item, $icePathParser);
+                    mtTree($alltypes, $item, $PathParser);
                 }
             }
             echo '</ul>';

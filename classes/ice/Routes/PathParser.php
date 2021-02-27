@@ -9,12 +9,14 @@
  *
  */
 
-namespace ice;
+namespace ice\Routes;
 
 use ice\Models\Mat;
 use ice\DB\DB;
+use ice\Web\Redirect;
+use ice\iceCacher;
 
-class icePathParser {
+class PathParser {
 
     private $cacher;
     private $types;
@@ -92,7 +94,7 @@ class icePathParser {
             }
 
             if(!$finded){
-                $redirect = new iceRedirect('/404',302);
+                $redirect = new Redirect('/404',302);
             }
 
         }

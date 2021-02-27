@@ -9,9 +9,9 @@
  *
  */
 
-namespace ice;
+namespace ice\Web;
 
-class iceRequestValues {
+class RequestValues {
 
     public $values;
 
