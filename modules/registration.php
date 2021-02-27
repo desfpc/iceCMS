@@ -9,14 +9,14 @@
  *
  */
 
-use ice\iceUser;
+use ice\Models\User;
 use ice\Helpers\Strings;
 
 $this->moduleData=new stdClass();
 
 $this->moduleData->title=$this->settings->site->title.' - регистрация';
 $this->moduleData->H1='Регистрация';
-$this->moduleData->user=new iceUser($this->DB);
+$this->moduleData->user=new User($this->DB);
 $this->moduleData->errors=array();
 $this->moduleData->success=array();
 
@@ -63,7 +63,7 @@ switch ($this->values->action)
                 'sex' => null
             );
 
-            $user = new iceUser($this->DB);
+            $user = new user($this->DB);
             if($user->registerUser($params))
             {
                 $this->moduleData->success[]='Пользователь успешно зарегистрирован! Войдите, используя свой email и пароль.';

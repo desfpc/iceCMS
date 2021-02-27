@@ -7,7 +7,7 @@
 */
 
 use ice\iceWidget;
-use ice\iceUser;
+use ice\Models\User;
 
 $patch = '/admin/users_admin';
 
@@ -122,7 +122,7 @@ $this->jsready.='
     <td>'.$row['full_name'].'</td>
     <td>'.$row['user_role_name'].'</td>
     <td>'.$stat.'</td>
-    <td>'.iceUser::formatDate($row['date_add']).'</td>
+    <td>'.User::formatDate($row['date_add']).'</td>
     <td><a href="'.$patch.'/?mode=edit&id='.$row['id'].'">
             <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Редактировать">
                 <i class="material-icons md-16 md-light">edit</i>

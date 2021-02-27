@@ -40,7 +40,7 @@ class Mat extends iceObject {
 
         $sort[] = ['col' => 'param_name', 'sort' => 'ASC'];
 
-        $extraValues = new iceMatExtraValuesList($this->DB, $conditions, $sort, 1, 100);
+        $extraValues = new MatExtraValuesList($this->DB, $conditions, $sort, 1, 100);
         $this->extraValues = $extraValues->getRecords();
 
     }
@@ -62,13 +62,13 @@ class Mat extends iceObject {
                 $res[0]['template_admin'] = 4; //по дефолту шаблон редактирования новости
             }
 
-            $listTemplate = new iceTemplate($this->DB, $res[0]['template_list']);
+            $listTemplate = new template($this->DB, $res[0]['template_list']);
             $listTemplate->getRecord($res[0]['template_list']);
 
-            $itemTemplate = new iceTemplate($this->DB, $res[0]['template_item']);
+            $itemTemplate = new template($this->DB, $res[0]['template_item']);
             $itemTemplate->getRecord($res[0]['template_item']);
 
-            $adminTemplate = new iceTemplate($this->DB, $res[0]['template_admin']);
+            $adminTemplate = new template($this->DB, $res[0]['template_admin']);
             $adminTemplate->getRecord($res[0]['template_admin']);
 
             //заносим шаблоны в свойства материала

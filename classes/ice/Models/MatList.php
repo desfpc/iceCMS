@@ -14,7 +14,7 @@ namespace ice\Models;
 use ice\iceObjectList;
 use ice\iceDB;
 
-class iceMatList extends iceObjectList {
+class MatList extends iceObjectList {
     public function __construct(iceDB $DB, $conditions=null, $sort=null, $page=1, $perpage=20, $cachetime=0, $settings=null)
     {
         $this->doConstruct($DB, 'materials', $conditions, $sort, $page, $perpage, $cachetime, $settings);

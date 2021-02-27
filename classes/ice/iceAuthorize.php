@@ -12,6 +12,8 @@
 
 namespace ice;
 
+use ice\Models\User;
+
 class iceAuthorize {
 
     public $autorized;
@@ -21,7 +23,7 @@ class iceAuthorize {
 
     public function doAuthorize($DB, $login, $pass)
     {
-        $user= new iceUser($DB);
+        $user= new User($DB);
         if($user->authorizeUser($pass, $login))
         {
             $this->user=$user;

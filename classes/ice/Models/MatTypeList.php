@@ -14,7 +14,7 @@ namespace ice\Models;
 use ice\iceObjectList;
 use ice\iceDB;
 
-class iceMatTypeList extends iceObjectList {
+class MatTypeList extends iceObjectList {
 
     //дерево
     public function getRecordsTree($mode = 'all') {

@@ -9,9 +9,12 @@
  *
  */
 
-namespace ice;
+namespace ice\Models;
 
-class iceTemplateList extends iceObjectList {
+use ice\iceObjectList;
+use ice\iceDB;
+
+class TemplateList extends iceObjectList {
     public function __construct(iceDB $DB, $conditions=null, $sort=null, $page=1, $perpage=20, $cachetime=0, $settings=null)
     {
         $this->doConstruct($DB, 'templates', $conditions, $sort, $page, $perpage, $cachetime, $settings);

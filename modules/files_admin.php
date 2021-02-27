@@ -9,7 +9,7 @@
  *
  */
 
-use ice\iceMatTypeList;
+use ice\Models\MatTypeList;
 use ice\iceFile;
 use ice\iceFileList;
 
@@ -31,7 +31,7 @@ $this->moduleData->errors=[];
 $this->moduleData->success=[];
 
 //получаем дерево типов материалов (всех)
-$materialTypes = new iceMatTypeList($this->DB, null, null, 1, null, 0, null);
+$materialTypes = new MatTypeList($this->DB, null, null, 1, null, 0, null);
 $this->moduleData->materialTypes = $materialTypes->getRecordsTree('all');
 
 $this->moduleData->materialTypes[0][] = [

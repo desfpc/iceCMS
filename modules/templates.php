@@ -9,8 +9,8 @@
  *
  */
 
-use ice\iceTemplate;
-use ice\iceTemplateList;
+use ice\Models\Template;
+use ice\Models\TemplateList;
 
 //секурность
 if(!$this->moduleAccess())
@@ -49,7 +49,7 @@ switch($this->values->mode){
         if(!$error){
 
             //params[$col['Field']]
-            $template = new iceTemplate($this->DB);
+            $template = new Template($this->DB);
             if($template->createRecord([
                 'filename' => $this->values->filename,
                 'name' => $this->values->name,
@@ -100,7 +100,7 @@ switch($this->values->mode){
             if(!$error){
 
                 //params[$col['Field']]
-                $template = new iceTemplate($this->DB, $this->values->id);
+                $template = new Template($this->DB, $this->values->id);
                 //$template->getRecord($this->values->id);
                 if($template->updateRecord([
                     'filename' => $this->values->filename,
@@ -124,7 +124,7 @@ switch($this->values->mode){
         }
 
         //получаем данные шаблона для вывода
-        $this->moduleData->editTemplate = new iceTemplate($this->DB, $this->values->id);
+        $this->moduleData->editTemplate = new Template($this->DB, $this->values->id);
         $this->moduleData->editTemplate->getRecord($this->values->id);
 
         break;
@@ -136,11 +136,11 @@ switch($this->values->mode){
 }
 
 //получение списка шаблонов
-$templates = new iceTemplateList($this->DB, null, [['col' => 'name', 'sort' => 'ASC']]);
+$templates = new TemplateList($this->DB, null, [['col' => 'name', 'sort' => 'ASC']]);
 $templates = $templates->getRecords();
 //добавляем в список шаблонов данные о типах материалов и названия типов
 foreach ($templates as $template) {
-    $templateObj = new iceTemplate($this->DB, $template['id']);
+    $templateObj = new Template($this->DB, $template['id']);
     $templateObj->getRecord($template['id']);
     $this->moduleData->templates[]=$templateObj->params;
 }

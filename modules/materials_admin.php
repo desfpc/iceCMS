@@ -9,10 +9,10 @@
  *
  */
 
-use ice\Models\iceMatType;
-use ice\Models\iceMatTypeList;
+use ice\Models\matType;
+use ice\Models\matTypeList;
 use ice\Models\Mat;
-use ice\Models\iceMatList;
+use ice\Models\matList;
 use ice\iceFile;
 use ice\Models\languageList;
 
@@ -34,7 +34,7 @@ $this->moduleData->errors=[];
 $this->moduleData->success=[];
 
 //получаем дерево типов материалов (всех)
-$materialTypes = new iceMatTypeList($this->DB, null, null, 1, null, 0, null);
+$materialTypes = new matTypeList($this->DB, null, null, 1, null, 0, null);
 $this->moduleData->materialTypes = $materialTypes->getRecordsTree('all');
 
 $this->moduleData->materialTypes[0][] = [
@@ -77,7 +77,7 @@ switch ($this->values->mode){
             $this->values->material_type_id = (int)$this->values->material_type_id;
         }
 
-        $matType = new iceMatType($this->DB, intval($this->values->material_type_id));
+        $matType = new matType($this->DB, intval($this->values->material_type_id));
         if(!$matType->getRecord(intval($this->values->material_type_id))){
             //$this->warnings[] = 'Для создания материала выберите тип';
             $this->setFlash('errors',['Для создания материала выберите его тип']);
@@ -136,7 +136,7 @@ switch ($this->values->mode){
         }
 
         //получаем тип материала
-        $matType = new iceMatType($this->DB, $material->params['material_type_id']);
+        $matType = new matType($this->DB, $material->params['material_type_id']);
         $matType->getRecord();
         $this->moduleData->mType = $matType;
 
@@ -298,7 +298,7 @@ switch ($this->values->mode){
         }
 
         //список материалов
-        $materials = new iceMatList($this->DB, $conditions, [['col' => 'id', 'sort' => 'DESC']], $page, $perpage);
+        $materials = new matList($this->DB, $conditions, [['col' => 'id', 'sort' => 'DESC']], $page, $perpage);
         $this->moduleData->page = $page;
         $this->moduleData->perpage = $perpage;
         $this->moduleData->materialsCnt = $materials->getCnt();

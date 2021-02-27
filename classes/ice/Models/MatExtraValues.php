@@ -14,7 +14,7 @@ namespace ice\Models;
 use ice\iceObject;
 use ice\iceDB;
 
-class iceMatExtraValues extends iceObject {
+class MatExtraValues extends iceObject {
 
     public function moreQuery(){
         $query=', (SELECT m.name FROM materials m WHERE m.id = dbtable.value_mat) value_mat_name,

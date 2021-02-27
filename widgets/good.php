@@ -6,11 +6,11 @@
  * @var ice\iceWidget $this
  */
 
-use ice\Models\iceMatType;
+use ice\Models\matType;
 use ice\iceFile;
 use ice\Models\Mat;
 
-$mtype = new iceMatType($this->DB, $this->params['material_type_id']);
+$mtype = new matType($this->DB, $this->params['material_type_id']);
 $mtype->getRecord();
 $mtype->getURL();
 

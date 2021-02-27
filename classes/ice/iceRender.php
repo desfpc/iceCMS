@@ -11,6 +11,8 @@
 
 namespace ice;
 
+use ice\Models\MatTypeList;
+
 class iceRender {
 
     public $settings; //настройки
@@ -259,7 +261,7 @@ class iceRender {
             return $parser->getMTTCache($key);
         }
 
-        $materialTypes = new iceMatTypeList($this->DB, null, null, 1, null, 0, null);
+        $materialTypes = new MatTypeList($this->DB, null, null, 1, null, 0, null);
         $materialTypes = $materialTypes->getRecordsTree('all');
         $parser->setMTTCache($key,$materialTypes,1*24*60*60);
         return $materialTypes;

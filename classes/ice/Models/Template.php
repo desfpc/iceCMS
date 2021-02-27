@@ -14,7 +14,7 @@ namespace ice\Models;
 use ice\iceObject;
 use ice\iceDB;
 
-class iceTemplate extends iceObject {
+class Template extends iceObject {
     //подменяем создание объекта - прописываем железно целевую таблицу
     public function __construct(iceDB $DB, $id=null, $settings=null)
     {

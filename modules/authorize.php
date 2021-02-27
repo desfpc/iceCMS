@@ -9,13 +9,13 @@
  *
  */
 
-use ice\iceUser;
+use ice\Models\User;
 
 $this->moduleData=new stdClass();
 
 $this->moduleData->title=$this->settings->site->title.' - авторизация';
 $this->moduleData->H1='Авторизация';
-$this->moduleData->user=new iceUser($this->DB);
+$this->moduleData->user=new User($this->DB);
 $this->moduleData->errors=array();
 $this->moduleData->success=array();
 

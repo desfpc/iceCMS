@@ -9,9 +9,12 @@
  *
  */
 
-namespace ice;
+namespace ice\Models;
 
-class iceMatExtraParams extends iceObject {
+use ice\iceObject;
+use ice\iceDB;
+
+class MatExtraParams extends iceObject {
 
     //подменяем создание объекта - прописываем железно целевую таблицу
     public function __construct(iceDB $DB, $id=null, $settings=null)
@@ -27,7 +30,7 @@ class iceMatExtraParams extends iceObject {
     public function afterCreateRecord(){
 
         //удаляем кэш типа материала
-        $mType = new iceMatType($this->DB, $this->params['mtype_id']);
+        $mType = new matType($this->DB, $this->params['mtype_id']);
         if($mType->getRecord()){
             $mType->uncacheRecord();
         }

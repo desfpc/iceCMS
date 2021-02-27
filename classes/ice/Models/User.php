@@ -9,9 +9,12 @@
  *
  */
 
-namespace ice;
+namespace ice\Models;
 
-class iceUser extends iceObject {
+use ice\iceObject;
+use ice\iceDB;
+
+class User extends iceObject {
 
 
     public function registerUser(array $params){

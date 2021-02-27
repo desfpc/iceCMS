@@ -9,8 +9,8 @@
  *
  */
 
-use ice\iceMatType;
-use ice\iceMatList;
+use ice\Models\MatType;
+use ice\Models\MatList;
 
 $this->moduleData=new stdClass();
 
@@ -24,7 +24,7 @@ $this->parser->parseURL($this->path_info['call_parts']);
 
 //формируем данные для отображения типа материала или материала
 $mtype = end($this->parser->mtypes);
-$mtype = new iceMatType($this->DB, $mtype['id']);
+$mtype = new MatType($this->DB, $mtype['id']);
 $mtype->getRecord();
 $this->moduleData->mtype = $mtype;
 $this->moduleData->material = $this->parser->material;
@@ -69,7 +69,7 @@ if(is_null($this->moduleData->material)){
             $perpage = 10;
         }
 
-        $mlist = new iceMatList($this->DB, $conditions, $sort, $page, $perpage);
+        $mlist = new MatList($this->DB, $conditions, $sort, $page, $perpage);
         $this->moduleData->mlist = $mlist->getRecords();
 
     }

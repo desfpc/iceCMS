@@ -9,8 +9,8 @@
  *
  */
 
-use ice\iceUser;
-use ice\iceUserList;
+use ice\Models\User;
+use ice\Models\UserList;
 use ice\iceRedirect;
 use ice\Helpers\Strings;
 
@@ -89,7 +89,7 @@ switch ($this->values->mode){
                     'sex' => null
                 );
 
-                $user = new iceUser($this->DB);
+                $user = new User($this->DB);
                 if($user->registerUser($params))
                 {
                     //редиректим на форму редактирования пользователя
@@ -113,7 +113,7 @@ switch ($this->values->mode){
 
         //пробуем получить пользователя
         if($this->values->id != ''){
-            $user = new iceUser($this->DB, (int)$this->values->id);
+            $user = new User($this->DB, (int)$this->values->id);
             if(!$user->getRecord()) {
                 new iceRedirect('/404');
             }
@@ -153,7 +153,7 @@ switch ($this->values->mode){
             if(in_array($this->values->action,$userActions)){
 
                 $id = (int)$this->values->id;
-                $user = new iceUser($this->DB, $id);
+                $user = new User($this->DB, $id);
                 if(!$user->getRecord()){
                     new iceRedirect('/404');
                 }
@@ -218,7 +218,7 @@ switch ($this->values->mode){
         }
 
         //список материалов
-        $users = new iceUserList($this->DB, $conditions, [['col' => 'id', 'sort' => 'DESC']], $page, $perpage);
+        $users = new UserList($this->DB, $conditions, [['col' => 'id', 'sort' => 'DESC']], $page, $perpage);
 
         //справочник ролей пользователя
         $userRoles=[];

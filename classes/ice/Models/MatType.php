@@ -12,8 +12,9 @@
 namespace ice\Models;
 
 use ice\iceObject;
+use ice\iceDB;
 
-class iceMatType extends iceObject {
+class MatType extends iceObject {
 
     public $url;
     public $extraParams;
@@ -136,7 +137,7 @@ SELECT * FROM ptypes WHERE id <> '.$this->id.';';
 
         $sort[] = ['col' => 'name', 'sort' => 'ASC'];
 
-        $this->extraParams = new iceMatExtraParamsList($this->DB, $conditions, $sort, 1, 100);
+        $this->extraParams = new MatExtraParamsList($this->DB, $conditions, $sort, 1, 100);
         $this->extraParams = $this->extraParams->getRecords();
     }
 

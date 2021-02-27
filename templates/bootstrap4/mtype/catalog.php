@@ -6,7 +6,7 @@
  * @var ice\iceRender $this
  */
 
-use ice\iceMatList;
+use ice\Models\MatList;
 use ice\iceWidget;
 
 //получаем товары
@@ -53,7 +53,7 @@ $conditions[] = [
 //сортировки
 $sort[] = ['col' => 'rand()', 'sort' => ''];
 
-$goods = new iceMatList($this->DB, $conditions, $sort, 1, 4);
+$goods = new MatList($this->DB, $conditions, $sort, 1, 4);
 $goods = $goods->getRecords();
 
 ?><div class="row no-gutter">

@@ -9,10 +9,10 @@
  *
  */
 
-use ice\iceTemplateList;
-use ice\iceMatExtraParams;
-use ice\iceMatType;
-use ice\iceMatTypeList;
+use ice\Models\TemplateList;
+use ice\Models\MatExtraParams;
+use ice\Models\MatType;
+use ice\Models\MatTypeList;
 use ice\icePathParser;
 
 //секурность
@@ -32,7 +32,7 @@ $this->getRequestValues(['id','mode','action','name','name_en','name_de','id_cha
     'template_list','template_item','template_admin','prepare_list','prepare_item','list_items','shop_ifgood','shop_ifstore']);
 
 //списки шаблонов для редактирования и добавления
-$listTemplates = new iceTemplateList($this->DB, [[
+$listTemplates = new TemplateList($this->DB, [[
     'col' => 'type',
     'type' => '=',
     'val' => 2,
@@ -41,7 +41,7 @@ $listTemplates = new iceTemplateList($this->DB, [[
 $listTemplates->getRecords();
 $this->moduleData->listTemplates=$listTemplates->records;
 
-$detailTemplates = new iceTemplateList($this->DB, [[
+$detailTemplates = new TemplateList($this->DB, [[
     'col' => 'type',
     'type' => '=',
     'val' => 1,
@@ -50,7 +50,7 @@ $detailTemplates = new iceTemplateList($this->DB, [[
 $detailTemplates->getRecords();
 $this->moduleData->detailTemplates=$detailTemplates->records;
 
-$adminTemplates = new iceTemplateList($this->DB, [[
+$adminTemplates = new TemplateList($this->DB, [[
     'col' => 'type',
     'type' => '=',
     'val' => 3,
@@ -69,7 +69,7 @@ switch($this->values->mode){
         $this->getRequestValues(['mtype_id','name','value_type','value_mtype']);
 
         //пробуем создать дополнительное поле
-        $extra = new iceMatExtraParams($this->DB);
+        $extra = new MatExtraParams($this->DB);
 
         if($extra->createRecord($extra->paramsFromValues($this->values))){
             $this->setFlash('success',['Дополнительное поле <strong>'.$this->values->name.'</strong> успешно создано']);
@@ -96,7 +96,7 @@ switch($this->values->mode){
         if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             //пробуем создать тип материала
-            $matType = new iceMatType($this->DB);
+            $matType = new MatType($this->DB);
 
             if($matType->createRecord($matType->paramsFromValues($this->values))){
                 $this->moduleData->success[] = 'Тип материала <strong>'.$this->values->name.'</strong> успешно создан.';
@@ -124,7 +124,7 @@ switch($this->values->mode){
         $this->moduleData->H1.=' - изменить';
 
         //получаем тип материала по id
-        $matType = new iceMatType($this->DB, intval($this->values->id));
+        $matType = new MatType($this->DB, intval($this->values->id));
         if(!$matType->getRecord(intval($this->values->id))){
             $this->module['name']='404';
             $this->loadModule();
@@ -158,7 +158,7 @@ switch($this->values->mode){
 
         if(!is_null($matType->params['parent_id']) && $matType->params['parent_id'] != '')
         {
-            $parentType = new iceMatType($this->DB, $matType->params['parent_id']);
+            $parentType = new MatType($this->DB, $matType->params['parent_id']);
             $parentType->getRecord();
             $this->moduleData->parentName = $parentType->params['name'];
         }
@@ -180,7 +180,7 @@ switch($this->values->mode){
     default:
 
         //получаем дерево типов материалов (всех)
-        $materialTypes = new iceMatTypeList($this->DB, null, null, 1, null, 0, null);
+        $materialTypes = new MatTypeList($this->DB, null, null, 1, null, 0, null);
         $this->moduleData->materialTypes = $materialTypes->getRecordsTree('all');
 
         break;
