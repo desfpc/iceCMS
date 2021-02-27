@@ -9,11 +9,13 @@
  *
  */
 
-namespace ice;
+namespace ice\Models;
 
+use ice\iceDB;
+use ice\iceObject;
 use ice\Helpers\Strings;
 
-class iceMat extends iceObject {
+class Mat extends iceObject {
 
     public $files = [];
     public $extraValues = [];

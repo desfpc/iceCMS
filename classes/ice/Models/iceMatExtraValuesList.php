@@ -9,9 +9,11 @@
  *
  */
 
-namespace ice;
+namespace ice\Models;
 
-class iceMatExtraValuesList extends iceObjectList {
+use ice;
+
+class iceMatExtraValuesList extends ice\iceObjectList {
 
     public function moreQuery(){
         $query=', (SELECT m.name FROM materials m WHERE m.id = dbtable.value_mat) value_mat_name,
@@ -21,7 +23,7 @@ class iceMatExtraValuesList extends iceObjectList {
         return $query;
     }
 
-    public function __construct(iceDB $DB, $conditions=null, $sort=null, $page=1, $perpage=20, $cachetime=0, $settings=null)
+    public function __construct(ice\iceDB $DB, $conditions=null, $sort=null, $page=1, $perpage=20, $cachetime=0, $settings=null)
     {
         $this->doConstruct($DB, 'material_extra_values', $conditions, $sort, $page, $perpage, $cachetime, $settings);
     }

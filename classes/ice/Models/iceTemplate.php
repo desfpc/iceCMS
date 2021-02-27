@@ -9,7 +9,10 @@
  *
  */
 
-namespace ice;
+namespace ice\Models;
+
+use ice\iceObject;
+use ice\iceDB;
 
 class iceTemplate extends iceObject {
     //подменяем создание объекта - прописываем железно целевую таблицу

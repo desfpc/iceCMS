@@ -7,7 +7,8 @@
 */
 
 use ice\iceWidget;
-use ice\iceMat;
+use ice\iceFile;
+use ice\Models\Mat;
 
 ?>
 <div class="row">
@@ -51,11 +52,11 @@ use ice\iceMat;
                     }
 
                     echo '<tr>
-                                <td>'.iceMat::statusIcon($material['status_id']).'&nbsp;'.$material['id'].'</td>
+                                <td>'.Mat::statusIcon($material['status_id']).'&nbsp;'.$material['id'].'</td>
                                 <td>'.$favicon.'</td>
                                 <td>'.$material['name'].'</td>
                                 <td>'.$material['material_type_name'].'</td>
-                                <td><small>'.iceMat::formatDate($material['date_add']).'</small></td>
+                                <td><small>'.Mat::formatDate($material['date_add']).'</small></td>
                                 <td><a href="/admin/materials_admin/?mode=edit&id='.$material['id'].'">
             <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Редактировать">
                 <i class="material-icons md-16 md-light">edit</i>
