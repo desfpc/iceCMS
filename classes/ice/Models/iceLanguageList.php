@@ -9,7 +9,10 @@
  *
  */
 
-namespace ice;
+namespace ice\Models;
+
+use ice\iceObjectList;
+use ice\iceDB;
 
 class iceLanguageList extends iceObjectList {
 

@@ -7,11 +7,12 @@
  */
 
 use ice\iceWidget;
+use ice\Models\Mat;
 
 //получаем последний активный материал
 if($this->moduleData->mlist){
     $id = $this->moduleData->mlist[0]['id'];
-    $this->moduleData->material = new iceMat($this->DB, $id);
+    $this->moduleData->material = new Mat($this->DB, $id);
     $this->moduleData->material->getRecord();
 
 $material = $this->moduleData->material->params; ?><div class="row">

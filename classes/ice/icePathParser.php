@@ -11,6 +11,8 @@
 
 namespace ice;
 
+use ice\Models\Mat;
+
 class icePathParser {
 
     private $cacher;
@@ -80,7 +82,7 @@ class icePathParser {
                 if($res = $this->DB->query($query)){
                     if(count($res) > 0){
                         $mid = $res[0]['id'];
-                        $material = new iceMat($this->DB, $mid);
+                        $material = new Mat($this->DB, $mid);
                         if($material->getRecord()){
                             $finded = true;
                         }

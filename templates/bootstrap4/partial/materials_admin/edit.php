@@ -6,7 +6,7 @@
  * @var ice\iceRender $this
  */
 
-use ice\iceMat;
+use ice\Models\Mat;
 
 $tmImageList = '[]';
 
@@ -22,8 +22,8 @@ $tmImageList = '[]';
     <div class="row">
     <div class="col-sm">
         <small>Автор: <strong><?=$this->moduleData->material->params['user_name']?></strong> &nbsp;|&nbsp;
-            Создано: <strong><?=iceMat::formatDate($this->moduleData->material->params['date_add'])?></strong> &nbsp;|&nbsp;
-            Статус: <strong><?=iceMat::statusIcon($this->moduleData->material->params['status_id'])?> <?=iceMat::statusName($this->moduleData->material->params['status_id'])?></strong> &nbsp;|&nbsp;
+            Создано: <strong><?=Mat::formatDate($this->moduleData->material->params['date_add'])?></strong> &nbsp;|&nbsp;
+            Статус: <strong><?=Mat::statusIcon($this->moduleData->material->params['status_id'])?> <?=Mat::statusName($this->moduleData->material->params['status_id'])?></strong> &nbsp;|&nbsp;
             Тип материала: <strong><a href="/admin/material_types_admin/?mode=edit&id=<?=$this->moduleData->material->params['material_type_id']?>"><?=$this->moduleData->material->params['material_type_name']?></a></strong> &nbsp;|&nbsp;
             <a href="/admin/materials_admin/?mode=edit&id=<?=$this->moduleData->material->params['id']?>&action=clearcache">Очистить кэш</a>  &nbsp;|&nbsp;
             TODO - Посмотреть на сайте

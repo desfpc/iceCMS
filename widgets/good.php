@@ -6,9 +6,9 @@
  * @var ice\iceWidget $this
  */
 
-use ice\iceMatType;
+use ice\Models\iceMatType;
 use ice\iceFile;
-use ice\iceMat;
+use ice\Models\Mat;
 
 $mtype = new iceMatType($this->DB, $this->params['material_type_id']);
 $mtype->getRecord();
@@ -34,6 +34,6 @@ echo '<a class="good" href="'.$url.'">
     <div class="good__img">'.$img.'</div>
     <p class="good__name">'.$this->params['name'].'</p>
     <p class="good__anons">'.$this->params['anons'].'</p>
-    <p class="good__price">'.iceMat::price($this->params['price']).'</p>
+    <p class="good__price">'.Mat::price($this->params['price']).'</p>
 </a>';
 

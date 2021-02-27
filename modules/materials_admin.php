@@ -9,12 +9,12 @@
  *
  */
 
-use ice\iceMatType;
-use ice\iceMatTypeList;
-use ice\iceMat;
-use ice\iceMatList;
+use ice\Models\iceMatType;
+use ice\Models\iceMatTypeList;
+use ice\Models\Mat;
+use ice\Models\iceMatList;
 use ice\iceFile;
-use ice\iceLanguageList;
+use ice\Models\iceLanguageList;
 
 //секурность
 if(!$this->moduleAccess())
@@ -95,7 +95,7 @@ switch ($this->values->mode){
         //проверяем, что форма отправлена
         if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-            $material = new iceMat($this->DB);
+            $material = new Mat($this->DB);
 
             if($material->createRecord($material->paramsFromValues($this->values))){
                 $this->moduleData->success[] = 'Материал <strong>'.$this->values->name.'</strong> успешно создан.';
@@ -128,7 +128,7 @@ switch ($this->values->mode){
             $this->loadModule();
         }
         else {
-            $material = new iceMat($this->DB, $this->values->id);
+            $material = new Mat($this->DB, $this->values->id);
             if(!$material->getRecord(intval($this->values->id))){
                 $this->module['name']='404';
                 $this->loadModule();

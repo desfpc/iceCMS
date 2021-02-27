@@ -9,7 +9,9 @@
  *
  */
 
-namespace ice;
+namespace ice\Models;
+
+use ice\iceObject;
 
 class iceMatType extends iceObject {
 

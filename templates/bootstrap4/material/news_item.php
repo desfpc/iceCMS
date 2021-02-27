@@ -7,11 +7,11 @@
  */
 
 use ice\iceWidget;
-use ice\iceMat;
+use ice\Models\Mat;
 
 $material = $this->moduleData->material->params; ?><div class="row">
     <div class="col-sm-12">
-        <div class="newsItem__date"><?=iceMat::formatDate($material['date_event'])?></div>
+        <div class="newsItem__date"><?=Mat::formatDate($material['date_event'])?></div>
         <div class="newsItem__content">
             <?php
 

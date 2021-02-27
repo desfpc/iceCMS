@@ -7,7 +7,7 @@
  */
 
 use ice\iceWidget;
-use ice\iceMat;
+use ice\Models\Mat;
 
 $material = $this->moduleData->material->params; ?><div class="row">
     <div class="col-lg-3" style="min-width: 200px;">
@@ -24,7 +24,7 @@ $material = $this->moduleData->material->params; ?><div class="row">
 
         ?>
         <p>&nbsp;</p>
-        <p class="goodItem__price">стоимость: <span><?=iceMat::price($this->moduleData->material->params['price'])?></span></p>
+        <p class="goodItem__price">стоимость: <span><?=Mat::price($this->moduleData->material->params['price'])?></span></p>
     </div>
     <div class="col-lg-9">
         <div class="newsItem__content">

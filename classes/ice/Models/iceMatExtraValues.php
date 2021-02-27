@@ -9,7 +9,10 @@
  *
  */
 
-namespace ice;
+namespace ice\Models;
+
+use ice\iceObject;
+use ice\iceDB;
 
 class iceMatExtraValues extends iceObject {
 
@@ -31,7 +34,7 @@ class iceMatExtraValues extends iceObject {
 
         //удаляем кэш типа материала
         if($this->params['value_type'] == 'value_mat'){
-            $mat = new iceMat($this->DB, $this->params['value_mat']);
+            $mat = new Mat($this->DB, $this->params['value_mat']);
             if($mat->getRecord()){
                 $mat->uncacheRecord();
             }
