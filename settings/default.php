@@ -15,6 +15,9 @@ $setup['template']='bootstrap4';
 //настройка релиз/разработка
 $setup['dev']=1;
 
+//уникальный секрет
+$setup['secret']=md5(time().' some secret '.rand(0,999999));
+
 //настройки БД
 $setup['db']=[];
 $setup['db']['type']='mysql';

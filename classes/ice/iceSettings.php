@@ -22,6 +22,8 @@ class iceSettings {
     public $cache;
     public $path;
     public $routes;
+    public $secret;
+    public $dev;
 
     public function save($adminPath = 'admin'){
 
@@ -59,7 +61,10 @@ class iceSettings {
 \$setup['template']='".$this->template."';
 
 //настройка релиз/разработка
-\$setup['dev']=1;
+\$setup['dev']=".$this->dev.";
+
+//уникальный секрет
+\$setup['secret']='".$this->secret."';
 
 //настройки БД
 \$setup['db']=[];
@@ -151,6 +156,7 @@ $setup[\'routes\'][\''.$lowerName.'\'] = \''.$row['name'].'\';';
             $settingsvalues['path']=1;
             $settingsvalues['template']=1;
             $settingsvalues['dev']=1;
+            $settingsvalues['secret']=1;
 
             $settingsvalues['db']['type']=1;
             $settingsvalues['db']['name']=1;

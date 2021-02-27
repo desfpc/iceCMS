@@ -5,7 +5,7 @@
  * PHP framework and CMS based on it.
  * https://github.com/desfpc/iceCMS
  *
- * CSFR Class
+ * CSRF Class
  *
  */
 
@@ -13,26 +13,26 @@ namespace ice;
 
 class iceCSRF {
 
-    const SALT = 'dfdfv_d3453!!3SD&@#sdc4_DcsdcDC_D@wsd$%#'; //TODO вынести соль в настройки приложения
-
     private $token = null;
     private $key;
+    private $salt;
     public $formName;
 
-    public function __construct($formName='') {
+    public function __construct(iceSettings $settings, $formName='') {
         $this->formName = $formName;
+        $this->salt = $settings->secret;
         return $this->makeToken();
     }
 
     //формируем ключ формы (что бы был свой токен на каждую форму)
     private function makeKey(){
-        $this->key = $this->formName.time();
+        $this->key = $this->formName.'_'.time().'_'.rand(0,1000);
     }
 
     //формируем CSRF токен
     private function makeToken(){
         $this->makeKey();
-        $this->token = hash('tiger192,3', 'CSRF_'.self::SALT.$this->key);
+        $this->token = hash('tiger192,3', 'CSRF_'.$this->salt.$this->key);
         $_SESSION['CSRF_'.$this->key] = $this->token;
         return true;
     }
