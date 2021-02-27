@@ -12,6 +12,7 @@
 namespace ice;
 
 use ice\DB\DB;
+use ice\DB\QueryBuilder;
 
 class iceObject {
 
@@ -73,7 +74,7 @@ class iceObject {
         }
 
         //формируем запрос для создания записи
-        $qbuilder=new iceQueryBuilder($this->DB, $this->cols, $this->params, $this->dbtable);
+        $qbuilder=new QueryBuilder($this->DB, $this->cols, $this->params, $this->dbtable);
         $query=$qbuilder->insert();
 
         if($res=$this->DB->query($query))
@@ -102,7 +103,7 @@ class iceObject {
             $this->params['id'] = $this->id;
         }
 
-        $qbuilder=new iceQueryBuilder($this->DB, $this->cols, $this->params, $this->dbtable);
+        $qbuilder=new QueryBuilder($this->DB, $this->cols, $this->params, $this->dbtable);
         $query=$qbuilder->update();
 
         //die($query);

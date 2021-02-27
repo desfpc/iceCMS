@@ -12,6 +12,7 @@
 namespace ice;
 
 use ice\DB\DB;
+use ice\DB\QueryBuilder;
 
 class iceImageCache extends iceObject {
     //подменяем создание объекта - прописываем железно целевую таблицу
@@ -29,7 +30,7 @@ class iceImageCache extends iceObject {
         }
 
         //формируем запрос для создания записи
-        $qbuilder=new iceQueryBuilder($this->DB, $this->cols, $this->params, 'image_caches');
+        $qbuilder=new QueryBuilder($this->DB, $this->cols, $this->params, 'image_caches');
         $query=$qbuilder->insert();
 
         if($res=$this->DB->query($query))

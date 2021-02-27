@@ -9,11 +9,9 @@
  *
  */
 
-namespace ice;
+namespace ice\DB;
 
-use ice\DB\DB;
-
-class iceQueryBuilder {
+class QueryBuilder {
 
     public $cols;
     public $params;

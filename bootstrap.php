@@ -31,7 +31,7 @@ $iceClasses = [
     'iceMessage',
     'iceParseModule',
     'icePathParser',
-    'iceQueryBuilder',
+    'DB/QueryBuilder',
     'iceRedirect',
     'iceRequestValues',
     'iceSettings',
