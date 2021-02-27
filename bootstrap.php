@@ -18,9 +18,9 @@ $iceClasses = [
     'ImageCache',
     'ImageCacheList',
     'JScriptBuilder',
-    'LanguageList',
+    'Models/LanguageList',
     'Logger',
-    'Mat',
+    'Models/Mat',
     'MatExtraParams',
     'MatExtraParamsList',
     'MatExtraValues',
@@ -46,7 +46,7 @@ $iceClasses = [
 ];
 
 foreach ($iceClasses as $iceClass) {
-    include_once($iceDir .'/ice'. $iceClass.'.php');
+    include_once($iceDir .'/'. $iceClass.'.php');
 }
 
 //Загрузка хэлперов

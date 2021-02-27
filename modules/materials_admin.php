@@ -14,7 +14,7 @@ use ice\Models\iceMatTypeList;
 use ice\Models\Mat;
 use ice\Models\iceMatList;
 use ice\iceFile;
-use ice\Models\iceLanguageList;
+use ice\Models\languageList;
 
 //секурность
 if(!$this->moduleAccess())
@@ -252,7 +252,7 @@ switch ($this->values->mode){
         $this->moduleData->material = $material;
 
         //список языков
-        $languages = new iceLanguageList($this->DB, null, [['col' => 'id', 'sort' => 'ASC']]);
+        $languages = new languageList($this->DB, null, [['col' => 'id', 'sort' => 'ASC']]);
         $this->moduleData->languages = $languages->getRecords(null);
 
         //список статусов
