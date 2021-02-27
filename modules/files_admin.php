@@ -71,7 +71,7 @@ switch ($this->values->action){
 }
 
 //список файлов
-//$iCaches = new iceImageCacheList($this->DB, null, null, 1, null, 0, null);
+//$iCaches = new ImageCacheList($this->DB, null, null, 1, null, 0, null);
 //$this->moduleData->iCaches = $iCaches->getRecords(null);
 
 //ограничиваем список в зависимости от переданного mtype

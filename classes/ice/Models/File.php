@@ -367,7 +367,7 @@ class File extends iceObject {
         if(isset($this->params['filetype']) && $this->params['filetype'] == 'image'){
 
             //список кэшей для изображения
-            $imageCaches = new iceImageCacheList($this->DB, null, null, 1, 1000);
+            $imageCaches = new ImageCacheList($this->DB, null, null, 1, 1000);
             $imageCaches = $imageCaches->getRecords();
 
             if(is_array($imageCaches) && count($imageCaches) > 0){

@@ -9,12 +9,13 @@
  *
  */
 
-namespace ice;
+namespace ice\Models;
 
 use ice\DB\DB;
 use ice\DB\QueryBuilder;
+use ice\iceObject;
 
-class iceImageCache extends iceObject {
+class ImageCache extends iceObject {
     //подменяем создание объекта - прописываем железно целевую таблицу
     public function __construct(DB $DB, $id=null, $settings=null)
     {

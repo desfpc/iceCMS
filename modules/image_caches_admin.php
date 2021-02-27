@@ -9,8 +9,8 @@
  *
  */
 
-use ice\iceImageCache;
-use ice\iceImageCacheList;
+use ice\Models\ImageCache;
+use ice\Models\ImageCacheList;
 
 //секурность
 if(!$this->moduleAccess())
@@ -38,7 +38,7 @@ switch ($this->values->mode){
         if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             //пробуем создать кэш изображения
-            $iCache = new iceImageCache($this->DB);
+            $iCache = new ImageCache($this->DB);
 
             if($this->values->watermark == ''){
                 $this->values->watermark = 0;
@@ -61,5 +61,5 @@ switch ($this->values->mode){
 }
 
 //список кэшей
-$iCaches = new iceImageCacheList($this->DB, null, null, 1, null, 0, null);
+$iCaches = new ImageCacheList($this->DB, null, null, 1, null, 0, null);
 $this->moduleData->iCaches = $iCaches->getRecords(null);

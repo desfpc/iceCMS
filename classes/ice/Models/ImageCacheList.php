@@ -9,11 +9,12 @@
  *
  */
 
-namespace ice;
+namespace ice\Models;
 
 use ice\DB\DB;
+use ice\iceObjectList;
 
-class iceImageCacheList extends iceObjectList {
+class ImageCacheList extends iceObjectList {
     public function __construct(DB $DB, $conditions=null, $sort=null, $page=1, $perpage=20, $cachetime=0, $settings=null)
     {
         $this->doConstruct($DB, 'image_caches', $conditions, $sort, $page, $perpage, $cachetime, $settings);
