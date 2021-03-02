@@ -6,7 +6,7 @@
  * @var ice\Web\Render $this
  */
 
-$this->jsready='
+$this->jsready = '
 
 if ($(".main-menu").html()) {
             SecMenuTop = $(".main-menu").offset().top;

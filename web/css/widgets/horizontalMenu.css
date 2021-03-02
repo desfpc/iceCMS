@@ -5,22 +5,27 @@
     margin-right: 0;
     margin-bottom: 10px;
 }
+
 .hMenu_link {
     display: block;
     width: 100%;
     padding: 10px;
 }
+
 .hMenu_link_active {
     background: #c8d6e7;
 }
+
 .hMenu_link:hover {
     text-decoration: none;
     background: #1B3756;
     color: #e5eafd;
 }
+
 .hMenu_link:first-child {
     border-radius: .25rem .25rem 0 0;
 }
+
 .hMenu_link:last-child {
     border-radius: 0 0 .25rem .25rem;
 }

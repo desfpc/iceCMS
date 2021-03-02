@@ -11,6 +11,7 @@
 
 namespace ice\Helpers;
 
-class Arrays {
+class Arrays
+{
 
 }

@@ -6,6 +6,7 @@
     width: 200px;
     margin: 0 20px 20px 0;
 }
+
 .widgetImages__carousel {
     width: 200px;
     height: 48px;
@@ -14,12 +15,14 @@
     display: block;
     position: relative;
 }
+
 .widgetImages__carousel-wrapper {
     width: 10000px;
     height: 48px;
     display: block;
     position: relative;
 }
+
 .widgetImages__carousel-item {
     width: 48px;
     height: 48px;
@@ -27,6 +30,7 @@
     display: inline-block;
     vertical-align: top;
 }
+
 .widgetImages__carousel-control-right {
     position: absolute;
     bottom: 0;
@@ -34,6 +38,7 @@
     width: 10px;
     height: 48px;
 }
+
 .widgetImages__carousel-control-left {
     position: absolute;
     bottom: 0;

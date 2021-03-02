@@ -9,29 +9,28 @@
  *
  */
 
-use ice\Models\matType;
-use ice\Models\matTypeList;
-use ice\Models\Mat;
-use ice\Models\matList;
 use ice\Models\File;
 use ice\Models\languageList;
+use ice\Models\Mat;
+use ice\Models\matList;
+use ice\Models\matType;
+use ice\Models\matTypeList;
 
 //секурность
-if(!$this->moduleAccess())
-    {
-        return;
-    };
+if (!$this->moduleAccess()) {
+    return;
+};
 
-$this->moduleData=new stdClass();
+$this->moduleData = new stdClass();
 
-$this->moduleData->title=$this->settings->site->title;
-$this->moduleData->H1='Материалы администрирование';
+$this->moduleData->title = $this->settings->site->title;
+$this->moduleData->H1 = 'Материалы администрирование';
 
 //получение переменных
-$this->getRequestValues(['mtype','action','mode','page']);
+$this->getRequestValues(['mtype', 'action', 'mode', 'page']);
 
-$this->moduleData->errors=[];
-$this->moduleData->success=[];
+$this->moduleData->errors = [];
+$this->moduleData->success = [];
 
 //получаем дерево типов материалов (всех)
 $materialTypes = new matTypeList($this->DB, null, null, 1, null, 0, null);
@@ -54,7 +53,7 @@ $this->moduleData->breadcrumbs[] = [
     'dir' => 'admin/materials_admin'
 ];
 
-switch ($this->values->mode){
+switch ($this->values->mode) {
 
     //создание записи
     case 'add':
@@ -68,24 +67,23 @@ switch ($this->values->mode){
         ];
 
         //получаем переменные
-        $this->getRequestValues(['name','id_char','material_type_id','anons','content','goodcode','tags','language']);
+        $this->getRequestValues(['name', 'id_char', 'material_type_id', 'anons', 'content', 'goodcode', 'tags', 'language']);
 
-        if($this->values->material_type_id == ''){
+        if ($this->values->material_type_id == '') {
             $this->values->material_type_id = 1;
-        }
-        else{
+        } else {
             $this->values->material_type_id = (int)$this->values->material_type_id;
         }
 
         $matType = new matType($this->DB, intval($this->values->material_type_id));
-        if(!$matType->getRecord(intval($this->values->material_type_id))){
+        if (!$matType->getRecord(intval($this->values->material_type_id))) {
             //$this->warnings[] = 'Для создания материала выберите тип';
-            $this->setFlash('errors',['Для создания материала выберите его тип']);
+            $this->setFlash('errors', ['Для создания материала выберите его тип']);
             $this->redirect('/admin/materials_admin');
         }
 
         //TODO установка языка
-        if($this->values->language == ''){
+        if ($this->values->language == '') {
             $this->values->language = 1;
         }
 
@@ -93,23 +91,22 @@ switch ($this->values->mode){
         $this->values->status_id = 0;
 
         //проверяем, что форма отправлена
-        if($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $material = new Mat($this->DB);
 
-            if($material->createRecord($material->paramsFromValues($this->values))){
-                $this->moduleData->success[] = 'Материал <strong>'.$this->values->name.'</strong> успешно создан.';
+            if ($material->createRecord($material->paramsFromValues($this->values))) {
+                $this->moduleData->success[] = 'Материал <strong>' . $this->values->name . '</strong> успешно создан.';
                 $this->unsetValues();
-                $this->setFlash('success',['Материал <strong>'.$this->values->name.'</strong> успешно создан']);
-                $this->redirect('/admin/materials_admin/?mode=edit&id='.$material->id);
-            }
-            else {
+                $this->setFlash('success', ['Материал <strong>' . $this->values->name . '</strong> успешно создан']);
+                $this->redirect('/admin/materials_admin/?mode=edit&id=' . $material->id);
+            } else {
                 $this->moduleData->errors[] = 'Не удалось сохранить материал';
             }
 
         }
 
-        $selectedMatType = ['id' => $matType->params['id'],'name' => $matType->params['name']];
+        $selectedMatType = ['id' => $matType->params['id'], 'name' => $matType->params['name']];
         $this->moduleData->selectedMatType = $selectedMatType;
 
 
@@ -119,18 +116,17 @@ switch ($this->values->mode){
     case 'edit':
 
         //получаем переменные
-        $this->getRequestValues(['id','name','id_char','material_type_id','anons','content','goodcode','tags','language','action','status_id','material_count','price','important','ordernum']);
+        $this->getRequestValues(['id', 'name', 'id_char', 'material_type_id', 'anons', 'content', 'goodcode', 'tags', 'language', 'action', 'status_id', 'material_count', 'price', 'important', 'ordernum']);
 
         //получаем материал по id
         $this->values->id = (int)$this->values->id;
-        if($this->values->id == 0){
-            $this->module['name']='404';
+        if ($this->values->id == 0) {
+            $this->module['name'] = '404';
             $this->loadModule();
-        }
-        else {
+        } else {
             $material = new Mat($this->DB, $this->values->id);
-            if(!$material->getRecord(intval($this->values->id))){
-                $this->module['name']='404';
+            if (!$material->getRecord(intval($this->values->id))) {
+                $this->module['name'] = '404';
                 $this->loadModule();
             }
         }
@@ -154,19 +150,19 @@ switch ($this->values->mode){
         ];
 
         //изменение материала - обработка формы
-        if($_SERVER['REQUEST_METHOD'] === 'POST' && $this->values->action == 'edit') {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && $this->values->action == 'edit') {
 
-            if($material->updateRecord($material->paramsFromValues($this->values))){
-                $this->moduleData->success[] = 'Материал <strong>'.$this->values->name.'</strong> успешно изменен.';
+            if ($material->updateRecord($material->paramsFromValues($this->values))) {
+                $this->moduleData->success[] = 'Материал <strong>' . $this->values->name . '</strong> успешно изменен.';
 
                 //сохранение экстрополей
-                if(isset($matType->extraParams) && is_array($matType->extraParams) && count($matType->extraParams) > 0){
+                if (isset($matType->extraParams) && is_array($matType->extraParams) && count($matType->extraParams) > 0) {
 
-                    foreach ($matType->extraParams as $extraParam){
+                    foreach ($matType->extraParams as $extraParam) {
 
                         //проверяем на существование переменной
-                        if(isset($_REQUEST['extraParam_'.$extraParam['id']])){
-                            $value = $_REQUEST['extraParam_'.$extraParam['id']];
+                        if (isset($_REQUEST['extraParam_' . $extraParam['id']])) {
+                            $value = $_REQUEST['extraParam_' . $extraParam['id']];
                             //обновляем или вставляем значение
 
                             $value_int = 'NULL';
@@ -177,27 +173,26 @@ switch ($this->values->mode){
 
                             $paramName = $extraParam['value_type'];
 
-                            switch ($extraParam['value_type']){
+                            switch ($extraParam['value_type']) {
                                 case 'value_char':
                                 case 'value_text':
-                                    $$paramName = "'".$_REQUEST['extraParam_'.$extraParam['id']]."'";
+                                    $$paramName = "'" . $_REQUEST['extraParam_' . $extraParam['id']] . "'";
                                     break;
                                 default:
-                                    $$paramName = (int)$_REQUEST['extraParam_'.$extraParam['id']];
+                                    $$paramName = (int)$_REQUEST['extraParam_' . $extraParam['id']];
                                     break;
                             }
 
 
                             $query = 'INSERT INTO material_extra_values (material_id, param_id, value_int, value_char, value_mat, value_text, value_flag) 
-                                        VALUES('.$material->id.', '.$extraParam['id'].', '.$value_int.', '.$value_char.', '.$value_mat.', '.$value_text.', '.$value_flag.') 
+                                        VALUES(' . $material->id . ', ' . $extraParam['id'] . ', ' . $value_int . ', ' . $value_char . ', ' . $value_mat . ', ' . $value_text . ', ' . $value_flag . ') 
                                         ON DUPLICATE KEY 
-                                        UPDATE value_int='.$value_int.', value_char='.$value_char.', value_mat='.$value_mat.', value_text = '.$value_text.', value_flag = '.$value_flag;
+                                        UPDATE value_int=' . $value_int . ', value_char=' . $value_char . ', value_mat=' . $value_mat . ', value_text = ' . $value_text . ', value_flag = ' . $value_flag;
 
                             $res = $this->DB->query($query);
 
-                        }
-                        else {
-                            $query = 'DELETE FROM material_extra_values WHERE material_id = '.$material->id.' AND param_id = '.$extraParam['id'];
+                        } else {
+                            $query = 'DELETE FROM material_extra_values WHERE material_id = ' . $material->id . ' AND param_id = ' . $extraParam['id'];
                             $res = $this->DB->query($query);
                         }
                     }
@@ -207,8 +202,7 @@ switch ($this->values->mode){
 
                 }
 
-            }
-            else {
+            } else {
                 $this->moduleData->errors[] = 'Не удалось сохранить материал';
             }
 
@@ -216,15 +210,14 @@ switch ($this->values->mode){
 
 
         //дополнительные действия
-        if($this->values->action != ''){
-            switch ($this->values->action){
+        if ($this->values->action != '') {
+            switch ($this->values->action) {
                 //очистка кэшей материала без изменения
                 case 'clearcache':
-                    if($material->uncacheRecord()){
+                    if ($material->uncacheRecord()) {
                         $material->getRecord();
                         $this->moduleData->success[] = 'Кэш материала обновлен';
-                    }
-                    else {
+                    } else {
                         $this->moduleData->errors[] = 'Не получилось очистить кэш материала';
                     }
                     break;
@@ -233,15 +226,14 @@ switch ($this->values->mode){
                 case 'addfile':
 
                     $file = new File($this->DB, null, $this->settings);
-                    if($file->upload('newFile', 'auto', false, $this->authorize->user->id, $material->params['id'])){
+                    if ($file->upload('newFile', 'auto', false, $this->authorize->user->id, $material->params['id'])) {
                         $material->uncacheRecord();
-                        $stext = 'Файл <strong>'.$file->params['filename'].'</strong> успешно загружен.';
+                        $stext = 'Файл <strong>' . $file->params['filename'] . '</strong> успешно загружен.';
                         $this->moduleData->success[] = $stext;
-                        $this->setFlash('success',[$stext]);
+                        $this->setFlash('success', [$stext]);
                         $this->unsetValues();
-                        $this->redirect('/admin/materials_admin/?mode=edit&id='.$material->params['id']);
-                    }
-                    else{
+                        $this->redirect('/admin/materials_admin/?mode=edit&id=' . $material->params['id']);
+                    } else {
                         $this->moduleData->errors = $file->errors;
                     }
 
@@ -269,17 +261,16 @@ switch ($this->values->mode){
 
         //страницы
         $page = (int)$this->values->page;
-        if($page < 1){
+        if ($page < 1) {
             $page = 1;
         }
         $perpage = 20;
 
         //ограничиваем список в зависимости от переданного mtype
-        $conditions=null;
-        if($this->values->mtype == ''){
+        $conditions = null;
+        if ($this->values->mtype == '') {
             $this->values->mtype = 'all';
-        }
-        elseif($this->values->mtype != 'all'){
+        } elseif ($this->values->mtype != 'all') {
             $conditions[] = [
                 'string' => false,
                 'type' => '=',
@@ -288,7 +279,7 @@ switch ($this->values->mode){
             ];
         }
 
-        if($this->values->mtype != '' && $this->values->mtype != 'all'){
+        if ($this->values->mtype != '' && $this->values->mtype != 'all') {
 
             $this->moduleData->breadcrumbs[] = [
                 'name' => $this->materialTypes['types'][$this->values->mtype]['name'],

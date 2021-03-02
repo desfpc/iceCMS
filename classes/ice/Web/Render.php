@@ -11,15 +11,16 @@
 
 namespace ice\Web;
 
-use ice\iceFlashVars;
-use ice\iceParseModule;
-use ice\Routes\PathParser;
-use ice\iceCacher;
-use ice\iceSettings;
-use ice\Models\MatTypeList;
+use ice\DB\Cacher;
 use ice\DB\DB;
+use ice\Models\MatTypeList;
+use ice\Routes\ParseModule;
+use ice\Routes\PathParser;
+use ice\Settings\Settings;
+use stdClass;
 
-class Render {
+class Render
+{
 
     public $settings; //настройки
     public $DB; //объект БД
@@ -43,28 +44,93 @@ class Render {
     public $cacher;
     public $parser;
 
-    public function moduleAccess(){
+    public function __construct($setup, $makeMaterialTypes = false)
+    {
+        $this->version = '0.1';
+        $this->settings = new Settings($setup);
+        $this->DB = new DB($this->settings);
+        $this->styles = new StylesBuilder();
+        $this->jscripts = new JScriptBuilder();
+        $this->errors = array();
+        $this->values = new stdClass();
+        $this->authorize = new Authorize($this->DB);
 
-        if($this->authorize->autorized){
-            if((int)$this->authorize->user->params['role']['secure'] === 1){
+        if (is_object($this->settings) && isset($this->settings->cache->host) && isset($this->settings->cache->port)) {
+            $this->cacher = new Cacher($this->settings->cache->host, $this->settings->cache->port);
+        } else {
+            $this->cacher = new Cacher();
+        }
+
+        //проверяем ошибки БД
+        if (isset($this->DB->errors) && $this->DB->errors->flag == 1) {
+            $this->errors[] = $this->DB->errors->text;
+        } //формируем типы материалов (для меню, парсинга итд итп)
+        elseif ($makeMaterialTypes) {
+
+            $this->materialTypes = $this->getMaterialTypesTree();
+            $this->parser = new PathParser($this->DB, $this->materialTypes, $this->settings);
+        }
+    }
+
+    public function getMaterialTypesTree()
+    {
+
+        $parser = new PathParser($this->DB, [], $this->settings);
+
+        $key = $parser->getMTTCacheKey();
+        if ($this->cacher->has($key)) {
+            return $parser->getMTTCache($key);
+        }
+
+        $materialTypes = new MatTypeList($this->DB, null, null, 1, null, 0, null);
+        $materialTypes = $materialTypes->getRecordsTree('all');
+        $parser->setMTTCache($key, $materialTypes, 1 * 24 * 60 * 60);
+        return $materialTypes;
+
+    }
+
+    public function moduleAccess()
+    {
+
+        if ($this->authorize->autorized) {
+            if ((int)$this->authorize->user->params['role']['secure'] === 1) {
                 return true;
             }
         }
-        $this->module['name']='404';
+        $this->module['name'] = '404';
         $this->loadModule();
         return false;
     }
 
-    public function setFlash($name,$value){
-        $flash = new iceFlashVars();
-        $flash->set($name,$value);
+    public function loadModule()
+    {
+        if (is_array($this->module) && $this->module['name'] != '') {
+            //проверяем наличае файла модуля
+            $modulePatch = $this->settings->path . '/modules/' . $this->module['name'] . '.php';
+            if (!file_exists($modulePatch)) {
+                $this->errors[] = 'Нет файла подключаемого модуля ' . $modulePatch;
+            } else {
+                require($modulePatch);
+            }
+        } else {
+            $this->errors[] = 'Не выбран модуль для загрузки';
+        }
     }
-    public function getFlash($name){
-        $flash = new iceFlashVars();
+
+    public function setFlash($name, $value)
+    {
+        $flash = new FlashVars();
+        $flash->set($name, $value);
+    }
+
+    public function getFlash($name)
+    {
+        $flash = new FlashVars();
         return ($flash->get($name));
     }
 
-    public function redirect($url, $code = null){
+    public function redirect($url, $code = null)
+    {
         $redirect = new Redirect($url, $code);
         die();
     }
@@ -79,6 +145,8 @@ class Render {
 
     }
 
+    //TODO функция разбора REST
+
     public function getRequestValues($valuesnames, $mode = 0)
     {
 
@@ -89,10 +157,13 @@ class Render {
 
     }
 
-    public function unsetValues(){
-        if(is_object($this->values)){
-            if(count($this->values) > 0){
-                foreach ($this->values as $key=>$value){
+    //функция разбора юрла
+
+    public function unsetValues()
+    {
+        if (is_object($this->values)) {
+            if (count($this->values) > 0) {
+                foreach ($this->values as $key => $value) {
                     $this->values->$key = '';
                 }
             }
@@ -100,21 +171,20 @@ class Render {
         return true;
     }
 
+    //функция загрузки модуля
+
     public function showErrors()
     {
-        if(is_array($this->errors) && count($this->errors) > 0)
-        {
+        if (is_array($this->errors) && count($this->errors) > 0) {
             visualijop($this->errors);
         }
     }
 
-    //TODO функция разбора REST
     public function parseREST()
     {
 
     }
 
-    //функция разбора юрла
     public function parseURL()
     {
         $path = [];
@@ -129,96 +199,44 @@ class Render {
             }
             $path['call_parts'] = explode('/', $path['call']);
 
-            if(isset($request_path[1])){
+            if (isset($request_path[1])) {
                 $path['query_utf8'] = urldecode($request_path[1]);
-                $path['query'] = utf8_decode(urldecode($request_path[1]));}
-            else{
-                $path['query_utf8']='';
-                $path['query']='';
+                $path['query'] = utf8_decode(urldecode($request_path[1]));
+            } else {
+                $path['query_utf8'] = '';
+                $path['query'] = '';
             }
             $vars = explode('&', $path['query']);
             foreach ($vars as $var) {
                 $t = explode('=', $var);
-                if(isset($t[1]))
-                {
+                if (isset($t[1])) {
                     $path['query_vars'][$t[0]] = $t[1];
-                }
-                else{
+                } else {
                     $path['query_vars'][$t[0]] = '';
                 }
 
             }
         }
-        $this->path_info=$path;
+        $this->path_info = $path;
 
-        $this->module = new iceParseModule($this->settings, $this->DB, $path);
+        $this->module = new ParseModule($this->settings, $this->DB, $path);
         $this->module = $this->module->module;
-    }
-
-    //функция загрузки модуля
-    public function loadModule()
-    {
-        if(is_array($this->module) && $this->module['name'] != '')
-        {
-            //проверяем наличае файла модуля
-            $modulePatch=$this->settings->path.'/modules/'.$this->module['name'].'.php';
-            if(!file_exists($modulePatch))
-            {
-                $this->errors[]='Нет файла подключаемого модуля '.$modulePatch;
-            }
-            else
-            {
-                require ($modulePatch);
-            }
-        }
-        else
-        {
-            $this->errors[]='Не выбран модуль для загрузки';
-        }
-    }
-
-    public function loadTemplate()
-    {
-        if(is_array($this->module) && $this->module['name'] != '')
-        {
-            //проверяем наличае файла модуля
-            $templatePatch=$this->settings->path.'/templates/'.$this->settings->template.'/module/t_'.$this->module['name'].'.php';
-            if(!file_exists($templatePatch))
-            {
-                $this->errors[]='Нет файла подключаемого шаблона '.$templatePatch;
-            }
-            else
-            {
-                ob_start();
-                require ($templatePatch);
-                $this->body=ob_get_contents();
-                ob_end_clean();
-            }
-        }
-        else
-        {
-            $this->errors[]='Не подключен ни один модуль';
-        }
     }
 
     public function printSite()
     {
         //если есть ошибки сайта - выводим 500 ошибку
-        if(is_array($this->errors) && count($this->errors) > 0)
-        {
-            $errors=$this->errors;
-            $this->module['name']='500';
+        if (is_array($this->errors) && count($this->errors) > 0) {
+            $errors = $this->errors;
+            $this->module['name'] = '500';
             $this->loadModule();
             $this->loadTemplate();
-            $this->errors=null;
+            $this->errors = null;
             $this->printSite();
-            $this->errors=$errors;
-        }
-        else
-        {
+            $this->errors = $errors;
+        } else {
             //выводим заголовки
-            if(is_null($this->headers))
-            {
+            if (is_null($this->headers)) {
                 $this->headers = new HeaderBuilder();
                 $this->headers->standartHeaders();
             }
@@ -226,17 +244,34 @@ class Render {
             $this->headers->printHeaders();
 
             //выводим тело сайта (формируется в шаблоне)
-            if(!is_null($this->body))
-            {
+            if (!is_null($this->body)) {
                 echo $this->body;
             }
         }
 
     }
 
+    public function loadTemplate()
+    {
+        if (is_array($this->module) && $this->module['name'] != '') {
+            //проверяем наличае файла модуля
+            $templatePatch = $this->settings->path . '/templates/' . $this->settings->template . '/module/t_' . $this->module['name'] . '.php';
+            if (!file_exists($templatePatch)) {
+                $this->errors[] = 'Нет файла подключаемого шаблона ' . $templatePatch;
+            } else {
+                ob_start();
+                require($templatePatch);
+                $this->body = ob_get_contents();
+                ob_end_clean();
+            }
+        } else {
+            $this->errors[] = 'Не подключен ни один модуль';
+        }
+    }
+
     public function destroy()
     {
-        if($this->DB->mysqli){
+        if ($this->DB->mysqli) {
             $this->DB->mysqli->close();
         }
         unset($this->settings);
@@ -257,58 +292,4 @@ class Render {
         unset($this->authorize); //авторизация пользюка
         unset($this->values); //переменные
     }
-
-    public function getMaterialTypesTree(){
-
-        $parser = new PathParser($this->DB, [], $this->settings);
-
-        $key = $parser->getMTTCacheKey();
-        if($this->cacher->has($key)){
-            return $parser->getMTTCache($key);
-        }
-
-        $materialTypes = new MatTypeList($this->DB, null, null, 1, null, 0, null);
-        $materialTypes = $materialTypes->getRecordsTree('all');
-        $parser->setMTTCache($key,$materialTypes,1*24*60*60);
-        return $materialTypes;
-
-    }
-
-    public function __construct($setup, $makeMaterialTypes = false)
-    {
-        $this->version = '0.1';
-        $this->settings = new iceSettings($setup);
-        $this->DB = new DB($this->settings);
-        $this->styles = new StylesBuilder();
-        $this->jscripts = new JScriptBuilder();
-        $this->errors=Array();
-        $this->values = new \stdClass();
-        $this->authorize = new Authorize($this->DB);
-
-        if(is_object($this->settings) && isset($this->settings->cache->host) && isset($this->settings->cache->port))
-        {
-            $this->cacher = new iceCacher($this->settings->cache->host,$this->settings->cache->port);
-        }
-        else
-        {
-            $this->cacher = new iceCacher();
-        }
-
-        //проверяем ошибки БД
-        if(isset($this->DB->errors) && $this->DB->errors->flag == 1)
-        {
-            $this->errors[]=$this->DB->errors->text;
-        }
-        //формируем типы материалов (для меню, парсинга итд итп)
-        elseif ($makeMaterialTypes){
-
-            $this->materialTypes = $this->getMaterialTypesTree();
-            $this->parser = new PathParser($this->DB, $this->materialTypes, $this->settings);
-
-        }
-
-
-
-    }
-
 }

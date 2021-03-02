@@ -6,7 +6,7 @@
  * @var ice\Web\Render $this
  */
 
-use ice\iceWidget;
+use ice\Web\Widget;
 
 include_once('t_header_short.php');
 ?>
@@ -22,7 +22,7 @@ include_once('t_header_short.php');
 <div class="container sitebody">
     <?php
 
-    $breadcrumbs = new iceWidget($this->DB, 'breadcrumbs', $this->settings);
+    $breadcrumbs = new Widget($this->DB, 'breadcrumbs', $this->settings);
     $breadcrumbs->show(['types' => $this->parser->mtypes, 'material' => $this->parser->material]);
 
     ?>
@@ -31,7 +31,7 @@ include_once('t_header_short.php');
             <?php
 
             //выводим ошибки
-            include_once ($template_folder.'/partial/t_alert.php');
+            include_once($template_folder . '/partial/t_alert.php');
 
             ?>
         </div>

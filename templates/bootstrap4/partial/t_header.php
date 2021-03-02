@@ -6,7 +6,7 @@
  * @var ice\Web\Render $this
  */
 
-use ice\iceWidget;
+use ice\Web\Widget;
 
 include_once('t_header_short.php');
 ?>
@@ -24,11 +24,11 @@ include_once('t_header_short.php');
         <div class="col-md" style="padding-top: 10px;">
             <?php
 
-            if(!isset($this->moduleData->breadcrumbs)){
+            if (!isset($this->moduleData->breadcrumbs)) {
                 $this->moduleData->breadcrumbs = [];
             }
 
-            $breadcrumbs = new iceWidget($this->DB, 'breadcrumbsAdmin', $this->settings);
+            $breadcrumbs = new Widget($this->DB, 'breadcrumbsAdmin', $this->settings);
             $breadcrumbs->show($this->moduleData->breadcrumbs);
 
             ?>

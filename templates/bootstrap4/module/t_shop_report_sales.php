@@ -6,18 +6,18 @@
  * @var ice\Web\Render $this
  */
 
-$template_folder=$this->settings->path.'/templates/'.$this->settings->template.'';
+$template_folder = $this->settings->path . '/templates/' . $this->settings->template . '';
 
 //подключаем стили и скрипты
-include_once ($template_folder.'/partial/t_jsandcss.php');
+include_once($template_folder . '/partial/t_jsandcss.php');
 //$this->styles->addStyle('');
 //$this->jscripts->addScript('');
 
 //js document.load
-include_once ($template_folder.'/partial/t_jsreadyglobal.php');
-$this->jsready.='';
+include_once($template_folder . '/partial/t_jsreadyglobal.php');
+$this->jsready .= '';
 
-include_once ($template_folder.'/partial/t_header.php');
+include_once($template_folder . '/partial/t_header.php');
 
 ?>
     <div class="container sitebody">
@@ -25,7 +25,7 @@ include_once ($template_folder.'/partial/t_header.php');
             <div class="col">
                 <?php
                 //выводим ошибки
-                include_once ($template_folder.'/partial/t_alert.php');
+                include_once($template_folder . '/partial/t_alert.php');
                 ?>
             </div>
         </div>
@@ -57,4 +57,4 @@ include_once ($template_folder.'/partial/t_header.php');
 
         ?>
     </div>
-<?php include_once ($template_folder.'/partial/t_footer.php');
+<?php include_once($template_folder . '/partial/t_footer.php');

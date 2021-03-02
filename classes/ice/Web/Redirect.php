@@ -11,11 +11,12 @@
 
 namespace ice\Web;
 
-class Redirect {
+class Redirect
+{
 
-    public function __construct($url,$code = null)
+    public function __construct($url, $code = null)
     {
-        header('Location: '.$url,true, $code);
+        header('Location: ' . $url, true, $code);
         die();
     }
 

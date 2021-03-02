@@ -10,20 +10,19 @@
  */
 
 //секурность
-if(!$this->moduleAccess())
-{
+if (!$this->moduleAccess()) {
     return;
 };
 
-$this->moduleData=new stdClass();
+$this->moduleData = new stdClass();
 
-$this->moduleData->title=$this->settings->site->title;
-$this->moduleData->H1='ice CMS';
-$this->moduleData->errors=array();
-$this->moduleData->success=array();
-$this->moduleData->content='<b>ice Framework</b> - универсальный PHP 7 фреймворк и CMS для быстрой разработки сайтов и интернет приложений любой сложности.
+$this->moduleData->title = $this->settings->site->title;
+$this->moduleData->H1 = 'ice CMS';
+$this->moduleData->errors = array();
+$this->moduleData->success = array();
+$this->moduleData->content = '<b>ice Framework</b> - универсальный PHP 7 фреймворк и CMS для быстрой разработки сайтов и интернет приложений любой сложности.
 <br>Проект на gitHub: <a target="_blank" href="https://github.com/desfpc/iceCMS">https://github.com/desfpc/iceCMS</a>';
-$this->moduleData->table=array();
+$this->moduleData->table = array();
 
 $this->moduleData->table[] =
     array('name' => 'Наименование',

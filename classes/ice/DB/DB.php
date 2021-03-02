@@ -11,9 +11,12 @@
 
 namespace ice\DB;
 
-use ice\iceSettings;
+use ice\Settings\Settings;
+use stdClass;
+use Throwable;
 
-class DB {
+class DB
+{
     public $settings;
     public $errors;
     public $warning;
@@ -21,14 +24,14 @@ class DB {
     public $status = 0;
     public $connected = 0;
 
-    public function __construct(iceSettings $settings)
+    public function __construct(Settings $settings)
     {
-        $this->status = new \stdClass();
-        $this->errors = new \stdClass();
-        $this->warning = new \stdClass();
+        $this->status = new stdClass();
+        $this->errors = new stdClass();
+        $this->warning = new stdClass();
 
-        $this->status->flag=0;
-        $this->status->text='Соединение с БД не установлено';
+        $this->status->flag = 0;
+        $this->status->text = 'Соединение с БД не установлено';
 
         $this->settings = $settings->db;
 
@@ -39,59 +42,46 @@ class DB {
     public function connect()
     {
 
-        $this->errors->flag='1';
-        $this->errors->text='Выбранный тип БД ('.$this->settings->type.') не поддерживается';
+        $this->errors->flag = '1';
+        $this->errors->text = 'Выбранный тип БД (' . $this->settings->type . ') не поддерживается';
 
-        switch ($this->settings->type)
-        {
+        switch ($this->settings->type) {
             case 'mysql':
 
-                try
-                {
-                    if (!$this->mysqli=mysqli_connect($this->settings->host, $this->settings->login, $this->settings->pass))
-                    {
-                        $this->errors->flag='1';
-                        $this->errors->text='Нет возможности установить соединение с БД';
-                    }
-                    else
-                    {
+                try {
+                    if (!$this->mysqli = mysqli_connect($this->settings->host, $this->settings->login, $this->settings->pass)) {
+                        $this->errors->flag = '1';
+                        $this->errors->text = 'Нет возможности установить соединение с БД';
+                    } else {
                         $this->connected = 1;
-                        if (!$this->mysqli->select_db($this->settings->name))
-                        {
-                            $this->errors->flag=1;
-                            $this->errors->text='Нет возможности выбрать БД "'.$this->settings->name.'"';
-                        }
-                        else
-                        {
+                        if (!$this->mysqli->select_db($this->settings->name)) {
+                            $this->errors->flag = 1;
+                            $this->errors->text = 'Нет возможности выбрать БД "' . $this->settings->name . '"';
+                        } else {
                             /* изменение набора символов на заданный */
                             if (!$this->mysqli->set_charset($this->settings->encoding)) {
                                 //printf("Ошибка при загрузке набора символов utf8: %s\n", $mysqli->error);
-                                $this->warning->flag=1;
-                                $this->warning->text='Ошибка выбора кодировки: '.$this->settings->encoding;
-                            }
-                            else
-                            {
-                                $this->errors->flag=0;
-                                $this->errors->text='Соединение с БД установлено';
+                                $this->warning->flag = 1;
+                                $this->warning->text = 'Ошибка выбора кодировки: ' . $this->settings->encoding;
+                            } else {
+                                $this->errors->flag = 0;
+                                $this->errors->text = 'Соединение с БД установлено';
 
-                                $this->status->flag=1;
-                                $this->status->text='Соединение с БД установлено';
+                                $this->status->flag = 1;
+                                $this->status->text = 'Соединение с БД установлено';
 
                             }
                         }
                     }
-                }
-                catch (\Throwable $t)
-                {
-                    $this->errors->flag=1;
-                    $this->errors->text='Не удалось установить соединение с БД: '.$t->getMessage();
+                } catch (Throwable $t) {
+                    $this->errors->flag = 1;
+                    $this->errors->text = 'Не удалось установить соединение с БД: ' . $t->getMessage();
                 }
 
                 break;
         }
 
-        if($this->errors->flag == 0)
-        {
+        if ($this->errors->flag == 0) {
             return true;
         }
         return false;
@@ -99,48 +89,43 @@ class DB {
     }
 
     //выполнение запроса к БД
-    public function query($query, $free=true, $cnt=false, $forced = false){
+    public function query($query, $free = true, $cnt = false, $forced = false)
+    {
 
-        if($this->status->flag || $forced)
-        {
-            switch ($this->settings->type){
+        if ($this->status->flag || $forced) {
+            switch ($this->settings->type) {
 
                 //обработка запроса к мускулю
                 case 'mysql':
 
-                    if(!$res = $this->mysqli->query($query)){
-                        $this->warning->flag=1;
+                    if (!$res = $this->mysqli->query($query)) {
+                        $this->warning->flag = 1;
 
-                        if(!isset($this->warning->text))
-                        {
-                            $this->warning->text=[];
+                        if (!isset($this->warning->text)) {
+                            $this->warning->text = [];
                         }
 
-                        $this->warning->text[]='Ошибка выполнения запроса: '.$query;
+                        $this->warning->text[] = 'Ошибка выполнения запроса: ' . $query;
                         return false;
                     }
 
                     //есди запрос - select show WITH RECURSIVE
-                    if(preg_match("/^select/i", trim($query)) || preg_match("/^show/i", trim($query)) || preg_match("/^with recursive/i", trim($query)))
-                    {
-                        if(!$cnt){
+                    if (preg_match("/^select/i", trim($query)) || preg_match("/^show/i", trim($query)) || preg_match("/^with recursive/i", trim($query))) {
+                        if (!$cnt) {
                             $result = [];
-                            while ($row = $res->fetch_assoc())
-                            {
+                            while ($row = $res->fetch_assoc()) {
                                 $result[] = $row;
                             }
 
-                            if($free)
-                            {
+                            if ($free) {
                                 $res->free();
                             }
-                            return($result);
+                            return ($result);
                         }
 
                         $result = $res->num_rows;
 
-                        if($free)
-                        {
+                        if ($free) {
                             $res->free();
                         }
                         return $result;
@@ -153,7 +138,7 @@ class DB {
                     }*/
 
                     //прочие запросы
-                    return(true);
+                    return (true);
 
 
                     break;
@@ -164,27 +149,27 @@ class DB {
     }
 
     //выполнение мультизапроса к БД
-    public function multiQuery($query){
-        if($this->status->flag)
-        {
-            switch ($this->settings->type){
+    public function multiQuery($query)
+    {
+        if ($this->status->flag) {
+            switch ($this->settings->type) {
 
                 //обработка запроса к мускулю
                 case 'mysql':
 
-                    if(!$res = $this->mysqli->multi_query($query)){
-                        $this->warning->flag=1;
+                    if (!$res = $this->mysqli->multi_query($query)) {
+                        $this->warning->flag = 1;
 
-                        if(!isset($this->warning->text))
-                        {
-                            $this->warning->text=[];
+                        if (!isset($this->warning->text)) {
+                            $this->warning->text = [];
                         }
 
-                        $this->warning->text[]='Ошибка выполнения запроса: '.$query;
+                        $this->warning->text[] = 'Ошибка выполнения запроса: ' . $query;
                         return false;
                     }
 
-                    while($this->mysqli->next_result()){;}//flush multi_queries
+                    while ($this->mysqli->next_result()) {
+                    }//flush multi_queries
 
                     return true;
 

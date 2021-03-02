@@ -13,7 +13,7 @@ include_once('t_header_short.php');
             <?php
 
             //выводим ошибки
-            include_once ($template_folder.'/partial/t_alert.php');
+            include_once($template_folder . '/partial/t_alert.php');
 
             ?>
         </div>

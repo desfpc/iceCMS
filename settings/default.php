@@ -4,50 +4,50 @@
  * PHP framework and CMS based on it.
  * https://github.com/desfpc/iceCMS
  */
-$setup=[];
+$setup = [];
 
 //общие настройки
-$setup['path']='/var/www/sites/iceCMS';
+$setup['path'] = '/var/www/sites/iceCMS';
 
 //настройки шаблонизатора (папка с шаблонами)
-$setup['template']='bootstrap4';
+$setup['template'] = 'bootstrap4';
 
 //настройка релиз/разработка
-$setup['dev']=1;
+$setup['dev'] = 1;
 
 //уникальный секрет
-$setup['secret']=md5(time().' some secret '.rand(0,999999));
+$setup['secret'] = md5(time() . ' some secret ' . rand(0, 999999));
 
 //настройки БД
-$setup['db']=[];
-$setup['db']['type']='mysql';
-$setup['db']['name']='ice';
-$setup['db']['host']='127.0.0.1';
-$setup['db']['port']='3306';
-$setup['db']['login']='ice';
-$setup['db']['pass']='ice';
-$setup['db']['encoding']='UTF8';
+$setup['db'] = [];
+$setup['db']['type'] = 'mysql';
+$setup['db']['name'] = 'ice';
+$setup['db']['host'] = '127.0.0.1';
+$setup['db']['port'] = '3306';
+$setup['db']['login'] = 'ice';
+$setup['db']['pass'] = 'ice';
+$setup['db']['encoding'] = 'UTF8';
 
 //настройки системы рассылки
-$setup['email']=[];
-$setup['email']['mail']='noreply@ice.cms';
-$setup['email']['port']='120';
-$setup['email']['signature']='Система рассылки ice.cms';
-$setup['email']['pass']='password';
-$setup['email']['smtp']='smtp.server';
+$setup['email'] = [];
+$setup['email']['mail'] = 'noreply@ice.cms';
+$setup['email']['port'] = '120';
+$setup['email']['signature'] = 'Система рассылки ice.cms';
+$setup['email']['pass'] = 'password';
+$setup['email']['smtp'] = 'smtp.server';
 
 //настройки сайта
-$setup['site']=[];
-$setup['site']['title']='ice.cms';
+$setup['site'] = [];
+$setup['site']['title'] = 'ice.cms';
 $setup['site']['primary_domain'] = 'ice.cms';
 $setup['site']['redirect_to_primary_domain'] = false;
 $setup['site']['language_subdomain'] = true;
 
 //настройки кэширования
-$setup['cache']=[];
-$setup['cache']['use_redis']=true;
-$setup['cache']['redis_host']='127.0.0.1';
-$setup['cache']['redis_port']=6379;
+$setup['cache'] = [];
+$setup['cache']['use_redis'] = true;
+$setup['cache']['redis_host'] = '127.0.0.1';
+$setup['cache']['redis_port'] = 6379;
 
 //роутинг для ЧПУ модулей //TODO сделать возможность передачи ЧПУ переменных
 $setup['routes'] = [];

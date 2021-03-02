@@ -9,26 +9,25 @@
  *
  */
 
-use ice\Models\MatTypeList;
 use ice\Models\File;
 use ice\Models\FileList;
+use ice\Models\MatTypeList;
 
 //секурность
-if(!$this->moduleAccess())
-    {
-        return;
-    };
+if (!$this->moduleAccess()) {
+    return;
+};
 
-$this->moduleData=new stdClass();
+$this->moduleData = new stdClass();
 
-$this->moduleData->title=$this->settings->site->title;
-$this->moduleData->H1='Файлы администрирование';
+$this->moduleData->title = $this->settings->site->title;
+$this->moduleData->H1 = 'Файлы администрирование';
 
 //получение переменных
-$this->getRequestValues(['mtype','action']);
+$this->getRequestValues(['mtype', 'action']);
 
-$this->moduleData->errors=[];
-$this->moduleData->success=[];
+$this->moduleData->errors = [];
+$this->moduleData->success = [];
 
 //получаем дерево типов материалов (всех)
 $materialTypes = new MatTypeList($this->DB, null, null, 1, null, 0, null);
@@ -52,18 +51,17 @@ $this->moduleData->materialTypes[0][] = [
 ];
 
 //действия
-switch ($this->values->action){
+switch ($this->values->action) {
     case 'addfile':
 
         $file = new File($this->DB, null, $this->settings);
-        if($file->upload('newFile', 'auto', false, $this->authorize->user->id)){
-            $stext = 'Файл <strong>'.$file->params['filename'].'</strong> успешно загружен.';
+        if ($file->upload('newFile', 'auto', false, $this->authorize->user->id)) {
+            $stext = 'Файл <strong>' . $file->params['filename'] . '</strong> успешно загружен.';
             $this->moduleData->success[] = $stext;
-            $this->setFlash('success',[$stext]);
+            $this->setFlash('success', [$stext]);
             $this->unsetValues();
-            $this->redirect('/admin/files/?page=1&mtype='.$this->values->mtype);
-        }
-        else{
+            $this->redirect('/admin/files/?page=1&mtype=' . $this->values->mtype);
+        } else {
             $this->moduleData->errors = $file->errors;
         }
 
@@ -75,26 +73,24 @@ switch ($this->values->action){
 //$this->moduleData->iCaches = $iCaches->getRecords(null);
 
 //ограничиваем список в зависимости от переданного mtype
-$conditions=null;
-if($this->values->mtype == ''){
+$conditions = null;
+if ($this->values->mtype == '') {
     $this->values->mtype = 'all';
-}
-elseif($this->values->mtype != 'all'){
+} elseif ($this->values->mtype != 'all') {
 
-    if($this->values->mtype == 'none'){
+    if ($this->values->mtype == 'none') {
         $conditions[] = [
             'string' => false,
             'type' => 'NOT IN',
             'col' => 'id',
             'val' => 'SELECT mf.file_id FROM material_files mf'
         ];
-    }
-    else {
+    } else {
         $conditions[] = [
             'string' => false,
             'type' => 'IN',
             'col' => 'id',
-            'val' => 'SELECT mf.file_id FROM material_files mf WHERE mf.material_id IN (SELECT mat.id FROM materials mat WHERE mat.material_type_id = '.$this->values->mtype.')'
+            'val' => 'SELECT mf.file_id FROM material_files mf WHERE mf.material_id IN (SELECT mat.id FROM materials mat WHERE mat.material_type_id = ' . $this->values->mtype . ')'
         ];
     }
 

@@ -7,35 +7,44 @@
  */
 
 //выводим ошибки
-include_once ($template_folder.'/partial/t_alert.php');
+include_once($template_folder . '/partial/t_alert.php');
 
 ?>
-<form id="matTypeAddForm" action="/admin/materials_admin/?mode=add" method="post"><input type="hidden" name="mode" value="add">
-    <div class="form-group row">
-        <label for="name" class="col-sm-2 col-form-label">Наименование</label>
-        <div class="col-sm-10">
-            <input type="text" class="form-control" id="name" name="name" aria-describedby="nameHelp" placeholder="Наименование материала" required value="<?= $this->values->name; ?>">
+    <form id="matTypeAddForm" action="/admin/materials_admin/?mode=add" method="post"><input type="hidden" name="mode"
+                                                                                             value="add">
+        <div class="form-group row">
+            <label for="name" class="col-sm-2 col-form-label">Наименование</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="name" name="name" aria-describedby="nameHelp"
+                       placeholder="Наименование материала" required value="<?= $this->values->name; ?>">
+            </div>
         </div>
-    </div>
-    <div class="form-group row">
-        <label for="id_char" class="col-sm-2 col-form-label">Идентификатор (En)</label>
-        <div class="col-sm-10">
-            <input type="text" class="form-control" id="id_char" name="id_char" aria-describedby="id_charHelp" placeholder="Буквенный идентификатор (En)" value="<?= $this->values->id_char; ?>">
+        <div class="form-group row">
+            <label for="id_char" class="col-sm-2 col-form-label">Идентификатор (En)</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="id_char" name="id_char" aria-describedby="id_charHelp"
+                       placeholder="Буквенный идентификатор (En)" value="<?= $this->values->id_char; ?>">
+            </div>
         </div>
-    </div>
-    <div class="form-group row">
-        <label for="parent_id" class="col-sm-2 col-form-label">Родительский тип</label>
-        <div class="col-sm-10">
-            <select class="form-control selectpicker" data-live-search="true" id="material_type_id" name="material_type_id" aria-describedby="parent_idHelp" placeholder="Родительский тип материала">
-                <option value="<?=$this->moduleData->selectedMatType['id']?>" selected><?=$this->moduleData->selectedMatType['name']?></option>
-            </select>
+        <div class="form-group row">
+            <label for="parent_id" class="col-sm-2 col-form-label">Родительский тип</label>
+            <div class="col-sm-10">
+                <select class="form-control selectpicker" data-live-search="true" id="material_type_id"
+                        name="material_type_id" aria-describedby="parent_idHelp"
+                        placeholder="Родительский тип материала">
+                    <option value="<?= $this->moduleData->selectedMatType['id'] ?>"
+                            selected><?= $this->moduleData->selectedMatType['name'] ?></option>
+                </select>
+            </div>
         </div>
-    </div>
-    <br /><hr /><br />
-    <button type="submit" class="btn btn-success"><i class="material-icons md-24 md-light">add_box</i> Создать</button>
-</form>
+        <br/>
+        <hr/>
+        <br/>
+        <button type="submit" class="btn btn-success"><i class="material-icons md-24 md-light">add_box</i> Создать
+        </button>
+    </form>
 <?php
-$this->jsready.="
+$this->jsready .= "
 
     $('#material_type_id')
         .selectpicker({

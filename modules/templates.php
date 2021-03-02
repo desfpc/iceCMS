@@ -13,58 +13,56 @@ use ice\Models\Template;
 use ice\Models\TemplateList;
 
 //секурность
-if(!$this->moduleAccess())
-{
+if (!$this->moduleAccess()) {
     return;
 };
 
-$this->moduleData=new stdClass();
+$this->moduleData = new stdClass();
 
-$this->moduleData->title=$this->settings->site->title;
-$this->moduleData->H1='Шаблоны материалов';
-$this->moduleData->errors=[];
-$this->moduleData->success=[];
+$this->moduleData->title = $this->settings->site->title;
+$this->moduleData->H1 = 'Шаблоны материалов';
+$this->moduleData->errors = [];
+$this->moduleData->success = [];
 
-$this->getRequestValues(['mode','filename','name','type','content','id']);
+$this->getRequestValues(['mode', 'filename', 'name', 'type', 'content', 'id']);
 
-switch($this->values->mode){
+switch ($this->values->mode) {
     //добавление нового шаблона
     case 'add':
 
         $error = false;
 
-        if($this->values->filename == '') {
+        if ($this->values->filename == '') {
             $this->moduleData->errors[] = 'Не заполнено название файла шаблона';
             $error = true;
         }
-        if($this->values->name == '') {
+        if ($this->values->name == '') {
             $this->moduleData->errors[] = 'Не заполнено название шаблона';
             $error = true;
         }
-        if($this->values->type == '' || !in_array($this->values->type,[1,2,3])) {
+        if ($this->values->type == '' || !in_array($this->values->type, [1, 2, 3])) {
             $this->moduleData->errors[] = 'Не верный тип шаблона';
             $error = true;
         }
 
-        if(!$error){
+        if (!$error) {
 
             //params[$col['Field']]
             $template = new Template($this->DB);
-            if($template->createRecord([
+            if ($template->createRecord([
                 'filename' => $this->values->filename,
                 'name' => $this->values->name,
                 'type' => $this->values->type,
                 'content' => $this->values->content
-            ])){
-                $this->moduleData->success[] = 'Шаблон <strong>'.$this->values->name.'</strong> успешно создан';
+            ])) {
+                $this->moduleData->success[] = 'Шаблон <strong>' . $this->values->name . '</strong> успешно создан';
 
                 $this->values->filename = '';
                 $this->values->name = '';
                 $this->values->type = '';
                 $this->values->content = '';
-                
-            }
-            else {
+
+            } else {
                 $this->moduleData->errors[] = 'Не удалось сохранить шаблон';
             }
 
@@ -76,41 +74,40 @@ switch($this->values->mode){
     case 'edit':
 
         //если есть POST данные - меняем
-        if($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $error = false;
 
-            if($this->values->id == '') {
+            if ($this->values->id == '') {
                 $this->moduleData->errors[] = 'Не передан идентификатор изменяемого шаблона';
                 $error = true;
             }
-            if($this->values->filename == '') {
+            if ($this->values->filename == '') {
                 $this->moduleData->errors[] = 'Не заполнено название файла шаблона';
                 $error = true;
             }
-            if($this->values->name == '') {
+            if ($this->values->name == '') {
                 $this->moduleData->errors[] = 'Не заполнено название шаблона';
                 $error = true;
             }
-            if($this->values->type == '' || !in_array($this->values->type,[1,2,3])) {
+            if ($this->values->type == '' || !in_array($this->values->type, [1, 2, 3])) {
                 $this->moduleData->errors[] = 'Не верный тип шаблона';
                 $error = true;
             }
 
-            if(!$error){
+            if (!$error) {
 
                 //params[$col['Field']]
                 $template = new Template($this->DB, $this->values->id);
                 //$template->getRecord($this->values->id);
-                if($template->updateRecord([
+                if ($template->updateRecord([
                     'filename' => $this->values->filename,
                     'name' => $this->values->name,
                     'type' => $this->values->type,
                     'content' => $this->values->content
-                ])){
-                    $this->moduleData->success[] = 'Шаблон <strong>'.$this->values->name.'</strong> успешно изменен';
-                }
-                else {
+                ])) {
+                    $this->moduleData->success[] = 'Шаблон <strong>' . $this->values->name . '</strong> успешно изменен';
+                } else {
                     $this->moduleData->errors[] = 'Не удалось изменить шаблон';
                 }
 
@@ -142,5 +139,5 @@ $templates = $templates->getRecords();
 foreach ($templates as $template) {
     $templateObj = new Template($this->DB, $template['id']);
     $templateObj->getRecord($template['id']);
-    $this->moduleData->templates[]=$templateObj->params;
+    $this->moduleData->templates[] = $templateObj->params;
 }

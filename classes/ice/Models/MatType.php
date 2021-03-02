@@ -11,109 +11,36 @@
 
 namespace ice\Models;
 
-use ice\iceObject;
 use ice\DB\DB;
 
-class MatType extends iceObject {
+class MatType extends Obj
+{
 
     public $url;
     public $extraParams;
 
     //формируем URL типа материала
-    public function getURL(){
-        $url = '';
-        if(isset($this->params['parents'])){
-            $parents = $this->params['parents'];
-            foreach ($parents as $parent){
-                $url.='/'.$parent['id_char'];
-            }
-        }
 
-        if($this->params['id_char'] != 'main'){
-            return $url.'/'.$this->params['id_char'];
-        }
-        return $url;
+    public function __construct(DB $DB, $id = null, $settings = null)
+    {
+        $this->doConstruct($DB, 'material_types', $id, $settings);
     }
 
     //получаем родительские записи
-    public function getParents(){
-        $query='WITH RECURSIVE ptypes AS (
-	
-	SELECT t.* FROM 
-	material_types t WHERE t.id = '.$this->id.'
 
-	UNION ALL
-
-	SELECT tt.* FROM
-	material_types tt, ptypes p
-	WHERE tt.id = p.parent_id
-	)
-
-SELECT * FROM ptypes WHERE id <> '.$this->id.' ORDER BY parent_id ASC;';
-
-        if($res=$this->DB->query($query))
-        {
-            $this->params['parents']=$res;
-        }
-
-    }
-
-    //получаем список дочерних разделов
-    public function getChilds(){
-
-        $query='WITH RECURSIVE ptypes AS (
-	
-	SELECT t.* FROM 
-	material_types t WHERE t.id = '.$this->id.'
-
-	UNION ALL
-
-	SELECT tt.* FROM
-	material_types tt, ptypes p
-	WHERE tt.parent_id = p.id
-
-	)
-
-SELECT * FROM ptypes WHERE id <> '.$this->id.';';
-
-        if($res=$this->DB->query($query))
-        {
-            $this->params['childs']=$res;
-        }
-
-    }
-
-    //получаем связанные файлы с типом материалов
-    public function getFiles(){
-
-        $query='SELECT f.*, mt.ordernum 
-        FROM files f, mtype_files mt 
-        WHERE f.id = mt.file_id AND mt.mtype_id = '.$this->id.'
-        ORDER BY mt.ordernum ASC, f.date_event DESC';
-        if($res=$this->DB->query($query))
-        {
-            $this->params['files']=$res;
-        }
-
-    }
-
-    //расширяем стандартный метод - удаление кэшей у связанных сущностей
-    public function fullUncacheRecord(){
+    public function fullUncacheRecord()
+    {
 
         //удаляем кэши родительских типов
-        if(isset($this->params['parents']))
-        {
-            foreach ($this->params['parents'] as $mtype)
-            {
+        if (isset($this->params['parents'])) {
+            foreach ($this->params['parents'] as $mtype) {
                 $this->uncacheRecord($mtype['id']);
             }
         }
 
         //удаляем кэши дочерних типов
-        if(isset($this->params['childs']))
-        {
-            foreach ($this->params['childs'] as $mtype)
-            {
+        if (isset($this->params['childs'])) {
+            foreach ($this->params['childs'] as $mtype) {
                 $this->uncacheRecord($mtype['id']);
             }
         }
@@ -122,27 +49,10 @@ SELECT * FROM ptypes WHERE id <> '.$this->id.';';
 
     }
 
-    //получение экстра-полей
-    public function getExtraParams(){
+    //получаем список дочерних разделов
 
-        $conditions = [];
-        $sort = [];
-
-        $conditions[] = [
-            'string' => false,
-            'type' => '=',
-            'col' => 'mtype_id',
-            'val' => $this->id
-        ];
-
-        $sort[] = ['col' => 'name', 'sort' => 'ASC'];
-
-        $this->extraParams = new MatExtraParamsList($this->DB, $conditions, $sort, 1, 100);
-        $this->extraParams = $this->extraParams->getRecords();
-    }
-
-    //расширяем стандартный метод - к полям БД добавляем связанные данные
-    public function fullRecord(){
+    public function fullRecord()
+    {
 
         //экстра-поля
         $this->getExtraParams();
@@ -160,12 +70,110 @@ SELECT * FROM ptypes WHERE id <> '.$this->id.';';
         $this->url = $this->getURL();
     }
 
+    //получаем связанные файлы с типом материалов
+
+    public function getExtraParams()
+    {
+
+        $conditions = [];
+        $sort = [];
+
+        $conditions[] = [
+            'string' => false,
+            'type' => '=',
+            'col' => 'mtype_id',
+            'val' => $this->id
+        ];
+
+        $sort[] = ['col' => 'name', 'sort' => 'ASC'];
+
+        $this->extraParams = new MatExtraParamsList($this->DB, $conditions, $sort, 1, 100);
+        $this->extraParams = $this->extraParams->getRecords();
+    }
+
+    //расширяем стандартный метод - удаление кэшей у связанных сущностей
+
+    public function getParents()
+    {
+        $query = 'WITH RECURSIVE ptypes AS (
+	
+	SELECT t.* FROM 
+	material_types t WHERE t.id = ' . $this->id . '
+
+	UNION ALL
+
+	SELECT tt.* FROM
+	material_types tt, ptypes p
+	WHERE tt.id = p.parent_id
+	)
+
+SELECT * FROM ptypes WHERE id <> ' . $this->id . ' ORDER BY parent_id ASC;';
+
+        if ($res = $this->DB->query($query)) {
+            $this->params['parents'] = $res;
+        }
+
+    }
+
+    //получение экстра-полей
+
+    public function getChilds()
+    {
+
+        $query = 'WITH RECURSIVE ptypes AS (
+	
+	SELECT t.* FROM 
+	material_types t WHERE t.id = ' . $this->id . '
+
+	UNION ALL
+
+	SELECT tt.* FROM
+	material_types tt, ptypes p
+	WHERE tt.parent_id = p.id
+
+	)
+
+SELECT * FROM ptypes WHERE id <> ' . $this->id . ';';
+
+        if ($res = $this->DB->query($query)) {
+            $this->params['childs'] = $res;
+        }
+
+    }
+
+    //расширяем стандартный метод - к полям БД добавляем связанные данные
+
+    public function getFiles()
+    {
+
+        $query = 'SELECT f.*, mt.ordernum 
+        FROM files f, mtype_files mt 
+        WHERE f.id = mt.file_id AND mt.mtype_id = ' . $this->id . '
+        ORDER BY mt.ordernum ASC, f.date_event DESC';
+        if ($res = $this->DB->query($query)) {
+            $this->params['files'] = $res;
+        }
+
+    }
+
     //TODO расширяем стандартный метод кэширования - удаление кэшей связанных файлов и типов материалов
 
     //подменяем создание объекта - прописываем железно целевую таблицу
-    public function __construct(DB $DB, $id=null, $settings=null)
+
+    public function getURL()
     {
-        $this->doConstruct($DB, 'material_types', $id, $settings);
+        $url = '';
+        if (isset($this->params['parents'])) {
+            $parents = $this->params['parents'];
+            foreach ($parents as $parent) {
+                $url .= '/' . $parent['id_char'];
+            }
+        }
+
+        if ($this->params['id_char'] != 'main') {
+            return $url . '/' . $this->params['id_char'];
+        }
+        return $url;
     }
 
 }

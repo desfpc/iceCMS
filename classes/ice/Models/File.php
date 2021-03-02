@@ -11,83 +11,90 @@
 
 namespace ice\Models;
 
-use ice\iceObject;
 use ice\DB\DB;
 
-class File extends iceObject {
+class File extends Obj
+{
 
     //подменяем создание объекта - прописываем железно целевую таблицу
-    public function __construct(DB $DB, $id=null, $settings=null)
+    public function __construct(DB $DB, $id = null, $settings = null)
     {
         $this->doConstruct($DB, 'files', $id, $settings);
     }
 
-    public static function formatIcon($DB, $file, $link = false, $ifArray = false){
+    public static function formatIcon($DB, $file, $link = false, $ifArray = false)
+    {
 
         $fileObj = new File($DB, $file['id']);
         $fileObj->getRecord();
         $file = $fileObj->params;
 
-        if($file['filetype'] == 'image'){
+        if ($file['filetype'] == 'image') {
             //visualijop($file, $fileObj);
-            $icon = '<img src="'.$fileObj->getFileCacheUrl(48,48).'" />';
-        }
-        else {
+            $icon = '<img src="' . $fileObj->getFileCacheUrl(48, 48) . '" />';
+        } else {
             $icon = '<i class="material-icons md-48 md-dark">insert_drive_file</i>';
         }
 
 
         //вешаем на иконку ссылку
-        if($link){
-            if($file['filetype'] == 'image'){
-                $icon='<a href="'.$fileObj->getFileCacheUrl(800,0).'" data-toggle="lightbox">'.$icon.'</a>';
-            }
-            else {
-                $icon = '<a href="'.$fileObj->getFileUrl().'">'.$icon.'</a>';
+        if ($link) {
+            if ($file['filetype'] == 'image') {
+                $icon = '<a href="' . $fileObj->getFileCacheUrl(800, 0) . '" data-toggle="lightbox">' . $icon . '</a>';
+            } else {
+                $icon = '<a href="' . $fileObj->getFileUrl() . '">' . $icon . '</a>';
             }
         }
 
-        if($ifArray){
-            return ['icon' => $icon, 'link' => $fileObj->getFileCacheUrl(800,0)];
+        if ($ifArray) {
+            return ['icon' => $icon, 'link' => $fileObj->getFileCacheUrl(800, 0)];
         }
 
         return $icon;
 
     }
 
-    public static function formateSize($size){
+    public function getFileCacheUrl($x, $y)
+    {
+        $folder = $x . 'x' . $y;
+        $dirpatch = $this->params['url'] . $folder . '/';
+        if ($this->params['extension'] != '') {
+            return $dirpatch . '/' . $this->id . '.' . $this->params['extension'];
+        }
+        return $dirpatch . '/' . $this->id;
+    }
 
-        if($size < 1024){
-            $size.='б';
+    public function getFileUrl()
+    {
+        $dirpatch = $this->params['url'];
+        if ($this->params['extension'] != '') {
+            return $dirpatch . '/' . $this->id . '.' . $this->params['extension'];
         }
-        elseif ($size < (1024*1024)){
-            $size = '<strong>'.round($size/1024,1).'</strong>Кб';
-        }
-        elseif ($size < (1024*1024*1024)){
-            $size = '<strong>'.round($size/(1024*1024),1).'</strong>Мб';
-        }
-        else {
-            $size = '<strong>'.round($size/(1024*1024*1024),1).'</strong>Гб';
+        return $dirpatch . '/' . $this->id;
+    }
+
+    public static function formateSize($size)
+    {
+
+        if ($size < 1024) {
+            $size .= 'б';
+        } elseif ($size < (1024 * 1024)) {
+            $size = '<strong>' . round($size / 1024, 1) . '</strong>Кб';
+        } elseif ($size < (1024 * 1024 * 1024)) {
+            $size = '<strong>' . round($size / (1024 * 1024), 1) . '</strong>Мб';
+        } else {
+            $size = '<strong>' . round($size / (1024 * 1024 * 1024), 1) . '</strong>Гб';
         }
 
         return $size;
 
     }
 
-    public static function getFileExtension($filename)
+    public function upload($paramName, $type = 'file', $private = false, $userId, $materialConnect = false)
     {
-        $path_info = pathinfo($filename);
-        if(!isset($path_info['extension']))
-        {
-            return('');
-        }
-        return $path_info['extension'];
-    }
 
-    public function upload($paramName, $type = 'file', $private = false, $userId, $materialConnect = false){
-
-        if($paramName != ''){
-            if(isset($_FILES[$paramName])){
+        if ($paramName != '') {
+            if (isset($_FILES[$paramName])) {
 
                 $tmp_name = $_FILES[$paramName]["tmp_name"];
                 $name = $_FILES[$paramName]['name'];
@@ -95,26 +102,25 @@ class File extends iceObject {
                 $size = $_FILES[$paramName]['size'];
                 list($width, $height, $imgtype, $attr) = getimagesize($tmp_name);
 
-                if(is_null($imgtype)) {
+                if (is_null($imgtype)) {
                     $imgtype = false;
                 }
 
-                if($type == 'image' && !$imgtype){
+                if ($type == 'image' && !$imgtype) {
                     $this->errors[] = 'Переданный файл не является изображением, либо его формат не поддерживается';
                     return false;
                 }
 
-                if($type == 'auto' && $imgtype){
+                if ($type == 'auto' && $imgtype) {
                     $type = 'image';
-                }
-                elseif ($type == 'auto'){
+                } elseif ($type == 'auto') {
                     $type = 'file';
                 }
 
                 //если тип - image, проверяем расширение
-                if($type == 'image'){
+                if ($type == 'image') {
 
-                    switch ($imgtype){
+                    switch ($imgtype) {
                         case '2':
                             $extension = 'jpg';
                             break;
@@ -133,25 +139,24 @@ class File extends iceObject {
                 }
 
                 $url = '/files/';
-                if($private){
-                    $url.='private/';
+                if ($private) {
+                    $url .= 'private/';
                 }
 
-                $url.=date('Ym').'/';
-                $dirpatch = $this->settings->path.'/web'.$url;
+                $url .= date('Ym') . '/';
+                $dirpatch = $this->settings->path . '/web' . $url;
                 //visualijop($dirpatch);
 
 
-                if(!is_dir($dirpatch)){
+                if (!is_dir($dirpatch)) {
                     mkdir($dirpatch, 0750);
                 }
 
                 $this->paramsFromPost();
 
-                if($private){
+                if ($private) {
                     $privateInt = 1;
-                }
-                else {
+                } else {
                     $privateInt = 2;
                 }
 
@@ -174,38 +179,37 @@ class File extends iceObject {
                     'private' => $privateInt
                 ];
 
-                if(!isset($this->params['name'])){
+                if (!isset($this->params['name'])) {
                     $this->params['name'] = $name;
                 }
-                if(!isset($this->params['anons'])){
+                if (!isset($this->params['anons'])) {
                     $this->params['anons'] = '';
                 }
 
                 //пробуем сделать запись в БД
-                if($id = $this->createRecord()){
+                if ($id = $this->createRecord()) {
 
                     //физически копируем файл
-                    $filename = $dirpatch.$id;
-                    if($extension != ''){
-                        $filename.='.'.$extension;
+                    $filename = $dirpatch . $id;
+                    if ($extension != '') {
+                        $filename .= '.' . $extension;
                     }
 
-                    if(move_uploaded_file($tmp_name, $filename)){
+                    if (move_uploaded_file($tmp_name, $filename)) {
 
                         //создаём кэши изображений
                         $this->createImageCaches();
 
                         //если все хорошо - связываем файл с материалом
-                        if($materialConnect){
-                            $query = 'INSERT INTO material_files(file_id, material_id, ordernum) VALUES('.$id.', '.$materialConnect.', NULL)';
+                        if ($materialConnect) {
+                            $query = 'INSERT INTO material_files(file_id, material_id, ordernum) VALUES(' . $id . ', ' . $materialConnect . ', NULL)';
                             $res = $this->DB->query($query);
                         }
 
                         return $id;
                     }
 
-                }
-                else{
+                } else {
                     $this->errors[] = 'Ошибка сохранения записи о файле';
                     return false;
                 }
@@ -214,8 +218,7 @@ class File extends iceObject {
                 //visualijop($this->settings);
 
 
-            }
-            else {
+            } else {
                 $this->errors[] = 'Файл не передан';
                 return false;
             }
@@ -225,49 +228,48 @@ class File extends iceObject {
 
     }
 
-
-    public function getFilePath(){
-
-        if($this->params['extension'] != ''){
-            return $this->settings->path.'/web'.$this->params['url'].$this->id.'.'.$this->params['extension'];
+    public static function getFileExtension($filename)
+    {
+        $path_info = pathinfo($filename);
+        if (!isset($path_info['extension'])) {
+            return ('');
         }
-        return $this->settings->path.'/web'.$this->params['url'].$this->id;
-
+        return $path_info['extension'];
     }
 
-    public function getFileCachePath($x, $y){
+    public function createImageCaches()
+    {
 
-        $folder=$x.'x'.$y;
+        if (isset($this->params['filetype']) && $this->params['filetype'] == 'image') {
 
-        $dirpatch = $this->settings->path.'/web'.$this->params['url'].$folder.'/';
-        //visualijop($dirpatch);
+            //список кэшей для изображения
+            $imageCaches = new ImageCacheList($this->DB, null, null, 1, 1000);
+            $imageCaches = $imageCaches->getRecords();
 
-        if(!is_dir($dirpatch)){
-            mkdir($dirpatch, 0750);
+            if (is_array($imageCaches) && count($imageCaches) > 0) {
+
+                foreach ($imageCaches as $cache) {
+                    $this->createImageCache($cache);
+                }
+
+            }
+
         }
 
-        if($this->params['extension'] != ''){
-            return $this->settings->path.'/web'.$this->params['url'].$folder.'/'.$this->id.'.'.$this->params['extension'];
-        }
-        return $this->settings->path.'/web'.$this->params['url'].$folder.'/'.$this->id;
-
+        return false;
     }
 
-    public function getFileCacheUrl($x, $y){
-        $folder=$x.'x'.$y;
-        $dirpatch = $this->params['url'].$folder.'/';
-        if($this->params['extension'] != ''){
-            return $dirpatch.'/'.$this->id.'.'.$this->params['extension'];
-        }
-        return $dirpatch.'/'.$this->id;
-    }
+    public function createImageCache($cache)
+    {
 
-    public function getFileUrl(){
-        $dirpatch = $this->params['url'];
-        if($this->params['extension'] != ''){
-            return $dirpatch.'/'.$this->id.'.'.$this->params['extension'];
-        }
-        return $dirpatch.'/'.$this->id;
+        $nw = $cache['width'];
+        $nh = $cache['height'];
+        $watermark = $cache['watermark'];
+        $wx = $cache['w_x'];
+        $wy = $cache['w_y'];
+
+        $this->SaveImageSize($nw, $nh, $this->params['extension'], 1, $watermark, $wx, $wy);
+
     }
 
     public function SaveImageSize($newx, $newy, $extension, $crop = 0, $watermark = 0, $wx = 0, $wy = 0)
@@ -279,10 +281,10 @@ class File extends iceObject {
         //определение размеров
         $originalx = $this->params['image_width'];
         $originaly = $this->params['image_height'];
-        if($newx == 0){
-            $newx = round($originalx*$newy/$originaly);
-        }elseif ($newy == 0){
-            $newy = round($originaly*$newx/$originalx);
+        if ($newx == 0) {
+            $newx = round($originalx * $newy / $originaly);
+        } elseif ($newy == 0) {
+            $newy = round($originaly * $newx / $originalx);
         }
 
 
@@ -334,7 +336,7 @@ class File extends iceObject {
         }
 
         //наносим watermark
-        if($watermark > 0){
+        if ($watermark > 0) {
 
             $wimg = new File($this->DB, $watermark);
             $stamp = imagecreatefrompng($wimg->getFilePath());
@@ -350,37 +352,33 @@ class File extends iceObject {
 
     }
 
-    public function createImageCache($cache){
+    public function getFilePath()
+    {
 
-        $nw = $cache['width'];
-        $nh = $cache['height'];
-        $watermark = $cache['watermark'];
-        $wx = $cache['w_x'];
-        $wy = $cache['w_y'];
-
-        $this->SaveImageSize($nw, $nh, $this->params['extension'], 1, $watermark, $wx, $wy);
+        if ($this->params['extension'] != '') {
+            return $this->settings->path . '/web' . $this->params['url'] . $this->id . '.' . $this->params['extension'];
+        }
+        return $this->settings->path . '/web' . $this->params['url'] . $this->id;
 
     }
 
-    public function createImageCaches(){
+    public function getFileCachePath($x, $y)
+    {
 
-        if(isset($this->params['filetype']) && $this->params['filetype'] == 'image'){
+        $folder = $x . 'x' . $y;
 
-            //список кэшей для изображения
-            $imageCaches = new ImageCacheList($this->DB, null, null, 1, 1000);
-            $imageCaches = $imageCaches->getRecords();
+        $dirpatch = $this->settings->path . '/web' . $this->params['url'] . $folder . '/';
+        //visualijop($dirpatch);
 
-            if(is_array($imageCaches) && count($imageCaches) > 0){
-
-                foreach ($imageCaches as $cache){
-                    $this->createImageCache($cache);
-                }
-
-            }
-
+        if (!is_dir($dirpatch)) {
+            mkdir($dirpatch, 0750);
         }
 
-        return false;
+        if ($this->params['extension'] != '') {
+            return $this->settings->path . '/web' . $this->params['url'] . $folder . '/' . $this->id . '.' . $this->params['extension'];
+        }
+        return $this->settings->path . '/web' . $this->params['url'] . $folder . '/' . $this->id;
+
     }
 
 }

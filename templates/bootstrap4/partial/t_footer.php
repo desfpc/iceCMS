@@ -13,7 +13,7 @@
         </div>
         <div class="row">
             <div class="col-md-7">
-                
+
             </div>
             <div class="col-md-5">
 
@@ -48,7 +48,7 @@ $('body,html').animate({scrollTop:0},800);
 
 ?>
 <script>
-    $(function() {
+    $(function () {
 
         <?= $this->jsready ?>
 

@@ -13,29 +13,28 @@ namespace ice\Models;
 
 use ice\DB\DB;
 use ice\DB\QueryBuilder;
-use ice\iceObject;
 
-class ImageCache extends iceObject {
+class ImageCache extends Obj
+{
     //подменяем создание объекта - прописываем железно целевую таблицу
-    public function __construct(DB $DB, $id=null, $settings=null)
+    public function __construct(DB $DB, $id = null, $settings = null)
     {
         $this->doConstruct($DB, 'image_caches', $id, $settings);
     }
 
     //создание новой записи
-    public function createRecord($params = null){
+    public function createRecord($params = null)
+    {
 
-        if(!is_null($params) && is_array($params))
-        {
+        if (!is_null($params) && is_array($params)) {
             $this->params = $params;
         }
 
         //формируем запрос для создания записи
-        $qbuilder=new QueryBuilder($this->DB, $this->cols, $this->params, 'image_caches');
-        $query=$qbuilder->insert();
+        $qbuilder = new QueryBuilder($this->DB, $this->cols, $this->params, 'image_caches');
+        $query = $qbuilder->insert();
 
-        if($res=$this->DB->query($query))
-        {
+        if ($res = $this->DB->query($query)) {
             //получаем и возвращаем идентификатор записи
             return true;
         }
@@ -43,22 +42,23 @@ class ImageCache extends iceObject {
 
     }
 
-    public function getWatermarkData() {
-
-        if($this->params['watermark'] == 0){
-            $this->params['watermark_data']=['name' => 'нет'];
-        }
-        else {
-            $query = 'SELECT name FROM files WHERE id = '.$this->params['watermark'];
-            if($res=$this->DB->query($query))
-            {
-                $this->params['watermark_data']=$res[0];
-            }
-        }
+    public function fullRecord()
+    {
+        $this->getWatermarkData();
     }
 
     //расширяем стиандартный метод - к полям БД добавляем связанные данные
-    public function fullRecord(){
-        $this->getWatermarkData();
+
+    public function getWatermarkData()
+    {
+
+        if ($this->params['watermark'] == 0) {
+            $this->params['watermark_data'] = ['name' => 'нет'];
+        } else {
+            $query = 'SELECT name FROM files WHERE id = ' . $this->params['watermark'];
+            if ($res = $this->DB->query($query)) {
+                $this->params['watermark_data'] = $res[0];
+            }
+        }
     }
 }

@@ -3,7 +3,7 @@
  * Created by Sergey Peshalov https://github.com/desfpc
  * PHP framework and CMS based on it.
  * https://github.com/desfpc/iceCMS
- * @var ice\iceWidget $this
+ * @var ice\Web\Widget $this
  */
 
 use ice\Routes\PathParser;
@@ -19,25 +19,24 @@ $this->styles->addStyle('/css/widgets/horizontalMenu.css');
 echo '<div class="hMenu">';
 
 //TODO при необходимости сделать вложенные разделы
-if(isset($this->params) && count($this->params) > 0){
+if (isset($this->params) && count($this->params) > 0) {
 
-    if(isset($childs[$parent]) && count($childs[$parent]) > 0){
+    if (isset($childs[$parent]) && count($childs[$parent]) > 0) {
 
         $menuTypes = $childs[$parent];
 
-        foreach ($menuTypes as $mtype){
+        foreach ($menuTypes as $mtype) {
 
-            if($mtype['sitemenu'] == 1){
+            if ($mtype['sitemenu'] == 1) {
 
-                if($active == $mtype['id_char']){
+                if ($active == $mtype['id_char']) {
                     $activeClass = ' hMenu_link_active';
-                }
-                else {
+                } else {
                     $activeClass = '';
                 }
 
                 $url = $PathParser->getMatTypeURL($mtype['id']);
-                echo '<a class="hMenu_link'.$activeClass.'" href="'.$url.'">'.$mtype['name'].'</a>';
+                echo '<a class="hMenu_link' . $activeClass . '" href="' . $url . '">' . $mtype['name'] . '</a>';
 
             }
 

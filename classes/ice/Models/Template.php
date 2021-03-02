@@ -11,20 +11,44 @@
 
 namespace ice\Models;
 
-use ice\iceObject;
 use ice\DB\DB;
 
-class Template extends iceObject {
+class Template extends Obj
+{
     //подменяем создание объекта - прописываем железно целевую таблицу
-    public function __construct(DB $DB, $id=null, $settings=null)
+    public function __construct(DB $DB, $id = null, $settings = null)
     {
         $this->doConstruct($DB, 'templates', $id, $settings);
     }
 
     //получение название колонки в типе материала в зависимости от типа шаблона
-    public function getColName() {
+
+    public function fullRecord()
+    {
+        $this->getMatTypes();
+        $this->getTypeName();
+    }
+
+    //получение названия типа
+
+    public function getMatTypes()
+    {
+
+        $query = 'SELECT * FROM material_types WHERE ' . $this->getColName() . ' = ' . $this->params['id'];
+
+        if ($res = $this->DB->query($query)) {
+            $this->params['mat_types'] = $res;
+        } else {
+            $this->params['mat_types'] = [];
+        }
+    }
+
+    //получение типов материалов шаблона
+
+    public function getColName()
+    {
         $colName = false;
-        switch ($this->params['type']){
+        switch ($this->params['type']) {
             case '1':
                 $colName = 'template_item';
                 break;
@@ -38,11 +62,13 @@ class Template extends iceObject {
         return $colName;
     }
 
-    //получение названия типа
-    public function getTypeName() {
+    //расширяем стандартный метод - к полям БД добавляем связанные данные
+
+    public function getTypeName()
+    {
 
         $colName = false;
-        switch ($this->params['type']){
+        switch ($this->params['type']) {
             case '1':
                 $colName = 'Шаблон материала';
                 break;
@@ -54,28 +80,8 @@ class Template extends iceObject {
                 break;
         }
 
-        $this->params['type_name']=$colName;
+        $this->params['type_name'] = $colName;
 
-    }
-
-    //получение типов материалов шаблона
-    public function getMatTypes() {
-
-        $query = 'SELECT * FROM material_types WHERE '.$this->getColName().' = '.$this->params['id'];
-
-        if($res=$this->DB->query($query))
-        {
-            $this->params['mat_types']=$res;
-        }
-        else {
-            $this->params['mat_types'] = [];
-        }
-    }
-
-    //расширяем стандартный метод - к полям БД добавляем связанные данные
-    public function fullRecord(){
-        $this->getMatTypes();
-        $this->getTypeName();
     }
 
 }

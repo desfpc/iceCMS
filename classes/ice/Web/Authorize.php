@@ -12,42 +12,16 @@
 
 namespace ice\Web;
 
-use ice\Models\User;
 use ice\DB\DB;
+use ice\Models\User;
 
-class Authorize {
+class Authorize
+{
 
     public $autorized;
     public $user;
     public $errors;
     public $secure;
-
-    public function doAuthorize($DB, $login, $pass)
-    {
-        $user= new User($DB);
-        if($user->authorizeUser($pass, $login))
-        {
-            $this->user=$user;
-            $this->autorized=true;
-            $this->secure=$user->params['role']['secure'];
-
-            return true;
-        }
-
-        $this->errors=array('Не верное сочетание логина и пароля');
-        return false;
-
-    }
-
-    public function deAuthorize()
-    {
-        if(!is_null($this->user))
-        {
-            $this->user->deauthorizeUser();
-        }
-        $this->user = null;
-        $this->autorized = false;
-    }
 
     public function __construct(DB $DB, $login = null, $pass = null)
     {
@@ -57,6 +31,31 @@ class Authorize {
         $this->secure = false;
 
         $this->doAuthorize($DB, $login, $pass);
+    }
+
+    public function doAuthorize($DB, $login, $pass)
+    {
+        $user = new User($DB);
+        if ($user->authorizeUser($pass, $login)) {
+            $this->user = $user;
+            $this->autorized = true;
+            $this->secure = $user->params['role']['secure'];
+
+            return true;
+        }
+
+        $this->errors = array('Не верное сочетание логина и пароля');
+        return false;
+
+    }
+
+    public function deAuthorize()
+    {
+        if (!is_null($this->user)) {
+            $this->user->deauthorizeUser();
+        }
+        $this->user = null;
+        $this->autorized = false;
     }
 
 }

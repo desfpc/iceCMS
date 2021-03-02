@@ -15,12 +15,11 @@ $this->headers = new HeaderBuilder();
 $this->headers->standartHeaders();
 $this->headers->addHeader('Content-Type: application/json');
 
-$this->moduleData=new stdClass();
+$this->moduleData = new stdClass();
 
 $this->getRequestValues(array('action'));
 
-switch ($this->values->action)
-{
+switch ($this->values->action) {
     //получаем список материалов по типу
     case 'getmats':
 
@@ -28,16 +27,12 @@ switch ($this->values->action)
 
         $type = (int)$this->values->type;
 
-        $query="SELECT id, name FROM materials WHERE material_type_id = $type AND status_id = 1 ORDER BY name ASC";
+        $query = "SELECT id, name FROM materials WHERE material_type_id = $type AND status_id = 1 ORDER BY name ASC";
 
-        if(!$res=$this->DB->query($query))
-        {
-            $out=false;
-        }
-        else
-        {
-            foreach ($res as $row)
-            {
+        if (!$res = $this->DB->query($query)) {
+            $out = false;
+        } else {
+            foreach ($res as $row) {
                 $out[] = [
                     'id' => $row['id'],
                     'name' => $row['name']
@@ -45,7 +40,7 @@ switch ($this->values->action)
             }
         }
 
-        $this->moduleData->res=['types' => $out];
+        $this->moduleData->res = ['types' => $out];
 
         break;
 
@@ -54,19 +49,15 @@ switch ($this->values->action)
 
         $this->getRequestValues(['query']);
 
-        $escaped_query=$this->DB->mysqli->real_escape_string($this->values->query);
+        $escaped_query = $this->DB->mysqli->real_escape_string($this->values->query);
 
-        $query="SELECT * FROM material_types 
-        WHERE LOWER(name) LIKE LOWER('%".$escaped_query."%')";
+        $query = "SELECT * FROM material_types 
+        WHERE LOWER(name) LIKE LOWER('%" . $escaped_query . "%')";
 
-        if(!$res=$this->DB->query($query))
-        {
-            $out=false;
-        }
-        else
-        {
-            foreach ($res as $row)
-            {
+        if (!$res = $this->DB->query($query)) {
+            $out = false;
+        } else {
+            foreach ($res as $row) {
                 $out[] = [
                     'id' => $row['id'],
                     'name' => $row['name']
@@ -75,16 +66,15 @@ switch ($this->values->action)
             }
         }
 
-        $this->moduleData->res=['types' => $out];
+        $this->moduleData->res = ['types' => $out];
 
         break;
 }
 
 
 //всегда выводим false, если результата нет после обработки
-if(!isset($this->moduleData->res))
-{
-    $this->moduleData->res=false;
+if (!isset($this->moduleData->res)) {
+    $this->moduleData->res = false;
 }
 
 //выводим результат без подключениыя шаблонов

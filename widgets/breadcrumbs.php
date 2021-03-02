@@ -3,7 +3,7 @@
  * Created by Sergey Peshalov https://github.com/desfpc
  * PHP framework and CMS based on it.
  * https://github.com/desfpc/iceCMS
- * @var ice\iceWidget $this
+ * @var ice\Web\Widget $this
  */
 
 //visualijop($this->params);
@@ -11,7 +11,7 @@
 $lastActive = false;
 $text = '';
 
-if(is_null($this->params['material'])){
+if (is_null($this->params['material'])) {
     $lastActive = true;
 }
 
@@ -22,31 +22,29 @@ $types = array_merge([0 => ['name' => 'Главная', 'id_char' => '']], $this
 $ctypes = count($types);
 
 
-
-if($ctypes > 0){
-    $i=0;
-    $url='';
-    foreach ($types as $type){
+if ($ctypes > 0) {
+    $i = 0;
+    $url = '';
+    foreach ($types as $type) {
         ++$i;
-        if($type['id_char'] != ''){
-            $url.='/'.$type['id_char'];
+        if ($type['id_char'] != '') {
+            $url .= '/' . $type['id_char'];
         }
-        if($lastActive && $i == $ctypes){
-            $text.='<li class="breadcrumb-item active" aria-current="page">'.$type['name'].'</li>';
-        }
-        else {
-            $text.='<li class="breadcrumb-item"><a href="'.$url.'/'.'">'.$type['name'].'</a></li>';
+        if ($lastActive && $i == $ctypes) {
+            $text .= '<li class="breadcrumb-item active" aria-current="page">' . $type['name'] . '</li>';
+        } else {
+            $text .= '<li class="breadcrumb-item"><a href="' . $url . '/' . '">' . $type['name'] . '</a></li>';
         }
     }
 }
 
-if(!is_null($this->params['material'])){
+if (!is_null($this->params['material'])) {
     $material = $this->params['material'];
-    $text.='<li class="breadcrumb-item active" aria-current="page">'.$material->params['name'].'</li>';
+    $text .= '<li class="breadcrumb-item active" aria-current="page">' . $material->params['name'] . '</li>';
 }
 
 //выводим
-if($text != ''){
+if ($text != '') {
     echo '<nav aria-label="breadcrumb"><ol class="breadcrumb">';
     echo $text;
     echo '</ol></nav>';

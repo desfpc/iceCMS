@@ -17,53 +17,55 @@ use ice\Models\File;
     </tr>
     </thead>
     <tbody>
-        <?php
+    <?php
 
-        if(isset($this->moduleData->material->files) && is_array($this->moduleData->material->files) && count($this->moduleData->material->files) > 0){
+    if (isset($this->moduleData->material->files) && is_array($this->moduleData->material->files) && count($this->moduleData->material->files) > 0) {
 
-            $tmImageList = '[';
+        $tmImageList = '[';
 
-            foreach ($this->moduleData->material->files as $file) {
+        foreach ($this->moduleData->material->files as $file) {
 
-                $iconArr = File::formatIcon($this->DB, $file, true, true);
-                $fileIcon = $iconArr['icon'];
-                $fileLink = $iconArr['link'];
+            $iconArr = File::formatIcon($this->DB, $file, true, true);
+            $fileIcon = $iconArr['icon'];
+            $fileLink = $iconArr['link'];
 
-                if($file['filetype'] == 'image'){
-                    if($tmImageList != '['){
-                        $tmImageList.=',';
-                    }
-                    $tmImageList .= '{ title: \''.$file['name'].'\', value: \''.$fileLink.'\' }';
+            if ($file['filetype'] == 'image') {
+                if ($tmImageList != '[') {
+                    $tmImageList .= ',';
                 }
-
-                echo '<tr>
-                                <td>'.$file['id'].'</td>
-                                <td>'.$fileIcon.'</td>
-                                <td>'.$file['name'].'</td>
-                                <td>'.$file['filename'].'</td>
-                                <td>'.File::formatDate($file['date_add']).'</td>
-                                <td>'.File::formateSize($file['size']).'</td>
-                                <td></td>
-                            </tr>';
+                $tmImageList .= '{ title: \'' . $file['name'] . '\', value: \'' . $fileLink . '\' }';
             }
 
-            $tmImageList .= ']';
-
+            echo '<tr>
+                                <td>' . $file['id'] . '</td>
+                                <td>' . $fileIcon . '</td>
+                                <td>' . $file['name'] . '</td>
+                                <td>' . $file['filename'] . '</td>
+                                <td>' . File::formatDate($file['date_add']) . '</td>
+                                <td>' . File::formateSize($file['size']) . '</td>
+                                <td></td>
+                            </tr>';
         }
 
-        ?>
+        $tmImageList .= ']';
+
+    }
+
+    ?>
     </tbody>
 </table>
-<br />
+<br/>
 <h3>Загрузить файл:</h3>
-<form method="post" enctype="multipart/form-data" action="/admin/materials_admin/?mode=edit&id=<?=$this->moduleData->material->params['id']?>">
+<form method="post" enctype="multipart/form-data"
+      action="/admin/materials_admin/?mode=edit&id=<?= $this->moduleData->material->params['id'] ?>">
     <input type="hidden" name="menu" value="materials_admin">
     <input type="hidden" name="mode" value="edit">
-    <input type="hidden" name="id" value="<?=$this->moduleData->material->params['id']?>">
+    <input type="hidden" name="id" value="<?= $this->moduleData->material->params['id'] ?>">
     <input type="hidden" name="MAX_FILE_SIZE" value="20971520">
     <input type="file" id="newFile" name="newFile">
     <input type="hidden" name="action" value="addfile">
-    <button type="submit" class="btn btn-success"><i class="material-icons md-24 md-light">attach_file</i> Загрузить</button>
+    <button type="submit" class="btn btn-success"><i class="material-icons md-24 md-light">attach_file</i> Загрузить
+    </button>
 </form>
-<hr />
-<br />
+<hr/>
+<br/>

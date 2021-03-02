@@ -6,22 +6,22 @@
  * @var ice\Web\Render $this
  */
 
-$template_folder=$this->settings->path.'/templates/'.$this->settings->template.'';
+$template_folder = $this->settings->path . '/templates/' . $this->settings->template . '';
 
 //подключаем стили и скрипты
-include_once ($template_folder.'/partial/t_jsandcss.php');
+include_once($template_folder . '/partial/t_jsandcss.php');
 //$this->styles->addStyle('');
 //$this->jscripts->addScript('');
 
 //js document.load
-include_once ($template_folder.'/partial/t_jsreadyglobal.php');
-$this->jsready.='
+include_once($template_folder . '/partial/t_jsreadyglobal.php');
+$this->jsready .= '
 
     $(".form-group").has("input#regLogin").hide();
 
 ';
 
-include_once ($template_folder.'/partial/t_header.php');
+include_once($template_folder . '/partial/t_header.php');
 
 ?>
     <div class="container sitebody">
@@ -29,7 +29,7 @@ include_once ($template_folder.'/partial/t_header.php');
             <div class="col">
                 <?php
                 //выводим ошибки
-                include_once ($template_folder.'/partial/t_alert.php');
+                include_once($template_folder . '/partial/t_alert.php');
                 ?>
             </div>
         </div>
@@ -38,15 +38,13 @@ include_once ($template_folder.'/partial/t_header.php');
                 <?= $this->moduleData->content ?><p>&nbsp;</p>
                 <?php
 
-                if(is_array($this->moduleData->table))
-                {
+                if (is_array($this->moduleData->table)) {
                     echo '<table class="table table-hover table-dark"><tbody>';
 
-                    foreach ($this->moduleData->table as $row)
-                    {
+                    foreach ($this->moduleData->table as $row) {
                         echo '<tr>
-    <td>'.$row['name'].'</td>
-    <th>'.$row['value'].'</th>
+    <td>' . $row['name'] . '</td>
+    <th>' . $row['value'] . '</th>
 </tr>';
                     }
 
@@ -57,4 +55,4 @@ include_once ($template_folder.'/partial/t_header.php');
             </div>
         </div>
     </div>
-<?php include_once ($template_folder.'/partial/t_footer.php');
+<?php include_once($template_folder . '/partial/t_footer.php');

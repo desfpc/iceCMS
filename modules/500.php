@@ -16,11 +16,11 @@ $this->headers->standartHeaders();
 $this->headers->addHeader('HTTP/1.0 500 Internal Server Error');
 $this->headers->addHeader('Status: 500 Internal Server Error');
 
-$this->moduleData=new stdClass();
+$this->moduleData = new stdClass();
 
-$this->moduleData->title=$this->settings->site->title.' - ошибка 404';
-$this->moduleData->H1='500';
-$this->moduleData->H3='ЧТО ТО В <span>КОСМОСЕ</span> '.$this->settings->site->title.' НЕ ТАК? Хмм, похоже, что произошел какой-то сбой.';
-$this->moduleData->buttonHome='На главную';
-$this->moduleData->buttonSiteMap='Карта сайта';
-$this->moduleData->errors=$this->errors;
+$this->moduleData->title = $this->settings->site->title . ' - ошибка 404';
+$this->moduleData->H1 = '500';
+$this->moduleData->H3 = 'ЧТО ТО В <span>КОСМОСЕ</span> ' . $this->settings->site->title . ' НЕ ТАК? Хмм, похоже, что произошел какой-то сбой.';
+$this->moduleData->buttonHome = 'На главную';
+$this->moduleData->buttonSiteMap = 'Карта сайта';
+$this->moduleData->errors = $this->errors;

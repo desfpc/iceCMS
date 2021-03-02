@@ -9,13 +9,12 @@
  *
  */
 
-namespace ice;
+namespace ice\Web;
 
 use ice\DB\DB;
-use ice\Web\JScriptBuilder;
-use ice\Web\StylesBuilder;
 
-class iceWidget {
+class Widget
+{
 
     public $name;
     public $DB;
@@ -25,12 +24,12 @@ class iceWidget {
     public $styles;
     public $jscripts;
 
-    public function __construct(DB $DB, $name, $settings=null)
+    public function __construct(DB $DB, $name, $settings = null)
     {
         $this->DB = $DB;
         $this->name = $name;
 
-        $this->settings=$settings;
+        $this->settings = $settings;
 
         $this->jscripts = new JScriptBuilder();
         $this->styles = new StylesBuilder();
@@ -38,31 +37,29 @@ class iceWidget {
         //TODO раскомитить, если нужно будет кэширование для виджетов
         /*if(is_object($this->settings) && isset($this->settings->cache->host) && isset($this->settings->cache->port))
         {
-            $this->cacher = new iceCacher($this->settings->cache->host,$this->settings->cache->port);
+            $this->cacher = new Cacher($this->settings->cache->host,$this->settings->cache->port);
         }
         else
         {
-            $this->cacher = new iceCacher();
+            $this->cacher = new Cacher();
         }*/
 
     }
 
     //подключаем файл виджета
-    public function show($params = []){
+    public function show($params = [])
+    {
 
         $this->params = $params;
 
-        if($this->name != ''){
+        if ($this->name != '') {
 
             //проверяем наличае файла виджета
-            $widgetPatch=$this->settings->path.'/widgets/'.$this->name.'.php';
-            if(!file_exists($widgetPatch))
-            {
-                $this->errors[]='Нет файла подключаемого виджета '.$widgetPatch;
-            }
-            else
-            {
-                require ($widgetPatch);
+            $widgetPatch = $this->settings->path . '/widgets/' . $this->name . '.php';
+            if (!file_exists($widgetPatch)) {
+                $this->errors[] = 'Нет файла подключаемого виджета ' . $widgetPatch;
+            } else {
+                require($widgetPatch);
             }
 
         }

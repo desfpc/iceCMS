@@ -3,7 +3,7 @@
  * Created by Sergey Peshalov https://github.com/desfpc
  * PHP framework and CMS based on it.
  * https://github.com/desfpc/iceCMS
- * @var ice\iceWidget $this
+ * @var ice\Web\Widget $this
  */
 
 /*[
@@ -17,39 +17,36 @@ $text = '';
 $url = '';
 $dirs = '/';
 
-if(is_array($this->params) && count($this->params) > 0){
-    $i=0;
+if (is_array($this->params) && count($this->params) > 0) {
+    $i = 0;
     $cnt = count($this->params);
-    foreach ($this->params as $param){
+    foreach ($this->params as $param) {
         ++$i;
 
-        if($i == $cnt){
-            $text.='<li class="breadcrumb-item active" aria-current="page">'.$param['name'].'</li>';
-        }
-        elseif (isset($param['dir']) && $param['dir'] != ''){
-            $dirs .= $param['dir'].'/';
-            $text.='<li class="breadcrumb-item"><a href="'.$dirs.$url.'">'.$param['name'].'</a></li>';
-        }
-        else {
-            if($url == ''){
+        if ($i == $cnt) {
+            $text .= '<li class="breadcrumb-item active" aria-current="page">' . $param['name'] . '</li>';
+        } elseif (isset($param['dir']) && $param['dir'] != '') {
+            $dirs .= $param['dir'] . '/';
+            $text .= '<li class="breadcrumb-item"><a href="' . $dirs . $url . '">' . $param['name'] . '</a></li>';
+        } else {
+            if ($url == '') {
                 $url .= '?';
-            }
-            else {
+            } else {
                 $url .= '&';
             }
-            $url .= $param['param'].'='.$param['value'];
+            $url .= $param['param'] . '=' . $param['value'];
 
-            if(isset($param['param2'])){
-                $url .= '&'.$param['param2'].'='.$param['value2'];
+            if (isset($param['param2'])) {
+                $url .= '&' . $param['param2'] . '=' . $param['value2'];
             }
 
-            $text.='<li class="breadcrumb-item"><a href="'.$dirs.$url.'">'.$param['name'].'</a></li>';
+            $text .= '<li class="breadcrumb-item"><a href="' . $dirs . $url . '">' . $param['name'] . '</a></li>';
         }
     }
 }
 
 //выводим
-if($text != ''){
+if ($text != '') {
     echo '<nav aria-label="breadcrumb"><ol class="breadcrumb">';
     echo $text;
     echo '</ol></nav>';

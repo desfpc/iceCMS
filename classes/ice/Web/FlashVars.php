@@ -9,25 +9,28 @@
  *
  */
 
-namespace ice;
+namespace ice\Web;
 
-class iceFlashVars {
+class FlashVars
+{
     public $vars = [];
 
     public function __construct()
     {
-        if(isset($_SESSION['flashVars'])){
+        if (isset($_SESSION['flashVars'])) {
             $this->vars = $_SESSION['flashVars'];
         }
     }
 
-    public function set($name,$value){
-        $this->vars[$name]=$value;
+    public function set($name, $value)
+    {
+        $this->vars[$name] = $value;
         $_SESSION['flashVars'] = $this->vars;
     }
 
-    public function get($name){
-        if(isset($this->vars[$name])){
+    public function get($name)
+    {
+        if (isset($this->vars[$name])) {
             $value = $this->vars[$name];
             unset($this->vars[$name]);
             unset($_SESSION['flashVars']);

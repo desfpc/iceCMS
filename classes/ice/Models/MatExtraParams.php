@@ -11,27 +11,29 @@
 
 namespace ice\Models;
 
-use ice\iceObject;
 use ice\DB\DB;
 
-class MatExtraParams extends iceObject {
+class MatExtraParams extends Obj
+{
 
     //подменяем создание объекта - прописываем железно целевую таблицу
-    public function __construct(DB $DB, $id=null, $settings=null)
+    public function __construct(DB $DB, $id = null, $settings = null)
     {
         $this->doConstruct($DB, 'material_extra_params', $id, $settings);
     }
 
-    public function moreQuery(){
-        $query=', (SELECT p.name FROM material_types p WHERE p.id = dbtable.value_mtype) value_mtype_name';
+    public function moreQuery()
+    {
+        $query = ', (SELECT p.name FROM material_types p WHERE p.id = dbtable.value_mtype) value_mtype_name';
         return $query;
     }
 
-    public function afterCreateRecord(){
+    public function afterCreateRecord()
+    {
 
         //удаляем кэш типа материала
         $mType = new matType($this->DB, $this->params['mtype_id']);
-        if($mType->getRecord()){
+        if ($mType->getRecord()) {
             $mType->uncacheRecord();
         }
 

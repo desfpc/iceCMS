@@ -11,12 +11,12 @@
 
 namespace ice\Models;
 
-use ice\iceObjectList;
 use ice\DB\DB;
 
-class FileList extends iceObjectList {
+class FileList extends ObjectList
+{
 
-    public function __construct(DB $DB, $conditions=null, $sort=null, $page=1, $perpage=20, $cachetime=0, $settings=null)
+    public function __construct(DB $DB, $conditions = null, $sort = null, $page = 1, $perpage = 20, $cachetime = 0, $settings = null)
     {
         $this->doConstruct($DB, 'files', $conditions, $sort, $page, $perpage, $cachetime, $settings);
     }

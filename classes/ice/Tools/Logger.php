@@ -11,6 +11,7 @@
 
 namespace ice\Tools;
 
-class Logger {
+class Logger
+{
 
 }

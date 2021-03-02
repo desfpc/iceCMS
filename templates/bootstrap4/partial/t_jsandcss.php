@@ -6,7 +6,7 @@
  * @var ice\Web\Render $this
  */
 //подключаемые стили
-$template_styles=array(
+$template_styles = array(
     'https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css',
     'https://fonts.googleapis.com/icon?family=Material+Icons',
     'https://fonts.googleapis.com/css?family=Rubik:300,400,700,900&amp;subset=cyrillic',
@@ -17,7 +17,7 @@ $template_styles=array(
 $this->styles->addStyles($template_styles);
 
 //подключаемые js скрипты
-$template_scripts=array(
+$template_scripts = array(
     'https://code.jquery.com/jquery-3.3.1.min.js',
     'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js',
     'https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js',

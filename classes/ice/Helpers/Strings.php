@@ -11,7 +11,22 @@
 
 namespace ice\Helpers;
 
-class Strings {
+class Strings
+{
+
+    public static function makeCharId($text)
+    {
+
+        $id_char = Strings::Transliterate($text);
+        $id_char = str_replace('"', '-quot-', $id_char);
+        $id_char = trim(preg_replace('/-{2,}/', '-', $id_char), '-');
+        $id_char = str_replace(' ', '_', $id_char);
+
+        return $id_char;
+
+    }
+
+    //формирование char_id из текста
 
     public static function Transliterate($string)
     {
@@ -35,7 +50,7 @@ class Strings {
 
         $output = str_replace(
             array_keys($table),
-            array_values($table),$string
+            array_values($table), $string
         );
 
         $output = preg_replace('/[^-a-z0-9._\[\]\'"]/i', ' ', $output);
@@ -44,30 +59,16 @@ class Strings {
         return $output;
     }
 
-    //формирование char_id из текста
-    public static function makeCharId($text){
-
-        $id_char = Strings::Transliterate($text);
-        $id_char = str_replace('"', '-quot-', $id_char);
-        $id_char = trim(preg_replace('/-{2,}/', '-', $id_char), '-');
-        $id_char = str_replace(' ','_',$id_char);
-
-        return $id_char;
-
-    }
-
     //проверка сложности пароля
+
     public static function checkSecurePass($text)
     {
-        if(mb_strlen($text, 'utf8') < 6)
-        {
+        if (mb_strlen($text, 'utf8') < 6) {
             return false;
         }
 
-        if (preg_match("/([0-9]+)/", $text))
-        {
-            if (preg_match("/([a-zA-Z]+)/", $text))
-            {
+        if (preg_match("/([0-9]+)/", $text)) {
+            if (preg_match("/([a-zA-Z]+)/", $text)) {
                 return true;
             }
             return false;

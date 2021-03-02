@@ -6,7 +6,7 @@
  * @var ice\Web\Render $this
  */
 
-use ice\iceWidget;
+use ice\Web\Widget;
 
 ?><!doctype html>
 <html lang="en">
@@ -30,32 +30,33 @@ use ice\iceWidget;
 <body>
 <?php
 
-if($this->authorize->secure == 1)
-{
-    include_once ($template_folder.'/partial/t_securepanel.php');
-    $mainmenuclass='secureclass';
-}
-else
-{
-    $mainmenuclass='';
+if ($this->authorize->secure == 1) {
+    include_once($template_folder . '/partial/t_securepanel.php');
+    $mainmenuclass = 'secureclass';
+} else {
+    $mainmenuclass = '';
 }
 
-?><div class="container-fluid header-topbar">
+?>
+<div class="container-fluid header-topbar">
     <div class="row">
         <div class="col-sm">
-            <a href="mailto:support@ice4service.com"><i class="material-icons md-16 md-dark">mail_outline</i> <?=$this->settings->email->mail?></a>
-            &nbsp;&nbsp;<a href="tel:+79898283459"><i class="material-icons md-16 md-dark">local_phone</i> +7 (000) 000-00-00</a>
+            <a href="mailto:support@ice4service.com"><i
+                    class="material-icons md-16 md-dark">mail_outline</i> <?= $this->settings->email->mail ?></a>
+            &nbsp;&nbsp;<a href="tel:+79898283459"><i class="material-icons md-16 md-dark">local_phone</i> +7 (000)
+                000-00-00</a>
         </div>
     </div>
 </div>
 <div class="container-fluid main-menu <?= $mainmenuclass ?>">
     <div class="row">
         <div class="col-md-auto logo col-auto">
-            <a href="/"><img src="/resourses/logos/logofw.svg" width="56" height="65"><span><?= $this->settings->site->title ?></span></a>
+            <a href="/"><img src="/resourses/logos/logofw.svg" width="56"
+                             height="65"><span><?= $this->settings->site->title ?></span></a>
         </div>
         <?php
 
-        $navigation = new iceWidget($this->DB, 'navigationMenu', $this->settings);
+        $navigation = new Widget($this->DB, 'navigationMenu', $this->settings);
         $navigation->show($this->materialTypes);
 
         ?>
@@ -69,9 +70,9 @@ else
                     <i class="close material-icons md-24 md-grey">close</i>
                     <?php
                     //выводим инфо пользователя, ссылки на личный кабинет и выход
-                    if($this->authorize->autorized)
-                    {
-                        ?><div class="user-name-block">
+                    if ($this->authorize->autorized) {
+                        ?>
+                        <div class="user-name-block">
                             <div class="border rounded-circle photo">
                                 <i class="material-icons md-24 md-dark">person</i>
                             </div>
@@ -87,13 +88,14 @@ else
                             <p><a href="/exit">Выход</a></p>
                         </div>
                         <?php
-                    }
-                    //выводим форму авторизации и ссылки на регистрацию
-                    else
-                    {
-                        ?><form id="smallRegForm" action="/authorize" method="post">
-                            <input type="email" class="form-control" id="auEmail" name="auEmail" aria-describedby="auEmailHelp" placeholder="Введите email" required="" value="">
-                            <input type="password" class="form-control" id="auPass" name="auPass" placeholder="введите Пароль" required="">
+                    } //выводим форму авторизации и ссылки на регистрацию
+                    else {
+                        ?>
+                        <form id="smallRegForm" action="/authorize" method="post">
+                            <input type="email" class="form-control" id="auEmail" name="auEmail"
+                                   aria-describedby="auEmailHelp" placeholder="Введите email" required="" value="">
+                            <input type="password" class="form-control" id="auPass" name="auPass"
+                                   placeholder="введите Пароль" required="">
                             <input type="hidden" name="action" value="login">
                             <button type="submit" class="btn btn-primary">Авторизироваться</button>
                         </form>
@@ -103,7 +105,8 @@ else
                 </div>
             </div>
             <div class="normalblock border rounded header-cart">
-                <i class="material-icons md-24 md-dark">shopping_basket</i>&nbsp;&nbsp;0&nbsp;&nbsp;<span class="hline"></span>&nbsp;&nbsp;0₽
+                <i class="material-icons md-24 md-dark">shopping_basket</i>&nbsp;&nbsp;0&nbsp;&nbsp;<span
+                    class="hline"></span>&nbsp;&nbsp;0₽
             </div>
         </div>
     </div>

@@ -9,15 +9,15 @@
  *
  */
 
-use ice\Models\MatType;
 use ice\Models\MatList;
+use ice\Models\MatType;
 
-$this->moduleData=new stdClass();
+$this->moduleData = new stdClass();
 
-$this->moduleData->title=$this->settings->site->title;
-$this->moduleData->H1='';
-$this->moduleData->errors=array();
-$this->moduleData->success=array();
+$this->moduleData->title = $this->settings->site->title;
+$this->moduleData->H1 = '';
+$this->moduleData->errors = array();
+$this->moduleData->success = array();
 
 //парсим URL, определяем текущий тип материала и материал
 $this->parser->parseURL($this->path_info['call_parts']);
@@ -30,11 +30,11 @@ $this->moduleData->mtype = $mtype;
 $this->moduleData->material = $this->parser->material;
 
 //формирование данных для типа материала
-if(is_null($this->moduleData->material)){
+if (is_null($this->moduleData->material)) {
     $this->moduleData->H1 = $this->moduleData->mtype->params['name'];
 
     //подготовка данных (если нужно)
-    if($this->moduleData->mtype->params['prepare_list'] == '1'){
+    if ($this->moduleData->mtype->params['prepare_list'] == '1') {
 
         //выборка
         $conditions[] = [
@@ -55,30 +55,28 @@ if(is_null($this->moduleData->material)){
         $sort[] = ['col' => 'id', 'sort' => 'DESC'];
 
         //пейджинация
-        if(!isset($this->values->page)){
+        if (!isset($this->values->page)) {
             $this->values->page = 1;
         }
 
         $page = (int)$this->values->page;
-        if($page < 1){
+        if ($page < 1) {
             $page = 1;
         }
 
         $perpage = (int)$this->moduleData->mtype->params['list_items'];
-        if($perpage == 0){
+        if ($perpage == 0) {
             $perpage = 10;
         }
 
         $mlist = new MatList($this->DB, $conditions, $sort, $page, $perpage);
         $this->moduleData->mlist = $mlist->getRecords();
 
-    }
-    else {
+    } else {
         $this->moduleData->mlist = null;
     }
 
-}
-//формирование данных для материала
+} //формирование данных для материала
 else {
     $this->moduleData->H1 = $this->moduleData->material->params['name'];
 }

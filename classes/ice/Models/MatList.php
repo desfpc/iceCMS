@@ -11,17 +11,18 @@
 
 namespace ice\Models;
 
-use ice\iceObjectList;
 use ice\DB\DB;
 
-class MatList extends iceObjectList {
-    public function __construct(DB $DB, $conditions=null, $sort=null, $page=1, $perpage=20, $cachetime=0, $settings=null)
+class MatList extends ObjectList
+{
+    public function __construct(DB $DB, $conditions = null, $sort = null, $page = 1, $perpage = 20, $cachetime = 0, $settings = null)
     {
         $this->doConstruct($DB, 'materials', $conditions, $sort, $page, $perpage, $cachetime, $settings);
     }
 
-    public function moreQuery(){
-        $query=',   (SELECT mt.name FROM material_types mt WHERE mt.id = dbtable.material_type_id) material_type_name,
+    public function moreQuery()
+    {
+        $query = ',   (SELECT mt.name FROM material_types mt WHERE mt.id = dbtable.material_type_id) material_type_name,
                     (SELECT fm.file_id FROM material_files fm, files f 
                         WHERE f.filetype = \'image\' AND f.id = fm.file_id AND fm.material_id = dbtable.id 
                         ORDER BY fm.ordernum ASC, f.id ASC

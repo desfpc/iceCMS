@@ -11,13 +11,19 @@
 
 namespace ice\Models;
 
-use ice\iceObjectList;
 use ice\DB\DB;
 
-class MatTypeList extends iceObjectList {
+class MatTypeList extends ObjectList
+{
 
     //дерево
-    public function getRecordsTree($mode = 'all') {
+    public function __construct(DB $DB, $conditions = null, $sort = null, $page = 1, $perpage = 20, $cachetime = 0, $settings = null)
+    {
+        $this->doConstruct($DB, 'material_types', $conditions, $sort, $page, $perpage, $cachetime, $settings);
+    }
+
+    public function getRecordsTree($mode = 'all')
+    {
 
         //режим отображения
         //all - все дерево
@@ -42,10 +48,10 @@ class MatTypeList extends iceObjectList {
                 //в типах материала проверки на язык не идет, так как для скорости работы, языки вписываются в поля таблицы...
                 // Но - в данном случае проверяем материал, поэтому смотрим, есть ли язык в кондициях запроса
                 $langQuery = '';
-                if(is_array($this->conditions) && count($this->conditions) > 0) {
+                if (is_array($this->conditions) && count($this->conditions) > 0) {
                     foreach ($this->conditions as $condition) {
-                        if($condition['col'] == 'language'){
-                            $langQuery = ' AND language = '.$condition['val'];
+                        if ($condition['col'] == 'language') {
+                            $langQuery = ' AND language = ' . $condition['val'];
                         }
                     }
                 }
@@ -61,7 +67,7 @@ class MatTypeList extends iceObjectList {
                         'string' => false,
                         'type' => 'IN',
                         'col' => 'id',
-                        'val' => 'SELECT material_type_id FROM materials WHERE status_id = 1'.$langQuery
+                        'val' => 'SELECT material_type_id FROM materials WHERE status_id = 1' . $langQuery
                     ]
                 ];
                 break;
@@ -82,15 +88,15 @@ class MatTypeList extends iceObjectList {
             ]
         ];
 
-        if($rows = $this->getRecords()) {
+        if ($rows = $this->getRecords()) {
 
-            if(count($rows) > 0) {
+            if (count($rows) > 0) {
 
                 //преобразуем массив записей в дерево записей
                 $tree = [];
                 foreach ($rows as $row) {
 
-                    if(is_null($row['parent_id'])){
+                    if (is_null($row['parent_id'])) {
                         $row['parent_id'] = 'null';
                     }
 
@@ -105,17 +111,13 @@ class MatTypeList extends iceObjectList {
         return false;
     }
 
-    public function moreQuery(){
-        $query=', (SELECT p.name FROM material_types p WHERE p.id = dbtable.parent_id) parent_name, 
+    public function moreQuery()
+    {
+        $query = ', (SELECT p.name FROM material_types p WHERE p.id = dbtable.parent_id) parent_name, 
         (SELECT ti.filename FROM templates ti WHERE ti.id = dbtable.template_item) template_item_name,
         (SELECT tl.filename FROM templates tl WHERE tl.id = dbtable.template_list) template_list_name,
         (SELECT ta.filename FROM templates ta WHERE ta.id = dbtable.template_admin) template_admin_name';
         return $query;
-    }
-
-    public function __construct(DB $DB, $conditions=null, $sort=null, $page=1, $perpage=20, $cachetime=0, $settings=null)
-    {
-        $this->doConstruct($DB, 'material_types', $conditions, $sort, $page, $perpage, $cachetime, $settings);
     }
 
 }
