@@ -21,7 +21,7 @@ require_once('../bootstrap.php');//подключение классов ice CMS
 //подключаем настройки, если их нет - редиректим на setup.php
 $settings_path = '../settings/settings.php';
 if (!file_exists($settings_path)) {
-    echo 'Сайт не настроен';
+    //echo 'Сайт не настроен';
     header('Location: /setup.php');
     exit;
 }

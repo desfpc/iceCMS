@@ -98,7 +98,12 @@ class Settings
                         }
                     } else {
 
-                        $this->$paramname = $setup[$paramname];
+                        if(isset($setup[$paramname])){
+                            $this->$paramname = $setup[$paramname];
+                        }
+                        else {
+                            $this->$paramname = null;
+                        }
 
                     }
 
@@ -224,7 +229,7 @@ $setup[\'routes\'][\'' . $lowerName . '\'] = \'' . $row['name'] . '\';';
         }
 
         //заносим текущие роуты
-        if (count($this->routes) > 0) {
+        if (isset($this->routes) && !is_null($this->routes) && count($this->routes) > 0) {
             foreach ($this->routes as $key => $value) {
                 $fileContent .= "
 \$setup['routes']['$key'] = '$value';";

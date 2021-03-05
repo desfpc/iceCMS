@@ -90,7 +90,7 @@ class File extends Obj
 
     }
 
-    public function upload($paramName, $type = 'file', $private = false, $userId, $materialConnect = false)
+    public function upload($paramName, $type = 'file', $private = false, $userId = null, $materialConnect = false)
     {
 
         if ($paramName != '') {

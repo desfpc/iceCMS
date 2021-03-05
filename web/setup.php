@@ -53,7 +53,7 @@ if (isset($_POST['doSetup'])) {
     }
 
     //формируем массив $setup
-    function makeSetup($arr, $parent = null, $default)
+    function makeSetup($arr, $parent = null, $default = null)
     {
 
         $setup = [];
