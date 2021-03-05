@@ -8,6 +8,7 @@
 
 use ice\Models\File;
 use ice\Models\Mat;
+use ice\Web\Widget;
 
 ?>
 <div class="row">
