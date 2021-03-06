@@ -1,7 +1,7 @@
 <?php
 
 if (!isset($iceDir)) {
-    $iceDir = './classes/ice';
+    $iceDir = './vendor/desfpc/ice';
 }
 
 //Загрузка файлов CMS в нужном порядке
