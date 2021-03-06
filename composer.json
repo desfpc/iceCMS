@@ -1,0 +1,15 @@
+{
+    "name": "desfpc/ice",
+    "description": "IceCMS - lite php CMS",
+    "license": "Apache License 2.0",
+    "authors": [
+        {
+            "name": "Sergey Peshalov",
+            "email": "desfpc@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "desfpc/redka": "0.*"
+    }
+}

@@ -11,7 +11,8 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 //подключаем нужные классы
-require_once('../classes/redka_remote/redka.php');//класс для работы с redis
+require_once ('../vendor/autoload.php');
+//require_once('../classes/redka_remote/redka.php');//класс для работы с redis
 require_once('../classes/visualijoper_remote/visualijoper.php');//призываем библиотеку визуализации Visualijoper
 require_once('../classes/pechkin_remote/pechkin.php');//класс для отправки email
 $iceDir = '../classes/ice';//директория с классами CMS

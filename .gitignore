@@ -1,1 +1,6 @@
 .idea/
+composer.lock
+settings/settings.php
+vendor/composer/
+vendor/desfpc/redka/
+vendor/autoload.php
