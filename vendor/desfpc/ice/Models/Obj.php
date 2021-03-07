@@ -29,14 +29,14 @@ class Obj
     private $dbtable;
     private $cacher;
     private $cacheKey;
+    private $rules; //TODO дополнительные правила для валидации полей
 
     public function __construct(DB $DB, $dtable, $id = null, $settings = null)
     {
         $this->doConstruct($DB, $dtable, $id, $settings);
     }
 
-    //TODO формирование списка параметров для редактирования/добавления запись из $_POST
-
+    //непосредственно construct - сделано, что бы не указывать имя таблицы в дочерних классах при переопледелении __construct
     public function doConstruct(DB $DB, $dtable, $id = null, Settings $settings = null)
     {
 
@@ -60,8 +60,13 @@ class Obj
 
     }
 
-    //формирование списка параметров для редактирования/добавления запись из $this->values
+    //TODO валидация объекта
+    public function validate()
+    {
 
+    }
+
+    //получение полей таблицы из БД
     private function getTableCols()
     {
         $key = $this->DB->settings->name . '_tableCols_' . $this->dbtable;
@@ -85,25 +90,13 @@ class Obj
         }
     }
 
+    //йформатирование даты из БД
     public static function formatDate($date)
     {
         return date('d.m.Y H:i', strtotime($date));
     }
 
-    //создание новой записи
-
-    public function paramsFromPost()
-    {
-        //получаем переменные из $_REQUEST
-        foreach ($this->cols as $col) {
-        }
-
-        //формируем массив с переменными
-
-    }
-
-    //изменение записи
-
+    //заполенние полей объекта(таблицы) из values
     public function paramsFromValues($values)
     {
 
@@ -121,8 +114,7 @@ class Obj
 
     }
 
-    //удаление записи
-
+    //создание записи в БД
     public function createRecord($params = null)
     {
 
@@ -147,13 +139,13 @@ class Obj
 
     }
 
+    //действие после создания записи в БД
     public function afterCreateRecord()
     {
         return true;
     }
 
-    //метод для переработки в конкретном объекте
-
+    //обновление записи в БД
     public function updateRecord($params = null)
     {
 
@@ -177,8 +169,7 @@ class Obj
         return false;
     }
 
-    //метод для переработки в конкретном объекте
-
+    //удаление кэша записи
     public function uncacheRecord($id = null)
     {
 
@@ -197,8 +188,7 @@ class Obj
 
     }
 
-    //получение данных обхекта
-
+    //формирование ключа для кэша объекта
     private function getCacheKey($id = null)
     {
         if (is_null($id)) {
@@ -209,15 +199,13 @@ class Obj
 
     }
 
-    //кэширование записи
-
+    //дополнительная логика по удалению кэша записи (например удаление кэшкй связанных объкектов или списков объектов)
     public function fullUncacheRecord()
     {
         //TODO удаление кэшей списков объектов
     }
 
-    //удаление из кэша записи
-
+    //удаление записи из БД
     public function deleteRecord($id)
     {
         $this->id = $id;
@@ -232,6 +220,7 @@ class Obj
         return false;
     }
 
+    //получение записи из БД
     public function getRecord($id = null)
     {
 
@@ -266,11 +255,13 @@ class Obj
         return false;
     }
 
+    //полное формирование данных объекта (доп. логика после получения данных из таблицы БД)
     public function fullRecord()
     {
 
     }
 
+    //кэширование объекта
     private function cacheRecord($expired = 30 * 24 * 60 * 60)
     {
         $this->getCacheKey();
