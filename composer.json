@@ -11,6 +11,7 @@
     "minimum-stability": "dev",
     "require": {
         "desfpc/redka": "0.*",
-        "desfpc/pechkin": "0.*"
+        "desfpc/pechkin": "0.*",
+        "desfpc/visualijoper": "1.*"
     }
 }

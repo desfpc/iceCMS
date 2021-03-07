@@ -87,7 +87,7 @@ class ImageCacheList extends ObjectList
             $query = str_replace('%subQuery%', $query, $parentQuery);
         }
 
-        //visualijop($query);
+        //visualijoper\visualijoper::visualijop($query);
 
         if ($this->cacher->has($this->getCacheKey($query))) {
             $records = $this->cacher->get($this->cacheKey, true);

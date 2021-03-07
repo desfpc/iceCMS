@@ -49,8 +49,6 @@ function printTypesMenu($obj, $arr, $id, $size)
 
 }
 
-//visualijop($this->moduleData->materialTypes);
-
 echo '<div class="mtypes-menu">';
 if (isset($this->moduleData->materialTypes) && is_array($this->moduleData->materialTypes) && count($this->moduleData->materialTypes) > 0) {
 

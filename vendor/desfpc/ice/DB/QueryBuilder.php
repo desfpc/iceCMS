@@ -95,7 +95,7 @@ class QueryBuilder
         $sout = '';
         $pout = '';
 
-        //visualijop($this->cols);
+        //visualijoper\visualijoper::visualijop($this->cols);
 
         foreach ($this->cols as $col) {
             $col = (array)$col;
@@ -113,8 +113,8 @@ class QueryBuilder
             } //вносим обычное значение
             else {
 
-                //visualijop($col['Type']);
-                //visualijop($this->params[$col['Field']]);
+                //visualijoper\visualijoper::visualijop($col['Type']);
+                //visualijoper\visualijoper::visualijop($this->params[$col['Field']]);
 
                 //в зависимости от типа колонки, рисуем кавычки на значение
                 if (mb_stripos($col['Type'], 'char', 0, 'UTF-8') !== false || mb_stripos($col['Type'], 'text', 0, 'UTF-8') !== false || mb_stripos($col['Type'], 'enum', 0, 'UTF-8') !== false) {
@@ -147,7 +147,7 @@ class QueryBuilder
 
         $out .= ')';
 
-        //visualijop($out);
+        //visualijoper\visualijoper::visualijop($out);
 
         return $out;
     }

@@ -13,7 +13,7 @@ ini_set('display_errors', 1);
 //подключаем нужные классы
 require_once ('../vendor/autoload.php');
 //require_once('../classes/redka_remote/redka.php');//класс для работы с redis - перенесено в composer
-require_once('../classes/visualijoper_remote/visualijoper.php');//призываем библиотеку визуализации Visualijoper
+//require_once('../classes/visualijoper_remote/visualijoper.php');//призываем библиотеку визуализации Visualijoper - перенесено в composer
 //require_once('../classes/pechkin_remote/pechkin.php');//класс для отправки email - перенесено в composer
 $iceDir = '../vendor/desfpc/ice';//директория с классами CMS
 $modelsDir = '../models';//директория пользовательских моделей
@@ -55,8 +55,8 @@ if ($site->settings->dev) {
     echo '<div class="normalblock" style="display: block;"><div class="developer_block">';
 
 //выводим объект сайта
-    visualijop($site, 'Объект сайта');
-    visualijop($_SESSION, 'Сессия');
+    visualijoper\visualijoper::visualijop($site, 'Объект сайта');
+    visualijoper\visualijoper::visualijop($_SESSION, 'Сессия');
 
 //phpinfo();
 

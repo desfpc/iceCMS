@@ -30,7 +30,7 @@ class File extends Obj
         $file = $fileObj->params;
 
         if ($file['filetype'] == 'image') {
-            //visualijop($file, $fileObj);
+            //visualijoper\visualijoper::visualijop($file, $fileObj);
             $icon = '<img src="' . $fileObj->getFileCacheUrl(48, 48) . '" />';
         } else {
             $icon = '<i class="material-icons md-48 md-dark">insert_drive_file</i>';
@@ -145,7 +145,7 @@ class File extends Obj
 
                 $url .= date('Ym') . '/';
                 $dirpatch = $this->settings->path . '/web' . $url;
-                //visualijop($dirpatch);
+                //visualijoper\visualijoper::visualijop($dirpatch);
 
 
                 if (!is_dir($dirpatch)) {
@@ -214,8 +214,8 @@ class File extends Obj
                     return false;
                 }
 
-                //visualijop($tmp_name, $extension, $name, $size, $width, $height, $imgtype, $attr);
-                //visualijop($this->settings);
+                //visualijoper\visualijoper::visualijop($tmp_name, $extension, $name, $size, $width, $height, $imgtype, $attr);
+                //visualijoper\visualijoper::visualijop($this->settings);
 
 
             } else {
@@ -368,7 +368,7 @@ class File extends Obj
         $folder = $x . 'x' . $y;
 
         $dirpatch = $this->settings->path . '/web' . $this->params['url'] . $folder . '/';
-        //visualijop($dirpatch);
+        //visualijoper\visualijoper::visualijop($dirpatch);
 
         if (!is_dir($dirpatch)) {
             mkdir($dirpatch, 0750);

@@ -75,7 +75,7 @@ class Obj
             $this->cols = $cols;
         } else {
             $query = 'SHOW COLUMNS FROM ' . $this->dbtable;
-            //visualijop($query);
+            //visualijoper\visualijoper::visualijop($query);
             if ($res = $this->DB->query($query)) {
                 if (count($res) > 0) {
                     $this->cols = $res;

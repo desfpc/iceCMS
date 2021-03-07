@@ -176,7 +176,7 @@ class Render
     public function showErrors()
     {
         if (is_array($this->errors) && count($this->errors) > 0) {
-            visualijop($this->errors);
+            visualijoper\visualijoper::visualijop($this->errors);
         }
     }
 

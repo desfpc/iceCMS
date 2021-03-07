@@ -77,7 +77,7 @@ class User extends Obj
         //проверяем запись пользователя
         $query = 'SELECT * FROM users WHERE status_id = 1 AND login_email = \'' . $this->DB->mysqli->real_escape_string($email) . '\'';
 
-        //visualijop($query);
+        //visualijoper\visualijoper::visualijop($query);
 
         if ($res = $this->DB->query($query)) {
             if (count($res) > 0) {
