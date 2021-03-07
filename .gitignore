@@ -4,3 +4,4 @@ settings/settings.php
 vendor/composer/
 vendor/desfpc/redka/
 vendor/autoload.php
+vendor/desfpc/pechkin/

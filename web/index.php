@@ -12,9 +12,9 @@ ini_set('display_errors', 1);
 
 //подключаем нужные классы
 require_once ('../vendor/autoload.php');
-//require_once('../classes/redka_remote/redka.php');//класс для работы с redis
+//require_once('../classes/redka_remote/redka.php');//класс для работы с redis - перенесено в composer
 require_once('../classes/visualijoper_remote/visualijoper.php');//призываем библиотеку визуализации Visualijoper
-require_once('../classes/pechkin_remote/pechkin.php');//класс для отправки email
+//require_once('../classes/pechkin_remote/pechkin.php');//класс для отправки email - перенесено в composer
 $iceDir = '../vendor/desfpc/ice';//директория с классами CMS
 $modelsDir = '../models';//директория пользовательских моделей
 require_once('../bootstrap.php');//подключение классов ice CMS
