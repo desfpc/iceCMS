@@ -18,6 +18,7 @@ use ice\Routes\ParseModule;
 use ice\Routes\PathParser;
 use ice\Settings\Settings;
 use stdClass;
+use visualijoper\visualijoper;
 
 class Render
 {
@@ -162,7 +163,7 @@ class Render
     public function unsetValues()
     {
         if (is_object($this->values)) {
-            if (count($this->values) > 0) {
+            if (count(get_object_vars($this->values)) > 0) {
                 foreach ($this->values as $key => $value) {
                     $this->values->$key = '';
                 }
