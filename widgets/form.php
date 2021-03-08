@@ -15,6 +15,7 @@ use ice\Web\Form;
 $formArr = [
     'method' => 'POST',
     'id' => 'testForm',
+    'paramIdFormula' => '%formId%_%paramName%', //авто формирование id полей формы - возможные варианты - %formId%, %paramName%
     'action' => '',
     'accept-charset' => 'utf-8',
     'enctype' => 'multipart/form-data',
@@ -86,7 +87,7 @@ $formArr = [
                 'type' => 'select',
                 'name' => 'language',
                 'live-search' => false,
-                'value' => '',
+                'value' => '1',
                 'class' => 'selectpicker',
                 'size' => 12,
                 'options' => [
@@ -99,7 +100,7 @@ $formArr = [
                         'value' => '2'
                     ],
                     [
-                        'name' => 'English',
+                        'name' => 'Deutsche',
                         'value' => '3'
                     ]
                 ]
@@ -195,6 +196,62 @@ $formArr = $this->params['form'];
 $out = '';
 $warnings = [];
 
+function makeParamId($input,$paramIdFormula){
+    return str_replace('%paramName%',$input['name'],$paramIdFormula);
+}
+
+function makeInputParams($input,$paramIdFormula){
+
+    $params = '';
+
+    if(!isset($input['id'])){
+        $input['id'] = makeParamId($input, $paramIdFormula);
+    }
+
+    $params.=' id="'.$input['id'].'"';
+    $params.=' name="'.$input['name'].'"';
+    $params.=' value="'.$input['value'].'"';
+
+    if(isset($input['placeholder'])){
+        $params.=' placeholder="'.$input['placeholder'].'"';
+    }
+
+    $class='form-control';
+    if(isset($input['class'])){
+        $class.=' '.$input['class'];
+    }
+    $params.=' class="'.$class.'"';
+
+    return $params;
+
+}
+
+function makeLabelAndDiv($input){
+
+    if(isset($input['label'])){
+        if(isset($input['size']) && $input['size'] > 3){
+            $start='<label for="'.$input['id'].'" class="col-sm-2 col-form-label text-right"><strong>'.$input['label'].'</strong></label><div class="col-sm-'.($input['size']-2).'">';
+            $end='</div>';
+        }
+        elseif(isset($input['size'])) {
+            $start='<div class="col-sm-'.$input['size'].'"><label for="'.$input['id'].'" class="col-form-label"><strong>'.$input['label'].'</strong></label>';
+            $end = '</div>';
+        }
+        else {
+            $start='<div class="col-sm"><label for="'.$input['id'].'" class="col-form-label"><strong>'.$input['label'].'</strong></label>';
+            $end = '</div>';
+        }
+    } elseif(isset($input['size'])) {
+        $start='<div class="col-sm-'.$input['size'].'">';
+        $end='</div>';
+    } else {
+        $start='<div class="col-sm">';
+        $end='</div>';
+    }
+
+    return [$start,$end];
+}
+
 if(is_array($formArr) && count($formArr) > 0){
 
     //строим форму
@@ -214,10 +271,20 @@ if(is_array($formArr) && count($formArr) > 0){
         $out.='<input type="hidden" name="csrf_token" value="'.$formArr['csrf_token'].'">';
     }
 
+    if(!isset($formArr['paramIdFormula'])){
+        $formArr['paramIdFormula'] = '%formId%_%paramName%';
+    }
+
+    $paramIdFormula = str_replace('%formId%',$formArr['id'],$formArr['paramIdFormula']);
+
     //скрытые поля
     if(isset($formArr['hiddens']) && is_array($formArr['hiddens']) && count($formArr['hiddens']) > 0){
         foreach ($formArr['hiddens'] as $item){
-            $out.='';
+            $out.='<input type="hidden"';
+
+            $out.=makeInputParams($item, $paramIdFormula);
+
+            $out.='>';
         }
     }
 
@@ -232,15 +299,61 @@ if(is_array($formArr) && count($formArr) > 0){
 
                 if(isset($col['type'])){
 
+                    if(!isset($col['id']) && isset($col['name'])){
+                        $col['id'] = makeParamId($col, $paramIdFormula);
+                    }
+
                     switch ($col['type']){
 
                         //обычный текстовый input
+                        case 'password':
                         case 'input':
+
+                            if($col['type'] == 'password'){
+                                $type = 'password';
+                            } else {
+                                $type = 'text';
+                            }
+
+                            $divs=makeLabelAndDiv($col);
+                            $out.=$divs[0];
+
+                            $out.='<input type="'.$type.'" ';
+                            $out.=makeInputParams($col, $paramIdFormula).'>';
+
+                            $out.=$divs[1];
 
                             break;
 
                         //выпадающий список select
                         case 'select':
+
+                            $divs=makeLabelAndDiv($col);
+                            $out.=$divs[0];
+
+                            $out.='<select ';
+                            $out.=makeInputParams($col, $paramIdFormula).'>';
+
+                            if(isset($col['options']) && is_array($col['options']) && count($col['options'])>0){
+
+                                foreach ($col['options'] as $option){
+
+                                    if($col['value'] == $option['value']){
+                                        $selected = ' selected';
+                                    }
+                                    else {
+                                        $selected = '';
+                                    }
+
+                                    $out.='<option value="'.$option['value'].'"'.$selected.'>'.$option['name'].'</option>';
+
+                                }
+
+                            }
+
+                            $out.='</select>';
+
+                            $out.=$divs[1];
 
                             break;
 
