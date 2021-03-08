@@ -9,6 +9,7 @@
 use ice\Web\Form;
 
 //TODO js валидация (email, int, float, маска, required поле)
+//TODO js обработка полей (tinymce, datetimepicker, etc)
 //TODO вывод ошибок (при js и серверной валидации)
 
 //Заполнение тестового массива для разработки (и далее документации)
@@ -129,7 +130,7 @@ $formArr = [
                 ]
             ],
             [
-                'type' => 'switch ',
+                'type' => 'switch',
                 'label' => 'Важный материал',
                 'name' => 'important',
                 'value' => 1,
@@ -200,7 +201,7 @@ function makeParamId($input,$paramIdFormula){
     return str_replace('%paramName%',$input['name'],$paramIdFormula);
 }
 
-function makeInputParams($input,$paramIdFormula){
+function makeInputParams($input,$paramIdFormula,$noClass=false,$noValue=false){
 
     $params = '';
 
@@ -210,17 +211,25 @@ function makeInputParams($input,$paramIdFormula){
 
     $params.=' id="'.$input['id'].'"';
     $params.=' name="'.$input['name'].'"';
-    $params.=' value="'.$input['value'].'"';
+    if(!$noValue){
+        $params.=' value="'.$input['value'].'"';
+    }
 
     if(isset($input['placeholder'])){
         $params.=' placeholder="'.$input['placeholder'].'"';
     }
 
-    $class='form-control';
-    if(isset($input['class'])){
-        $class.=' '.$input['class'];
+    if(!$noClass){
+        $class='form-control';
+        if(isset($input['class'])){
+            $class.=' '.$input['class'];
+        }
+        $params.=' class="'.$class.'"';
     }
-    $params.=' class="'.$class.'"';
+
+    if(isset($input['checked']) && $input['checked']){
+        $params.=' checked="checked"';
+    }
 
     return $params;
 
@@ -230,7 +239,7 @@ function makeLabelAndDiv($input){
 
     if(isset($input['label'])){
         if(isset($input['size']) && $input['size'] > 3){
-            $start='<label for="'.$input['id'].'" class="col-sm-2 col-form-label text-right"><strong>'.$input['label'].'</strong></label><div class="col-sm-'.($input['size']-2).'">';
+            $start='<label for="'.$input['id'].'" class="col-sm-2 col-form-label text-right">'.$input['label'].'</label><div class="col-sm-'.($input['size']-2).'">';
             $end='</div>';
         }
         elseif(isset($input['size'])) {
@@ -250,6 +259,17 @@ function makeLabelAndDiv($input){
     }
 
     return [$start,$end];
+}
+
+function makeColSizeClass($item){
+    if(isset($item['size'])){
+        $divClass = 'col-sm-'.$item['size'];
+    }
+    else {
+        $divClass = 'col-sm';
+    }
+
+    return $divClass;
 }
 
 if(is_array($formArr) && count($formArr) > 0){
@@ -360,29 +380,136 @@ if(is_array($formArr) && count($formArr) > 0){
                         //группа input-ов
                         case 'input-group':
 
+                            if(isset($col['size'])){
+                                $divClass = 'col-sm-'.$col['size'];
+                            }
+                            else {
+                                $divClass = 'col-sm';
+                            }
+
+                            $out.='<div class="'.$divClass.'"><div class="input-group">';
+
+                            if(isset($col['label'])){
+                                $out .= '<div class="input-group-prepend">
+                <span class="input-group-text">'.$col['label'].'</span>
+            </div>';
+
+                            }
+
+                            if(isset($col['inputs']) && is_array($col['inputs']) && count($col['inputs'])>0){
+                                foreach ($col['inputs'] as $input){
+                                    $out.='<input type="text" '.makeInputParams($input, $paramIdFormula).'>';
+                                }
+                            }
+
+                            $out.='</div></div>';
+
                             break;
 
                         //radio кнопки
                         case 'radio':
+
+                            $divs=makeLabelAndDiv($col);
+                            $out.=$divs[0];
+
+                            if(isset($col['options']) && is_array($col['options']) && count($col['options']) > 0){
+
+                                $i=0;
+
+                                foreach ($col['options'] as $option){
+
+                                    ++$i;
+
+                                    if(!isset($option['id'])){
+                                        $option['id'] = $col['id'].$i;
+                                    }
+
+                                    $option['label'] = $option['name'];
+                                    $option['name'] = $col['name'];
+
+                                    $out.='<div class="form-check">
+  <input class="form-check-input" type="radio" '.makeInputParams($option,$paramIdFormula).'>
+  <label class="form-check-label" for="exampleRadios1">
+    '.$option['label'].'
+  </label>
+</div>';
+
+                                }
+                            }
+
+                            $out.=$divs[1];
 
                             break;
 
                         //checkbox в виде switch
                         case 'switch':
 
+                            $divClass = makeColSizeClass($col);
+
+                            $out.='<div class="custom-control switch form-group '.$divClass.'">';
+
+                            $out.='<input type="checkbox" class="danger" '.makeInputParams($col, $paramIdFormula, true).'>
+                            <span class="slider round"></span>';
+
+                            if(isset($col['label'])){
+                                $out.='<label class="custom-control-label" for="'.$col['id'].'">'.$col['label'].'</label>';
+                            }
+
+                            $out.='</div>';
+
                             break;
 
                         //обычный checkbox
                         case 'checkbox':
 
+                            $divClass = makeColSizeClass($col);
+
+                            $out.='<div class="form-group form-check '.$divClass.'">';
+
+                            $out.='<input type="checkbox" class="form-check-input" '.makeInputParams($col, $paramIdFormula, true).'>';
+
+                            if(isset($col['label'])){
+                                $out.='<label class="form-check-label" for="exampleCheck1">'.$col['label'].'</label>';
+                            }
+
+                            $out.='</div>';
+
                             break;
 
                         //текстовое поле
                         case 'text':
+
+                            $divClass = makeColSizeClass($col);
+
+                            $out.='<div class="form-group '.$divClass.'">';
+
+                            if(isset($col['label'])){
+                                $out.='<label for="'.$col['id'].'" class="col-form-label">'.$col['label'].'</label>';
+                            }
+
+                            $out.='<textarea '.makeInputParams($col, $paramIdFormula, false, true).'>'.$col['value'].'</textarea>';
+
+                            $out.='</div>';
+
                             break;
 
                         //submit кнопка
                         case 'submit':
+
+                            $divClass = makeColSizeClass($col);
+                            $out.='<div class="form-group '.$divClass.'">';
+
+                            if(isset($col['icon'])){
+                                $icon = '<i class="material-icons md-24 md-light">'.$col['icon'].'</i> ';
+                            }
+                            else {
+                                $icon = '';
+                            }
+
+                            $out.='<button type="submit" class="btn '.$col['class'].'">'.$icon.$col['text'].'</button>';
+
+                            $out.='</div>';
+
                             break;
 
                     }
