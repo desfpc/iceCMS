@@ -28,8 +28,7 @@ class CSRF
         return $this->makeToken();
     }
 
-    //формируем ключ формы (что бы был свой токен на каждую форму)
-
+    //формируем CSRF токен
     private function makeToken()
     {
         $this->makeKey();
@@ -38,15 +37,13 @@ class CSRF
         return true;
     }
 
-    //формируем CSRF токен
-
+    //формируем ключ формы (что бы был свой токен на каждую форму)
     private function makeKey()
     {
         $this->key = $this->formName . '_' . time() . '_' . rand(0, 1000);
     }
 
-    //получаем ключ
-
+    //проверяем CSFR
     public static function checkCSFR($key, $token)
     {
 
@@ -56,15 +53,13 @@ class CSRF
         return true;
     }
 
-    //получаем токен
-
+    //получаем ключ
     public function getKey()
     {
         return $this->key;
     }
 
-    //проверяем CSFR
-
+    //получаем токен
     public function getToken()
     {
         return $this->token;

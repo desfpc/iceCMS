@@ -14,7 +14,19 @@ namespace ice\Web;
 class Form
 {
 
-    public $formArr = []; //форма (массив) для виджета
+    public $formArr = []; //массив формы для виджета
+
+    //параметры формы для валидации массива и виджета
+    public static $formParams = [
+        'method',
+        'id',
+        'action',
+        'accept-charset',
+        'enctype',
+        'name',
+        'class',
+        'target'
+    ];
 
     public function __construct(array $arr)
     {

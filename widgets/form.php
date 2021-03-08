@@ -6,8 +6,9 @@
  * @var ice\Web\Widget $this
  */
 
+use ice\Web\Form;
+
 //TODO js валидация (email, int, float, маска, required поле)
-//TODO генерация HTML из массива
 //TODO вывод ошибок (при js и серверной валидации)
 
 //Заполнение тестового массива для разработки (и далее документации)
@@ -20,7 +21,18 @@ $formArr = [
     'name' => 'testForm',
     'class' => 'test-form',
     'target' => '_self',
-    'csrf' => 'кодCSRF',
+    'csrf_key' => 'csrf_key',
+    'csrf_token' => 'csrf_token',
+    'hiddens' => [
+        [
+            'name' => 'id',
+            'value' => '5'
+        ],
+        [
+            'name' => 'mode',
+            'value' => 'edit'
+        ]
+    ],
     'values' => [
         'row_1' => [
             [
@@ -32,7 +44,8 @@ $formArr = [
                 'required' => true,
                 'help' => 'Является login-ом на сайте. Другие пользователи его не увидят.',
                 'validator' => 'email',
-                'error' => 'Не верный email'
+                'error' => 'Не верный email',
+                'size' => 12
             ]
         ],
         'row_2' => [
@@ -43,6 +56,7 @@ $formArr = [
                 'placeholder' => 'код товара',
                 'value' => '',
                 'required' => false,
+                'size' => 4
             ],
             [
                 'label' => 'Стоимость',
@@ -51,7 +65,8 @@ $formArr = [
                 'placeholder' => '0',
                 'value' => '',
                 'required' => false,
-                'validator' => 'float'
+                'validator' => 'float',
+                'size' => 4
             ],
             [
                 'label' => 'Тест валидатора по маске',
@@ -61,7 +76,8 @@ $formArr = [
                 'value' => '',
                 'required' => false,
                 'validator' => 'mask',
-                'mask' => ''
+                'mask' => '',
+                'size' => 4
             ]
         ],
         'row_3' => [
@@ -72,6 +88,7 @@ $formArr = [
                 'live-search' => false,
                 'value' => '',
                 'class' => 'selectpicker',
+                'size' => 12,
                 'options' => [
                     [
                         'name' => 'Русский',
@@ -92,6 +109,7 @@ $formArr = [
             [
                 'type' => 'input-group',
                 'label' => 'Дата начала и окончания события',
+                'size' => 9,
                 'inputs' => [
                     [
                         'type' => 'input',
@@ -114,7 +132,8 @@ $formArr = [
                 'label' => 'Важный материал',
                 'name' => 'important',
                 'value' => 1,
-                'checked' => false
+                'checked' => false,
+                'size' => 3
             ]
         ],
         'row_5' => [
@@ -123,6 +142,7 @@ $formArr = [
                 'label' => 'Radios',
                 'name' => 'gridRadios',
                 'value' => '1',
+                'size' => 9,
                 'options' => [
                     [
                         'name' => 'Радио 1',
@@ -143,7 +163,8 @@ $formArr = [
                 'label' => 'Чекбокс обычный',
                 'name' => 'simpleCheckbox',
                 'value' => '1',
-                'checked' => true
+                'checked' => true,
+                'size' => 3
             ]
         ],
         'row_6' => [
@@ -152,7 +173,8 @@ $formArr = [
                 'label' => 'Текстовое поле с TinyMCE',
                 'class' => 'tinymce',
                 'name' => 'content',
-                'value' => 'Текст какой-то'
+                'value' => 'Текст какой-то',
+                'size' => 12
             ]
         ],
         'row_7' => [
@@ -160,22 +182,111 @@ $formArr = [
                 'type' => 'submit',
                 'class' => 'btn-success',
                 'icon' => 'edit',
-                'text' => 'изменить'
+                'text' => 'изменить',
+                'size' => 12
             ]
         ]
     ]
 ];
 $this->params['form'] = $formArr; //переопределяем поля из тестового массива TODO убрать после отладки
 
-
 $formArr = $this->params['form'];
 
 $out = '';
+$warnings = [];
 
 if(is_array($formArr) && count($formArr) > 0){
 
+    //строим форму
+    $out.='<form ';
+    foreach (Form::$formParams as $param){
+        if(isset($formArr[$param])){
+            $out .= $param.'="'.$formArr[$param].'"';
+        }
+    }
+    $out.='>';
+
+    //строим csrf поля
+    if(isset($formArr['csrf_key'])){
+        $out.='<input type="hidden" name="csrf_key" value="'.$formArr['csrf_key'].'">';
+    }
+    if(isset($formArr['csrf_token'])){
+        $out.='<input type="hidden" name="csrf_token" value="'.$formArr['csrf_token'].'">';
+    }
+
+    //скрытые поля
+    if(isset($formArr['hiddens']) && is_array($formArr['hiddens']) && count($formArr['hiddens']) > 0){
+        foreach ($formArr['hiddens'] as $item){
+            $out.='';
+        }
+    }
+
+    //видимые поля
+    if(isset($formArr['values']) && is_array($formArr['values']) && count($formArr['values']) > 0){
+        //массив по строкам
+        foreach ($formArr['values'] as $row){
+            $out.='<div class="form-group row">';
+
+            //массив по колонкам
+            foreach ($row as $col){
+
+                if(isset($col['type'])){
+
+                    switch ($col['type']){
+
+                        //обычный текстовый input
+                        case 'input':
+
+                            break;
+
+                        //выпадающий список select
+                        case 'select':
+
+                            break;
+
+                        //группа input-ов
+                        case 'input-group':
+
+                            break;
+
+                        //radio кнопки
+                        case 'radio':
+
+                            break;
+
+                        //checkbox в виде switch
+                        case 'switch':
+
+                            break;
+
+                        //обычный checkbox
+                        case 'checkbox':
+
+                            break;
+
+                        //текстовое поле
+                        case 'text':
+                            break;
+
+                        //submit кнопка
+                        case 'submit':
+                            break;
+
+                    }
+
+                }
+                else {
+                    $warnings[] = $col;
+                }
+
+            }
+
+            $out.='</div>';
+        }
+    }
 
 
+    $out.='</form>';
 }
 
 echo $out;
