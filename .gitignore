@@ -6,3 +6,15 @@ vendor/desfpc/redka/
 vendor/autoload.php
 vendor/desfpc/pechkin/
 vendor/desfpc/visualijoper/
+vendor/bin/
+vendor/doctrine/
+vendor/myclabs/
+vendor/nikic/
+vendor/phar-io/
+vendor/phpdocumentor/
+vendor/phpspec/
+vendor/phpunit/
+vendor/sebastian/
+vendor/symfony/
+vendor/theseer/
+vendor/webmozart/

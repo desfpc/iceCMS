@@ -13,5 +13,8 @@
         "desfpc/redka": "0.*",
         "desfpc/pechkin": "0.*",
         "desfpc/visualijoper": "1.*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9"
     }
 }
