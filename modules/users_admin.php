@@ -13,6 +13,7 @@ use ice\Helpers\Strings;
 use ice\Models\User;
 use ice\Models\UserList;
 use ice\Web\Redirect;
+use ice\Web\Form;
 
 //секурность
 if (!$this->moduleAccess()) {
@@ -41,6 +42,16 @@ switch ($this->values->mode) {
 
     //форма создания пользователя
     case 'add':
+
+        //TODO ниже код тестирования класса построителя форм. Доделать, дотестировать, радоваться.
+        /*$form = new Form();
+        $user = new User($this->DB, 10);
+        $user->getRecord();
+
+        visualijoper\visualijoper::visualijop($user);
+
+        $form->makeFromObj($user);*/
+
 
         $this->moduleData->breadcrumbs[] = [
             'name' => 'Создание пользователя',
