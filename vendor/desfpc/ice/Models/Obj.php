@@ -31,6 +31,9 @@ class Obj
     private $cacheKey;
     private $rules; //TODO дополнительные правила для валидации полей
 
+    //наименования свойств $params
+    public static $labels = [];//нужно переопределить в конкретном классе
+
     public function __construct(DB $DB, $dtable, $id = null, $settings = null)
     {
         $this->doConstruct($DB, $dtable, $id, $settings);

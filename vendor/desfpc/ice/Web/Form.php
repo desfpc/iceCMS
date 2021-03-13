@@ -69,10 +69,37 @@ class Form
             foreach ($obj->cols as $col){
 
                 //формируем данные по полю
+
+                //Заполнение значения параметра
                 $param = [];
                 $param['name'] = $col['Field'];
                 if(isset($obj->params) && is_array($obj->params) && isset($obj->params[$col['Field']])){
                     $param['value'] = $obj->params[$col['Field']];
+                }
+
+                //Наименование параметра
+                if(isset($obj::$labels[$col['Field']])){
+                    $param['label'] = $obj::$labels[$col['Field']];
+                }
+
+                //простой разбор типов переменных
+                switch ($col['Type']){
+                    case 'datetime':
+                        $param['validator'] = 'datetime';
+                        $param['type'] = 'input';
+                        break;
+                    case 'json': //TODO дополнительно разобрать JSON
+                    case 'text':
+                        $param['type'] = 'text';
+                        break;
+                    default:
+                        $param['type'] = 'input';
+                        break;
+                }
+
+                //устанавлмиваем required
+                if($col['Null'] == 'NO'){
+                    $param['required'] = true;
                 }
 
                 /*'label' => 'Email адрес',
