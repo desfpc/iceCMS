@@ -37,6 +37,7 @@ class Render
     public $sitemessages; //сообщение от сайта пользователю (например результат какой-либо обработки)
     public $module; //активный модуль для вывода
     public $language; //выбранный язык отображения
+    public $languageName; //выбранный язык отображения
     public $path_info;//результат разбора строки
     public $authorize;//авторизация пользюка
     public $values;//переменные
@@ -55,6 +56,9 @@ class Render
         $this->errors = array();
         $this->values = new stdClass();
         $this->authorize = new Authorize($this->DB);
+
+        $this->language = 1; //TODO получение языка
+        $this->languageName = 'ru';
 
         if (is_object($this->settings) && isset($this->settings->cache->host) && isset($this->settings->cache->port)) {
             $this->cacher = new Cacher($this->settings->cache->host, $this->settings->cache->port);

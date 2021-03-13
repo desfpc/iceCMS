@@ -16,12 +16,29 @@ use ice\DB\DB;
 class User extends Obj
 {
 
+    //TODO вынести в класс переводчик
+    public static $labels = [
+        'id' => 'ID',
+        'login_email' => 'Email (логин)',
+        'login_phone' => 'Телефон (логин)',
+        'nik_name' => 'Ник',
+        'full_name' => 'ФИО',
+        'passcode' => 'Код подтверждения',
+        'status_id' => 'ID статуса',
+        'status' => 'Статус',
+        'password' => 'Пароль',
+        'date_add' => 'Дата создания',
+        'contacts' => 'Контакты',
+        'user_state' => 'Состояние',
+        'user_role' => 'Роль',
+        'sex' => 'Пол'
+    ];
 
     public function __construct(DB $DB, $id = null, $settings = null)
     {
         $this->doConstruct($DB, 'users', $id, $settings);
     }
-
+    
     public function registerUser(array $params)
     {
         //проверяем необходимые параметры

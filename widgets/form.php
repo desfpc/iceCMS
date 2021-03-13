@@ -13,7 +13,7 @@ use ice\Web\Form;
 //TODO вывод ошибок (при js и серверной валидации)
 
 //Заполнение тестового массива для разработки (и далее документации)
-$formArr = [
+/*$formArr = [
     'method' => 'POST',
     'id' => 'testForm',
     'paramIdFormula' => '%formId%_%paramName%', //авто формирование id полей формы - возможные варианты - %formId%, %paramName%
@@ -190,7 +190,16 @@ $formArr = [
         ]
     ]
 ];
-$this->params['form'] = $formArr; //переопределяем поля из тестового массива TODO убрать после отладки
+$this->params['form'] = $formArr; //переопределяем поля из тестового массива TODO убрать после отладки*/
+
+if(!isset($this->params['form']) || !is_array($this->params['form']) || count($this->params['form']) == 0){
+    throw new Exception('No form array');
+}
+
+//$this->params['errors'] - ошибки валидации. Сразу делаем проверку, что бы не повторять в коде
+if(!isset($this->params['errors']) || !is_array($this->params['errors'])){
+    $this->params['errors'] = [];
+}
 
 $formArr = $this->params['form'];
 
@@ -224,6 +233,11 @@ function makeInputParams($input,$paramIdFormula,$noClass=false,$noValue=false){
         if(isset($input['class'])){
             $class.=' '.$input['class'];
         }
+
+        if(key_exists($input['name'],$this->params['errors'])){
+            $class.=' is-invalid';
+        }
+
         $params.=' class="'.$class.'"';
     }
 

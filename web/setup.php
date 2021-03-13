@@ -27,8 +27,9 @@ require_once($defaultDir . '/settings/default.php');
 //заменяем путь по умолчанию на $defaultDir
 $setup['path'] = $defaultDir;
 
-//визуализатор переменных для отладки
-require_once($defaultDir . '/classes/visualijoper_remote/visualijoper.php');
+//подключение зависимостей
+//require_once($defaultDir . '/classes/visualijoper_remote/visualijoper.php');
+require_once ('../vendor/autoload.php');
 
 //обработка формы настроек
 if (isset($_POST['doSetup'])) {
@@ -37,7 +38,7 @@ if (isset($_POST['doSetup'])) {
     if (isset($_POST['path']) && !is_dir($_POST['path'])) {
         $errors[] = 'Директории "' . $_POST['path'] . '" не существует!';
         $errorValues['path'] = true;
-    } elseif (!is_dir($_POST['path'] . '/classes/ice')) {
+    } elseif (!is_dir($_POST['path'] . '/vendor/desfpc/ice')) {
         $errors[] = 'Не обнаружено директории "' . $_POST['path'] . '/classes/ice' . '"';
         $errorValues['path'] = true;
     }
@@ -88,8 +89,8 @@ if (isset($_POST['doSetup'])) {
     //visualijop($newSetup, 'Новый массив с настройками');
 
     //подключаем нужные классы
-    require_once($defaultDir . '/classes/ice/Settings/Settings.php');
-    require_once($defaultDir . '/classes/ice/DB/DB.php');
+    require_once($defaultDir . '/vendor/desfpc/ice/Settings/Settings.php');
+    require_once($defaultDir . '/vendor/desfpc/ice/DB/DB.php');
 
     $iceSetup = new ice\Settings\Settings($newSetup);
     //visualijop($iceSetup,'Класс настроек');
@@ -118,8 +119,8 @@ if (isset($_POST['doSetup'])) {
 
     //проверка соединения с Redis
     if ($newSetup['cache']['use_redis']) {
-        require_once($defaultDir . '/classes/redka_remote/redka.php');
-        require_once($defaultDir . '/classes/ice/DB/Cacher.php');
+        //require_once($defaultDir . '/vendor/desfpc/redka/redka.php');
+        require_once($defaultDir . '/vendor/desfpc/ice/DB/Cacher.php');
 
         $cacher = new ice\DB\Cacher($iceSetup->cache->redis_host, $iceSetup->cache->redis_port);
 
@@ -149,6 +150,7 @@ if (isset($_POST['doSetup'])) {
         if ($sqlFile = file_get_contents($defaultDir . '/sql/ice.sql')) {
             if (!$iceDB->multiQuery($sqlFile)) {
                 $errors[] = 'Не получилось развернуть БД';
+                //\visualijoper\visualijoper::visualijop($iceDB);
             }
         } else {
             $errors[] = 'Не могу прочитать SQL файл для разворачивания БД';

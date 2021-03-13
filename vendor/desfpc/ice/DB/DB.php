@@ -158,18 +158,21 @@ class DB
                 case 'mysql':
 
                     if (!$res = $this->mysqli->multi_query($query)) {
-                        $this->warning->flag = 1;
 
-                        if (!isset($this->warning->text)) {
-                            $this->warning->text = [];
-                        }
+                        do{
 
-                        $this->warning->text[] = 'Ошибка выполнения запроса: ' . $query;
-                        return false;
+                            $this->warning->flag = 1;
+
+                            if (!isset($this->warning->text)) {
+                                $this->warning->text = [];
+                            }
+
+                            $this->warning->text[] = 'Ошибка выполнения запроса: ' . $query;
+                            return false;
+
+                        } while(mysqli_more_results($this->mysqli) && mysqli_next_result($this->mysqli));
+
                     }
-
-                    while ($this->mysqli->next_result()) {
-                    }//flush multi_queries
 
                     return true;
 
