@@ -152,7 +152,8 @@ class File extends Obj
                     mkdir($dirpatch, 0750);
                 }
 
-                $this->paramsFromPost();
+                //TODO изменение параметров из POST запроса - в разработке
+                //$this->params = array_merge($this->params,$this->paramsFromPost());
 
                 if ($private) {
                     $privateInt = 1;

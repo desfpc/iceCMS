@@ -83,7 +83,7 @@ class Obj
             $this->cols = $cols;
         } else {
             $query = 'SHOW COLUMNS FROM ' . $this->dbtable;
-            //visualijoper\visualijoper::visualijop($query);
+
             if ($res = $this->DB->query($query)) {
                 if (count($res) > 0) {
                     $this->cols = $res;
@@ -97,6 +97,21 @@ class Obj
     public static function formatDate($date)
     {
         return date('d.m.Y H:i', strtotime($date));
+    }
+
+    public function paramsFromPost(){
+        $post = $_REQUEST;
+
+        $params = [];
+
+        foreach ($this->cols as $col){
+            if(isset($post[$col['Field']])){
+                $params[$col['Field']] = $post[$col['Field']];
+            }
+        }
+
+        return $params;
+
     }
 
     //заполенние полей объекта(таблицы) из values
