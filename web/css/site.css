@@ -729,6 +729,20 @@ a.good:hover {
     font-weight: bold;
     text-align: right;
 }
+.goodItem__price {
+    font-size: 18px;
+    text-align: right;
+    clear: both;
+    padding: 10px 40px 0 0;
+}
+.goodItem__price span {
+    font-weight: bold;
+}
+.btn.btn-cart {
+    margin-left: 10px;
+}
+
+/* Horizontal menu (Example - Catalog) */
 .hMenu {
     width: 100%;
     background: #e4ecf5;
@@ -754,13 +768,4 @@ a.good:hover {
 }
 .hMenu_link:last-child {
     border-radius: 0 0 .25rem .25rem;
-}
-.goodItem__price {
-    font-size: 18px;
-    text-align: right;
-    clear: both;
-    padding: 10px 40px 0 0;
-}
-.goodItem__price span {
-    font-weight: bold;
 }
