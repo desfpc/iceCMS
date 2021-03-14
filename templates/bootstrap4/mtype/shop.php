@@ -81,6 +81,9 @@ $goods = $goods->getRecords();
 
                 echo '<div class="col-md-4">';
 
+                //добавляем в $good параметр cart для вывода кнопки "в корзину"
+                $good['cart'] = true;
+
                 $wGood = new Widget($this->DB, 'good', $this->settings);
                 $wGood->show($good);
 
