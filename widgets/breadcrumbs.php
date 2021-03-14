@@ -33,7 +33,7 @@ if ($ctypes > 0) {
         if ($lastActive && $i == $ctypes) {
             $text .= '<li class="breadcrumb-item active" aria-current="page">' . $type['name'] . '</li>';
         } else {
-            $text .= '<li class="breadcrumb-item"><a href="' . $url . '/' . '">' . $type['name'] . '</a></li>';
+            $text .= '<li class="breadcrumb-item"><a href="' . $url . '">' . $type['name'] . '</a></li>';
         }
     }
 }
