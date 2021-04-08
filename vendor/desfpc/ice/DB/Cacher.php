@@ -25,6 +25,11 @@ class Cacher
     public $errors = [];
     private $redis;
 
+    /**
+     * Cacher constructor.
+     * @param string $host
+     * @param int $port
+     */
     public function __construct($host = 'localhost', $port = 6379)
     {
         $this->status = 0;
@@ -48,7 +53,13 @@ class Cacher
 
     }
 
-    public function has($key)
+    /**
+     * Проверка на наличае ключа в кэше
+     *
+     * @param $key
+     * @return bool
+     */
+    public function has($key): bool
     {
         if ($this->status) {
             $this->key = $key;
@@ -57,6 +68,12 @@ class Cacher
         return false;
     }
 
+    /**
+     * Поиск ключей в кэше
+     *
+     * @param string $pattern
+     * @return array|false|int|string|null
+     */
     public function findKeys($pattern = '*')
     {
         if ($this->status) {
@@ -65,6 +82,13 @@ class Cacher
         return false;
     }
 
+    /**
+     * Получение значения по ключу
+     *
+     * @param $key
+     * @param false $decode
+     * @return array|false|int|mixed|string|null
+     */
     public function get($key, $decode = false)
     {
         if ($this->status) {
@@ -81,7 +105,15 @@ class Cacher
         return false;
     }
 
-    public function set($key, $value, $expired = null)
+    /**
+     * Установка значения по ключу
+     *
+     * @param $key
+     * @param $value
+     * @param null $expired
+     * @return bool
+     */
+    public function set($key, $value, $expired = null): bool
     {
         if ($this->status) {
             $this->key = $key;
@@ -96,7 +128,13 @@ class Cacher
         return false;
     }
 
-    public function del($key)
+    /**
+     * Удаление значения
+     *
+     * @param $key
+     * @return bool
+     */
+    public function del($key): bool
     {
         if ($this->status) {
             $this->key = $key;
