@@ -319,6 +319,29 @@ ul.slimmenu > li {
     color: #606975;
     font-size: 12px;
     padding: 0 20px;
+    position: relative;
+    cursor: pointer;
+}
+.header-cart__details {
+    position: absolute;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    box-shadow: 0 3px 25px 0 rgba(47, 56, 68, 0.22);
+    right: -3px;
+    top: -3px;
+    background: #ffffff;
+    line-height: normal;
+    padding: 10px 0;
+    text-align: left;
+    min-width: 200px;
+    display: none;
+}
+.header-cart__goods {
+    list-style-type: none;
+    padding: 0 6px;
+}
+.header-cart__details a {
+    margin: 0 0 3px 6px;
 }
 
 .hline {

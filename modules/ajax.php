@@ -70,10 +70,20 @@ switch ($this->values->action) {
                 }
 
                 $allCost = 0;
+                $allCnt = 0;
                 foreach ($_SESSION['cart']['goods'] as $good){
                     $allCost += $good['cost'];
+                    $allCnt += $good['count'];
                 }
 
+                $_SESSION['cart']['allCost'] = $allCost;
+                $_SESSION['cart']['allCnt'] = $allCnt;
+
+                $this->moduleData->res = [
+                    'goods' => $_SESSION['cart']['goods'],
+                    'allCost' => $allCost,
+                    'allCnt' => $allCnt
+                ];
 
                 break;
             //удаление товара из корзины

@@ -103,10 +103,42 @@ if ($this->authorize->secure == 1) {
                     }
                     ?>
                 </div>
-            </div>
+            </div><?php
+
+            $allCost = 0; //полная стоимость заказа
+            $allCnt = 0; //полное кол-во товаров
+
+            if(isset($_SESSION['cart'])) {
+                if(isset($_SESSION['cart']['allCost'])) {
+                    $allCost = $_SESSION['cart']['allCost'];
+                }
+                if(isset($_SESSION['cart']['allCnt'])) {
+                    $allCnt = $_SESSION['cart']['allCnt'];
+                }
+            }
+
+            ?>
             <div class="normalblock border rounded header-cart">
-                <i class="material-icons md-24 md-dark">shopping_basket</i>&nbsp;&nbsp;0&nbsp;&nbsp;<span
-                    class="hline"></span>&nbsp;&nbsp;0₽
+                <i class="material-icons md-24 md-dark">shopping_basket</i><span class="header-cart__cnt">&nbsp;&nbsp;<?=$allCnt?>&nbsp;&nbsp;</span><span class="hline"></span><span class="header-cart__cost">&nbsp;&nbsp;<strong><?=$allCost?></strong>₽</span>
+                <div class="header-cart__details">
+                    <ul class="header-cart__goods">
+                        <?php
+
+                        if(isset($_SESSION['cart']['goods']) && is_array($_SESSION['cart']['goods']) && count($_SESSION['cart']['goods']) > 0) {
+                            foreach ($_SESSION['cart']['goods'] as $good) {
+                                if($good['count'] > 0) {
+                                    echo '<li>';
+                                    echo $good['name'].' ('.$good['count'].'шт)';
+                                    echo '</li>';
+                                }
+                            }
+                        }
+
+                        ?>
+                    </ul>
+                    <hr>
+                    <a href="/cart">Перейти в корзину</a>
+                </div>
             </div>
         </div>
     </div>
