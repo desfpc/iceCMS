@@ -178,6 +178,7 @@ INSERT INTO `material_types` VALUES (4, 'Документация', 3, 'document
 INSERT INTO `material_types` VALUES (5, 'Изображения', 3, 'images', 1, NULL, NULL, NULL, NULL, NULL, NULL, 10, NULL, NULL, 'Images', 'Bilder');
 INSERT INTO `material_types` VALUES (6, 'Для разработки', 3, 'for-development', 100, NULL, NULL, NULL, 5, NULL, NULL, 10, 1, NULL, 'For development', 'Zu entwickeln');
 INSERT INTO `material_types` VALUES (7, 'Каталог', 0, 'catalog', 2, 1, 6, 7, 5, 1, 1, 20, NULL, NULL, 'Catalog', 'Katalog');
+INSERT INTO `material_types` VALUES (9, 'Корзина', 0, 'cart', 3, NULL, 11, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Cart', 'Korb');
 
 -- ----------------------------
 -- Table structure for materials
@@ -295,6 +296,7 @@ INSERT INTO `templates` VALUES (5, 'all_admin', 'Полный', 3, 'Шаблон
 INSERT INTO `templates` VALUES (6, 'catalog', 'Каталог список', 2, 'Список товаров, разделы каталога');
 INSERT INTO `templates` VALUES (7, 'catalog_item', 'Каталог - товар', 1, 'Детализация товара');
 INSERT INTO `templates` VALUES (8, 'text', 'Текстовый раздел', 2, 'В списке показывается детализация последнего активного материала');
+INSERT INTO `templates` VALUES (9, 'cart', 'Корзина', 2, 'Отображение товаров, добавленных в корзину; оформление заказа');
 
 -- ----------------------------
 -- Table structure for translates

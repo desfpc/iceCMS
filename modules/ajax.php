@@ -86,16 +86,39 @@ switch ($this->values->action) {
                 ];
 
                 break;
-            //удаление товара из корзины
-            case 'delete':
+            //изменение кол-ва товаров
+            case 'edit':
+
+                $this->getRequestValue('count');
+                $this->values->count = (int)$this->values->count;
+                if($this->values->count <= 0){
+                    $this->values->count = 0;
+                }
+
+                if(!isset($_SESSION['cart'])){
+                    $_SESSION['cart'] = [];
+                }
+
+                if(!isset($_SESSION['cart']['goods'][$id])){
+                    $_SESSION['cart']['goods'][$id] = [
+                        'id' => $id,
+                        'count' => $this->values->count,
+                        'name' => $mat->params['name'],
+                        'price' => $mat->params['price'],
+                        'cost' => $this->values->count * $mat->params['price']
+                    ];
+                }
+                else {
+                    $_SESSION['cart']['goods'][$id]['count'] = $this->values->count;
+                    $_SESSION['cart']['goods'][$id]['price'] = $mat->params['price'];
+                    $_SESSION['cart']['goods'][$id]['cost'] = $this->values->count * $mat->params['price'];
+                }
+
+
 
                 break;
             //добавление товара в список wishlist
             case 'wishAdd':
-
-                break;
-            //удаление товара из списка wishlist
-            case 'wishDelete':
 
                 break;
         }

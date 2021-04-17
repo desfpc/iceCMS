@@ -11,8 +11,6 @@ use ice\Web\Widget;
 
 $material = $this->moduleData->material->params;
 
-\visualijoper\visualijoper::visualijop($material);
-
 ?>
 <div class="row">
     <div class="col-lg-3" style="min-width: 200px;">

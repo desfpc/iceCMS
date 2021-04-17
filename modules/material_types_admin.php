@@ -152,7 +152,7 @@ switch ($this->values->mode) {
             }
         }
 
-        if (!is_null($matType->params['parent_id']) && $matType->params['parent_id'] != '') {
+        if (!is_null($matType->params['parent_id']) && $matType->params['parent_id'] != '' && $matType->params['parent_id'] != 0) {
             $parentType = new MatType($this->DB, $matType->params['parent_id']);
             $parentType->getRecord();
             $this->moduleData->parentName = $parentType->params['name'];

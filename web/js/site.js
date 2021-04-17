@@ -44,6 +44,22 @@ $(function () {
         document.location.href = '/cart';
     });
 
+    //cart change count
+    $('.cart-good-cnt').change(function () {
+        //console.log($(this).val());
+        //console.log($(this).attr('data'));
+
+        let id = $(this).attr('data');
+        let val = $(this).val();
+
+        $.ajax({
+            method: "POST",
+            url: "/?menu=ajax&action=cart&type=add&id="+id,
+        });
+
+
+    });
+
     //to cart btn click
     $('.btn-cart').click(function (e) {
 
