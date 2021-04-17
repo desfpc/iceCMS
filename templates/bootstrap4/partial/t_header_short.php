@@ -60,7 +60,7 @@ if ($this->authorize->secure == 1) {
         $navigation->show($this->materialTypes);
 
         ?>
-        <div class="col-md-2" style="margin-bottom: 18px; text-align: right;">
+        <div class="col-lg-2" style="margin-bottom: 18px; text-align: right;">
             <div class="normalblock border rounded-circle header-round">
                 <i class="material-icons md-24 md-dark">search</i>
             </div>
@@ -110,7 +110,7 @@ if ($this->authorize->secure == 1) {
 
             if(isset($_SESSION['cart'])) {
                 if(isset($_SESSION['cart']['allCost'])) {
-                    $allCost = $_SESSION['cart']['allCost'];
+                    $allCost = $_SESSION['cart']['allFormatedCost'];
                 }
                 if(isset($_SESSION['cart']['allCnt'])) {
                     $allCnt = $_SESSION['cart']['allCnt'];
@@ -119,7 +119,7 @@ if ($this->authorize->secure == 1) {
 
             ?>
             <div class="normalblock border rounded header-cart">
-                <i class="material-icons md-24 md-dark">shopping_basket</i><span class="header-cart__cnt">&nbsp;&nbsp;<?=$allCnt?>&nbsp;&nbsp;</span><span class="hline"></span><span class="header-cart__cost">&nbsp;&nbsp;<strong><?=$allCost?></strong>₽</span>
+                <i class="material-icons md-24 md-dark">shopping_basket</i><span class="header-cart__cnt">&nbsp;&nbsp;<?=$allCnt?>&nbsp;&nbsp;</span><span class="hline"></span><span class="header-cart__cost">&nbsp;&nbsp;<strong><?=$allCost?></strong></span>
                 <div class="header-cart__details">
                     <ul class="header-cart__goods">
                         <?php

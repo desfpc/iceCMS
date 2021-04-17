@@ -311,16 +311,16 @@ ul.slimmenu > li {
 .header-cart {
     height: 44px;
     line-height: 44px;
-    width: auto;
     white-space: nowrap;
     margin: 20px 0 0 0;
     border-radius: 1.3rem !important;
     text-align: center;
     color: #606975;
     font-size: 12px;
-    padding: 0 20px;
+    padding: 0 5px;
     position: relative;
     cursor: pointer;
+    width: 140px;
 }
 .header-cart__details {
     position: absolute;

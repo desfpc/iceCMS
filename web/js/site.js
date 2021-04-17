@@ -45,7 +45,7 @@ $(function () {
     });
 
     //cart change count
-    $('.cart-good-cnt').change(function () {
+    $('.cart-good-cnt').keyup(function () {
         //console.log($(this).val());
         //console.log($(this).attr('data'));
 
@@ -54,11 +54,46 @@ $(function () {
 
         $.ajax({
             method: "POST",
-            url: "/?menu=ajax&action=cart&type=add&id="+id,
+            url: "/?menu=ajax&action=cart&type=edit&id="+id+"&count="+val,
+            dataType: "json"
+        }).done(function ( res ) {
+            console.log(res);
+
+            changeCartVidget (res);
+            changeCart (res);
         });
 
 
     });
+
+    function changeCart(res) {
+        $('.cart_allCnt').html(res.allCnt);
+        $('.cart_allCost').html(res.allFormatedCost);
+
+        let goods = res.goods;
+        let out = '';
+
+        $.each( goods, function( i, e ) {
+            $('.cart_cost_' + e.id).html(e.formatedCost);
+        });
+
+    }
+
+    function changeCartVidget(res) {
+        $('.header-cart__cost').html('&nbsp;&nbsp;<strong>'+res.allFormatedCost+'</strong>');
+        $('.header-cart__cnt').html('&nbsp;&nbsp;'+res.allCnt+'&nbsp;&nbsp;');
+
+        let goods = res.goods;
+        let out = '';
+
+        $.each( goods, function( i, e ) {
+            out += '<li>';
+            out += e.name + ' (' + e.count + 'шт)';
+            out += '</li>';
+        });
+
+        $('.header-cart__goods').html(out);
+    }
 
     //to cart btn click
     $('.btn-cart').click(function (e) {
@@ -70,23 +105,9 @@ $(function () {
             method: "POST",
             url: "/?menu=ajax&action=cart&type=add&id="+id,
             dataType: "json"
-        }).done(function( res ) {
-            console.log(res);
+        }).done(function (res) {
 
-            $('.header-cart__cost').html('&nbsp;&nbsp;<strong>'+res.allCost+'</strong>₽');
-            $('.header-cart__cnt').html('&nbsp;&nbsp;'+res.allCnt+'&nbsp;&nbsp;');
-
-            let goods = res.goods;
-            console.log(typeof goods);
-            let out = '';
-
-            $.each( goods, function( i, e ) {
-                out += '<li>';
-                out += e.name + ' (' + e.count + 'шт)';
-                out += '</li>';
-            });
-
-            $('.header-cart__goods').html(out);
+            changeCartVidget (res);
 
         });
 

@@ -20,6 +20,29 @@ $this->moduleData = new stdClass();
 
 $this->getRequestValue('action');
 
+
+function makeCartAllCost() {
+    $allCost = 0;
+    $allCnt = 0;
+    foreach ($_SESSION['cart']['goods'] as $good){
+        $allCost += $good['cost'];
+        $allCnt += $good['count'];
+        $_SESSION['cart']['goods'][$good['id']]['formatedCost'] = Mat::price($good['cost']);
+        $_SESSION['cart']['goods'][$good['id']]['formatedPrice'] = Mat::price($good['price']);
+    }
+
+    $_SESSION['cart']['allCost'] = $allCost;
+    $_SESSION['cart']['allFormatedCost'] = Mat::price($allCost);
+    $_SESSION['cart']['allCnt'] = $allCnt;
+
+    return [
+        'goods' => $_SESSION['cart']['goods'],
+        'allCost' => $allCost,
+        'allFormatedCost' => Mat::price($allCost),
+        'allCnt' => $allCnt
+    ];
+}
+
 switch ($this->values->action) {
 
     //работа с корзиной
@@ -27,10 +50,10 @@ switch ($this->values->action) {
 
         $this->getRequestValues(['type','id']);
 
-        $type = (int)$this->values->type;
+        $type = $this->values->type;
         $id = (int)$this->values->id;
 
-        $types = ['add','delete','wishAdd','wishDelete'];
+        $types = ['add','edit','wishAdd','wishEdit'];
 
         if(!in_array($type,$types)){
             die(json_encode(['success' => false, 'message' => 'Wrong Type']));
@@ -69,21 +92,7 @@ switch ($this->values->action) {
                     $_SESSION['cart']['goods'][$id]['cost'] = $_SESSION['cart']['goods'][$id]['count'] * $mat->params['price'];
                 }
 
-                $allCost = 0;
-                $allCnt = 0;
-                foreach ($_SESSION['cart']['goods'] as $good){
-                    $allCost += $good['cost'];
-                    $allCnt += $good['count'];
-                }
-
-                $_SESSION['cart']['allCost'] = $allCost;
-                $_SESSION['cart']['allCnt'] = $allCnt;
-
-                $this->moduleData->res = [
-                    'goods' => $_SESSION['cart']['goods'],
-                    'allCost' => $allCost,
-                    'allCnt' => $allCnt
-                ];
+                $this->moduleData->res = makeCartAllCost();
 
                 break;
             //изменение кол-ва товаров
@@ -114,7 +123,7 @@ switch ($this->values->action) {
                     $_SESSION['cart']['goods'][$id]['cost'] = $this->values->count * $mat->params['price'];
                 }
 
-
+                $this->moduleData->res = makeCartAllCost();
 
                 break;
             //добавление товара в список wishlist

@@ -17,7 +17,7 @@ $allCnt = 0;
 $goodsOut = '';
 
 if(isset($_SESSION['cart'])){
-    $allCost = $_SESSION['cart']['allCost'];
+    $allCost = $_SESSION['cart']['allFormatedCost'];
     $allCnt = $_SESSION['cart']['allCnt'];
     $cartGoods = '';
 
@@ -59,9 +59,9 @@ if(isset($_SESSION['cart'])){
 
             $goodsOut.='<td>' . $favicon . '</td>';
             $goodsOut.='<td><a href="' . $url . '">' . $material['name'] . '</a></td>';
-            $goodsOut.='<td>' . Mat::price($_SESSION['cart']['goods'][$material['id']]['price']) . '</td>';
+            $goodsOut.='<td>' . $_SESSION['cart']['goods'][$material['id']]['formatedPrice'] . '</td>';
             $goodsOut.='<td><input type="text" data="' . $material['id'] . '" class="form-control cart-good-cnt" value="' . $_SESSION['cart']['goods'][$material['id']]['count'] . '"></td>';
-            $goodsOut.='<td><b>' . Mat::price($_SESSION['cart']['goods'][$material['id']]['cost']) . '</b></td>';
+            $goodsOut.='<td><b class="cart_cost_' . $material['id'] . '">' . $_SESSION['cart']['goods'][$material['id']]['formatedCost'] . '</b></td>';
 
             $goodsOut.= '</tr>';
         }
@@ -85,8 +85,8 @@ if(isset($_SESSION['cart'])){
             <?=$goodsOut?>
             <tr>
                 <td colspan="3">
-                <th><?=$allCnt?></th>
-                <th><?=Mat::price($allCost)?></th>
+                <th class="cart_allCnt"><?=$allCnt?></th>
+                <th class="cart_allCost"><?=$allCost?></th>
             </tr>
         </table>
     </div>
