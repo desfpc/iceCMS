@@ -4,6 +4,7 @@
  * PHP framework and CMS based on it.
  * https://github.com/desfpc/iceCMS
  * @var ice\Web\Render $this
+ * @var string $template_folder
  */
 
 use ice\Web\Widget;
