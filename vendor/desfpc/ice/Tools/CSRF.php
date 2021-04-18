@@ -20,6 +20,7 @@ class CSRF
     private $token = null;
     private $key;
     private $salt;
+    private $prepared = false;
 
     /**
      * CSRF constructor.
@@ -57,6 +58,20 @@ class CSRF
     }
 
     /**
+     * Выводит input с токеном
+     *
+     * @return bool
+     */
+    public function printInput() {
+
+        if($this->prepared){
+            echo '<input type="hidden" name="_csrf" value="'.$this->getToken().'">';
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * получаем ключ
      *
      * @return mixed
@@ -65,7 +80,7 @@ class CSRF
     {
         return $this->key;
     }
-    
+
     /**
      * формируем CSRF токен
      *
@@ -76,6 +91,7 @@ class CSRF
         $this->makeKey();
         $this->token = hash('tiger192,3', 'CSRF_' . $this->salt . $this->key);
         $_SESSION['CSRF_' . $this->key] = $this->token;
+        $this->prepared = true;
         return true;
     }
 
