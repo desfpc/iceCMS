@@ -1,4 +1,5 @@
 .idea/
+.github/
 composer.lock
 settings/settings.php
 vendor/composer/
@@ -18,3 +19,4 @@ vendor/sebastian/
 vendor/symfony/
 vendor/theseer/
 vendor/webmozart/
+web/files/
