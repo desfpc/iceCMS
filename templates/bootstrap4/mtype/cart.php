@@ -6,12 +6,10 @@
  * @var ice\Web\Render $this
  */
 
-use ice\Models\Mat;
 use ice\Models\MatList;
 use ice\Models\MatType;
 use ice\Models\File;
 use ice\Tools\CSRF;
-//use visualijoper\visualijoper;
 
 $allCost = 0;
 $allCnt = 0;
@@ -19,6 +17,21 @@ $goodsOut = '';
 
 //получение переменных с формы
 $this->getRequestValues(['email','telegram','name','comment']);
+
+//сохранение заказа
+if($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if(isset($_SESSION['cart']) && isset($_SESSION['cart']['allCost']) && (float)$_SESSION['cart']['allCost'] > 0){
+
+        //TODO проверка CSRF
+
+        //TODO регистрация/авторизация пользователя (если нужно)
+
+        //TODO запись заказа
+
+        //TODO отсылка уведомлений
+
+    }
+}
 
 if(isset($_SESSION['cart'])){
     $allCost = $_SESSION['cart']['allFormatedCost'];
