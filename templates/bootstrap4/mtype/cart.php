@@ -152,6 +152,12 @@ if(isset($_SESSION['cart'])){
 </div><?php
 } else {
     ?>
-
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="alert alert-secondary" role="alert">
+                В корзине нет товаров
+            </div>
+        </div>
+    </div>
     <?php
 }
