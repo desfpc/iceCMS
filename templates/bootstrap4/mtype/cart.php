@@ -18,7 +18,7 @@ $allCnt = 0;
 $goodsOut = '';
 
 //получение переменных с формы
-$this->getRequestValues(['email','telegram']);
+$this->getRequestValues(['email','telegram','name','comment']);
 
 if(isset($_SESSION['cart'])){
     $allCost = $_SESSION['cart']['allFormatedCost'];
@@ -71,20 +71,17 @@ if(isset($_SESSION['cart'])){
         }
     }
 
-}
-
-?>
-<div class="row">
+    ?><div class="row">
     <div class="col-sm-12">
         <table class="table">
             <thead class="thead-dark">
-                <tr>
-                    <th></th>
-                    <th>Товар</th>
-                    <th>Стоимость</th>
-                    <th>Кол-во</th>
-                    <th>Итого</th>
-                </tr>
+            <tr>
+                <th></th>
+                <th>Товар</th>
+                <th>Стоимость</th>
+                <th>Кол-во</th>
+                <th>Итого</th>
+            </tr>
             </thead>
             <?=$goodsOut?>
             <tr>
@@ -96,9 +93,13 @@ if(isset($_SESSION['cart'])){
         <?php
         $emailForm = true;
         $telegramForm = true;
+        $nameForm = true;
         //определение полей для авторизации пользователя
         if($this->authorize->autorized) {
             $emailForm = false;
+            if($this->authorize->user->params['full_name'] != ''){
+                $nameForm = false;
+            }
             $contacts = $this->authorize->user->params['contacts'];
             if($contacts != '') {
                 if($contacts = json_decode($contacts, true)) {
@@ -111,30 +112,46 @@ if(isset($_SESSION['cart'])){
 
         $csfr = new CSRF($this->settings,'store_request');
 
-        $emailForm = true;
-        $telegramForm = true;
+        /*$emailForm = true;
+        $nameForm = true;
+        $telegramForm = true;*/
 
         ?>
         <h2>Оформление заказа:</h2>
+        <p>&nbsp;</p>
         <form method="post" action="/cart">
             <?php $csfr->printInput(); ?>
-            <div class="row">
-            <?= $emailForm ? '<div class="col-md-6 form-group">
-        <label for="email">Email адрес</label>
-        <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp"
-               placeholder="your@email.com" required value="'.$this->values->email.'">
-        <small id="emailHelp" class="form-text text-muted">Является login-ом на сайте. Другие пользователи его не увидят. Обязательно.</small>
-    </div>' : '' ?>
-            <?= $telegramForm ? '<div class="col-md-6 form-group">
-        <label for="telegram">Telegram логин или номер телефона</label>
-        <input type="text" class="form-control" id="telegram" name="telegram" aria-describedby="telegramHelp"
-               placeholder="79991122333" value="'.$this->values->telegram.'">
-               <small id="telegramHelp" class="form-text text-muted">Вводится для оповещения о статусе заказа через Telegram. Не обязатьельно.</small>
-    </div>' : '' ?>
-            </div>
-            <div class="row">
-                
-            </div>
+<?= $emailForm ? '
+            <div class="row"><div class="col-md-12 form-group">
+                <label for="email">Email адрес</label>
+                <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" placeholder="your@email.com" required value="'.$this->values->email.'">
+                <small id="emailHelp" class="form-text text-muted">Является login-ом на сайте. Другие пользователи его не увидят. Обязательно.</small>
+            </div></div>' : '' ?>
+<?= $telegramForm ? '
+            <div class="row"><div class="col-md-12 form-group">
+                <label for="telegram">Telegram логин или номер телефона</label>
+                <input type="text" class="form-control" id="telegram" name="telegram" aria-describedby="telegramHelp" placeholder="79991122333" value="'.$this->values->telegram.'">
+                <small id="telegramHelp" class="form-text text-muted">Вводится для оповещения о статусе заказа через Telegram. Не обязатьельно.</small>
+            </div></div>' : '' ?>
+<?= $nameForm ? '
+            <div class="row"><div class="col-md-12 form-group">
+                <label for="name">Ваше имя</label>
+                <input type="text" class="form-control" id="name" name="name" aria-describedby="nameHelp" placeholder="Дарт Вейдер" value="'.$this->values->name.'">
+                <small id="telegramHelp" class="form-text text-muted">Как к Вам обращаться? Не обязатьельно.</small>
+            </div></div>' : '' ?>
+            <div class="row"><div class="col-md-12 form-group">
+                <label for="comment">Комментарий к заказу</label>
+                <textarea class="form-control" id="comment" name="comment" aria-describedby="commentHelp"><?=$this->values->comment?></textarea>
+                <small id="commentHelp" class="form-text text-muted">Комментарий к заказу. Не обязатьельно.</small>
+            </div></div>
+            <div class="row"><div class="col-md-12 form-group">
+                <button type="submit" class="btn btn-success"><i class="material-icons md-24 md-light">shopping_basket</i> Оформить заказ</button>
+            </div></div>
         </form>
     </div>
-</div>
+</div><?php
+} else {
+    ?>
+
+    <?php
+}
