@@ -179,6 +179,7 @@ INSERT INTO `material_types` VALUES (5, 'Изображения', 3, 'images', 1
 INSERT INTO `material_types` VALUES (6, 'Для разработки', 3, 'for-development', 100, NULL, NULL, NULL, 5, NULL, NULL, 10, 1, NULL, 'For development', 'Zu entwickeln');
 INSERT INTO `material_types` VALUES (7, 'Каталог', 0, 'catalog', 2, 1, 6, 7, 5, 1, 1, 20, NULL, NULL, 'Catalog', 'Katalog');
 INSERT INTO `material_types` VALUES (9, 'Корзина', 0, 'cart', 3, NULL, 11, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Cart', 'Korb');
+INSERT INTO `material_types` VALUES (10, 'Настойки интернет магазина', 3, 'online-store-settings', 3, NULL, NULL, NULL, NULL, NULL, NULL, 100, NULL, NULL, 'Online store settings', 'Online-Shop-Einstellungen');
 
 -- ----------------------------
 -- Table structure for materials

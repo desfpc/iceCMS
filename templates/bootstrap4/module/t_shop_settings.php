@@ -19,6 +19,9 @@ $this->jsready .= '';
 
 include_once($template_folder . '/partial/t_header.php');
 
+//получение параметров
+$this->getRequestValues(['mode']);
+
 ?>
     <div class="container sitebody">
         <div class="row">
@@ -30,31 +33,10 @@ include_once($template_folder . '/partial/t_header.php');
             </div>
         </div>
         <?php
-
-        /*switch($this->values->mode){
-
-            //форма добавления
-            case 'add':
-                include_once ($template_folder.'/partial/material_types_admin/add.php');
-                break;
-
-            //форма изменения
-            case 'edit':
-                include_once ($template_folder.'/partial/material_types_admin/edit.php');
-                break;
-
-            //удаление
-            case 'delete':
-                include_once ($template_folder.'/partial/material_types_admin/delete.php');
-                break;
-
-            //списвок структуры материалов
-            default:
-                include_once ($template_folder.'/partial/material_types_admin/list.php');
-                break;
-
-        }*/
-
+        //TODO выводим настройки магазина
+        if(!empty($this->moduleData->settings)) {
+            
+        }
         ?>
     </div>
 <?php include_once($template_folder . '/partial/t_footer.php');
