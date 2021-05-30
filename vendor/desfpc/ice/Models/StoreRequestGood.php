@@ -5,7 +5,7 @@
  * PHP framework and CMS based on it.
  * https://github.com/desfpc/iceCMS
  *
- * Store Request Class
+ * Store Request Good Class
  *
  */
 
@@ -13,7 +13,7 @@ namespace ice\Models;
 
 use ice\DB\DB;
 
-class StoreRequest extends Obj
+class StoreRequestGood extends Obj
 {
     /**
      * StoreRequest constructor. (подменяем создание объекта - прописываем железно целевую таблицу)
@@ -23,6 +23,6 @@ class StoreRequest extends Obj
      */
     public function __construct(DB $DB, $id = null, $settings = null)
     {
-        $this->doConstruct($DB, 'store_requests', $id, $settings);
+        $this->doConstruct($DB, 'store_requests_goods', $id, $settings);
     }
 }

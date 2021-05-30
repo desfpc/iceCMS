@@ -6,9 +6,14 @@
  * @var ice\Web\Render $this
  */
 
+use ice\Helpers\Strings;
+use ice\Messages\Message;
 use ice\Models\MatList;
 use ice\Models\MatType;
 use ice\Models\File;
+use ice\Models\StoreRequest;
+use ice\Models\StoreRequestGood;
+use ice\Models\User;
 use ice\Tools\CSRF;
 
 $allCost = 0;
@@ -16,20 +21,110 @@ $allCnt = 0;
 $goodsOut = '';
 
 //получение переменных с формы
-$this->getRequestValues(['email','telegram','name','comment']);
+$this->getRequestValues(['email','telegram','name','comment','_csrf']);
 
 //сохранение заказа
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if(isset($_SESSION['cart']) && isset($_SESSION['cart']['allCost']) && (float)$_SESSION['cart']['allCost'] > 0){
+    $allCost = (float)$_SESSION['cart']['allCost'];
+    if (isset($_SESSION['cart'], $_SESSION['cart']['allCost'], $_SESSION['cart']['goods'])
+        && $allCost > 0 && is_array($_SESSION['cart']['goods']) && count($_SESSION['cart']['goods']) > 0) {
 
-        //TODO проверка CSRF
+        //проверка CSRF
+        if (empty($this->values->_csrf) || !CSRF::checkCSFR('store_request', $this->values->_csrf)) {
+            $this->setFlash('error', ['Ошибка данных формы. Попробуйте отправить еще раз.']);
+            return;
+        }
 
-        //TODO регистрация/авторизация пользователя (если нужно)
+        //регистрация/авторизация пользователя (если нужно)
+        if($this->authorize->autorized) {
+            $userId = $this->authorize->user->id;
+        } else {
+            if($this->values->email != '' && Strings::checkEmail($this->values->email)) {
+                //генерируем, распихиваем переданные параметры в свойство params, заносим пользюка
+                $userPass = Strings::randomPassword(8);
+                $params = [
+                    'id' => null,
+                    'login_email' => $this->values->email,
+                    'login_phone' => $this->values->telegram,
+                    'nik_name' => $this->values->name,
+                    'full_name' => $this->values->name,
+                    'passcode' => null,
+                    'status_id' => 1,
+                    'password_input' => $userPass,
+                    'password' => null,
+                    'date_add' => null,
+                    'contacts' => null,
+                    'user_state' => null,
+                    'user_role' => 1,
+                    'sex' => null
+                ];
 
-        //TODO запись заказа
+                $user = new user($this->DB);
+                if ($user->registerUser($params)) {
+                    //TODO отсылка сообщения с паролем пользователя
+                    $message = new Message($this->settings, ['email']);
+
+                    $userId = $user->id;
+                } else {
+                    $this->setFlash('error', ['Ошибка регистрации пользователя']);
+                    return;
+                }
+            } else {
+                $this->setFlash('error', ['Не введен или не валидный E-mail пользователя']);
+                return;
+            }
+        }
+
+        //запись заказа
+        $params = [
+            'id' => null,
+            'user_id' => $userId,
+            'date_add' => null,
+            'date_edit' => null,
+            'status' => 'created',
+            'payment_method' => 'on_delivery',
+            'price' => $allCost,
+            'comment' => $this->values->comment
+        ];
+        $request = new StoreRequest($this->DB);
+        if(!$request->createRecord($params)) {
+            $this->setFlash('error', ['Ошибка при создании заказа']);
+            return;
+        }
+
+        //запись детализации заказа
+        $cartGoods = '';
+        foreach ($_SESSION['cart']['goods'] as $good) {
+            if ($cartGoods != '') {
+                $cartGoods .= ',';
+            }
+            $cartGoods .= $good['id'];
+        }
+        $conditions[] = [
+            'string' => false,
+            'type' => 'IN',
+            'col' => 'id',
+            'val' => $cartGoods
+        ];
+        $materials = new MatList($this->DB, $conditions, [['col' => 'name', 'sort' => 'ASC']], 1, 1000);
+        $goods = $materials->getRecords();
+
+        foreach ($goods as $material) {
+            $params = [
+                'request_id' => $request->id,
+                'good_id' => $material->id,
+                'price' => $_SESSION['cart']['goods'][$material['id']]['cost'],
+                'count' => $_SESSION['cart']['goods'][$material['id']]['count']
+            ];
+            $good = new StoreRequestGood();
+            $good->createRecord($params);
+        }
 
         //TODO отсылка уведомлений
 
+        //TODO очистка формы, сессии и кук от данных заказа
+
+        //TODO вывод рпезультата
     }
 }
 
@@ -43,7 +138,7 @@ if(isset($_SESSION['cart'])){
         //visualijoper::visualijop($_SESSION['cart']['goods']);
 
         foreach ($_SESSION['cart']['goods'] as $good) {
-            if($cartGoods != ''){
+            if ($cartGoods != '') {
                 $cartGoods .= ',';
             }
             $cartGoods .= $good['id'];
@@ -115,10 +210,8 @@ if(isset($_SESSION['cart'])){
             }
             $contacts = $this->authorize->user->params['contacts'];
             if($contacts != '') {
-                if($contacts = json_decode($contacts, true)) {
-                    if(key_exists('telegram', $contacts) && $contacts['telegram'] != '') {
-                        $telegramForm = false;
-                    }
+                if(($contacts = json_decode($contacts, true)) && !empty($contacts['telegram']) && $contacts['telegram'] != '') {
+                    $telegramForm = false;
                 }
             }
         }

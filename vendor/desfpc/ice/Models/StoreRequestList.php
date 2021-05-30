@@ -18,12 +18,13 @@ class StoreRequestList extends ObjectList
 
     /**
      * StoreRequestList constructor.
+     *
      * @param DB $DB
      * @param null $conditions
      * @param null $sort
      * @param int $page
      * @param int $perpage
-     * @param int $cachetime
+     * @param int $cachetimeё
      * @param null $settings
      */
     public function __construct(DB $DB, $conditions = null, $sort = null, $page = 1, $perpage = 20, $cachetime = 0, $settings = null)

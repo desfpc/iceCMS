@@ -44,12 +44,14 @@ class CSRF
     /**
      * проверяем CSFR
      *
-     * @param $key
+     * @param $formName
      * @param $token
      * @return bool
      */
-    public static function checkCSFR($key, $token): bool
+    public static function checkCSFR($formName, $token): bool
     {
+        if(!isset($_SESSION['CSRF_' . $formName])) return false;
+        $key = $_SESSION['CSRF_' . $formName];
 
         if (!isset($_SESSION['CSRF_' . $key])) return false;
         if ($token != $_SESSION['CSRF_' . $key]) return false;
@@ -91,6 +93,7 @@ class CSRF
         $this->makeKey();
         $this->token = hash('tiger192,3', 'CSRF_' . $this->salt . $this->key);
         $_SESSION['CSRF_' . $this->key] = $this->token;
+        $_SESSION['CSRF_' . $this->formName] = $this->key;
         $this->prepared = true;
         return true;
     }
@@ -102,5 +105,4 @@ class CSRF
     {
         $this->key = $this->formName . '_' . time() . '_' . rand(0, 1000);
     }
-
 }

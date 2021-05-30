@@ -13,8 +13,13 @@ namespace ice\Helpers;
 
 class Strings
 {
-
-    public static function makeCharId($text)
+    /**
+     * Создание char идентификатора из EN или RU текста
+     *
+     * @param $text
+     * @return string
+     */
+    public static function makeCharId($text): string
     {
 
         $id_char = Strings::Transliterate($text);
@@ -26,8 +31,12 @@ class Strings
 
     }
 
-    //формирование char_id из текста
-
+    /**
+     * Транслитерация текста
+     *
+     * @param $string
+     * @return array|string|string[]|null
+     */
     public static function Transliterate($string)
     {
         $table = array(
@@ -59,9 +68,13 @@ class Strings
         return $output;
     }
 
-    //проверка сложности пароля
-
-    public static function checkSecurePass($text)
+    /**
+     * проверка пароля на наличае необходимых символов
+     *
+     * @param $text
+     * @return bool
+     */
+    public static function checkSecurePass($text):bool
     {
         if (mb_strlen($text, 'utf8') < 6) {
             return false;
@@ -76,11 +89,34 @@ class Strings
         return false;
     }
 
-    public static function checkEmail($text)
+    /**
+     * Проверка email по маске
+     *
+     * @param $text
+     * @return bool
+     */
+    public static function checkEmail($text):bool
     {
         $pattern = '/^[a-z0-9_.\-]+@[a-z0-9_.\-]+\.[a-z0-9_.\-]+$/i';
         $res = preg_match($pattern, $text);
         return (bool)$res;
     }
 
+    /**
+     * Генерация случайной строки (пароля)
+     *
+     * @param int $len
+     * @return string
+     */
+    public static function randomPassword($len = 8):string
+    {
+        $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()_-+=?';
+        $pass = [];
+        $alphaLength = strlen($alphabet) - 1;
+        for ($i = 0; $i < $len; $i++) {
+            $n = rand(0, $alphaLength);
+            $pass[] = $alphabet[$n];
+        }
+        return implode($pass);
+    }
 }

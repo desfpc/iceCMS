@@ -22,6 +22,13 @@ class File extends Obj
         $this->doConstruct($DB, 'files', $id, $settings);
     }
 
+    /**
+     * @param $DB
+     * @param $file
+     * @param false $link
+     * @param false $ifArray
+     * @return array|string
+     */
     public static function formatIcon($DB, $file, $link = false, $ifArray = false)
     {
 
@@ -73,8 +80,14 @@ class File extends Obj
         return $dirpatch . '/' . $this->id;
     }
 
-    public static function formateSize($size)
+    /**
+     * @param int $size
+     * @return string
+     */
+    public static function formateSize($size): string
     {
+
+        $size = (int)$size;
 
         if ($size < 1024) {
             $size .= 'б';

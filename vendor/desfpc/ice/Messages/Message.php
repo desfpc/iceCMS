@@ -24,6 +24,12 @@ class Message
     public $types;
     public $settings;
 
+    /**
+     * Message constructor.
+     *
+     * @param Settings $settings
+     * @param string[] $types
+     */
     public function __construct(Settings $settings, $types = ['email'])
     {
 
@@ -44,15 +50,26 @@ class Message
 
     }
 
-    //send message
-
+    /**
+     * Формирование email заголовка TO
+     *
+     * @param $email
+     * @param $name
+     */
     public static function makeTo($email, $name)
     {
 
     }
 
-    //send email
-
+    /**
+     * Отсылка сообщения
+     *
+     * @param $to
+     * @param $subject
+     * @param $message
+     * @param array $attachments
+     * @return false
+     */
     public function send($to, $subject, $message, $attachments = [])
     {
 
@@ -68,8 +85,15 @@ class Message
         }
     }
 
-    //TODO create TO string from email and name strings
-
+    /**
+     * Отсылка email транспорт
+     *
+     * @param $to
+     * @param $subject
+     * @param $message
+     * @param array $attachments
+     * @return bool
+     */
     public function sendEmail($to, $subject, $message, $attachments = [])
     {
         $mail = new pechkin(

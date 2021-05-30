@@ -38,7 +38,7 @@ switch ($this->values->action) {
             $this->moduleData->errors[] = 'Введен не верный адрес электронной почты';
         } else {
             //генерируем, распихиваем переданные параметры в свойство params, заносим пользюка
-            $params = array(
+            $params = [
                 'id' => null,
                 'login_email' => $this->values->regEmail,
                 'login_phone' => $this->values->regTel,
@@ -53,7 +53,7 @@ switch ($this->values->action) {
                 'user_state' => null,
                 'user_role' => 1,
                 'sex' => null
-            );
+            ];
 
             $user = new user($this->DB);
             if ($user->registerUser($params)) {
