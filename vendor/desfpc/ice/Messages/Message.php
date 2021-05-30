@@ -28,9 +28,9 @@ class Message
      * Message constructor.
      *
      * @param Settings $settings
-     * @param string[] $types
+     * @param string|string[] $types
      */
-    public function __construct(Settings $settings, $types = ['email'])
+    public function __construct(Settings $settings, $types = 'email')
     {
 
         if (empty($types)) return false;
@@ -51,38 +51,45 @@ class Message
     }
 
     /**
-     * Формирование email заголовка TO
+     * Формирование email заголовка: "name <email>"
      *
      * @param $email
      * @param $name
+     * @return string
      */
-    public static function makeTo($email, $name)
+    public static function makeTo($email, $name): string
     {
-
+        if($name == '') return $email;
+        return $name.' <'.$email.'>';
     }
 
     /**
      * Отсылка сообщения
      *
-     * @param $to
-     * @param $subject
-     * @param $message
+     * @param string $to
+     * @param string $toName
+     * @param string $subject
+     * @param string $message
      * @param array $attachments
-     * @return false
+     * @return bool
      */
-    public function send($to, $subject, $message, $attachments = [])
+    public function send($to, $toName = '', $subject, $message, $attachments = [])
     {
-
         if (count($this->types) == 0) return false;
+        $errors = [];
 
         foreach ($this->types as $type) {
-
             switch ($type) {
                 case 'email':
-                    $this->sendEmail($to, $subject, $message, $attachments);
+                    if(!$this->sendEmail(self::makeTo($to, $toName), $subject, $message, $attachments)) {
+                        $errors[] = 'Ошибка отправки email';
+                    };
                     break;
             }
         }
+
+        if($errors) return false;
+        return true;
     }
 
     /**
@@ -94,7 +101,7 @@ class Message
      * @param array $attachments
      * @return bool
      */
-    public function sendEmail($to, $subject, $message, $attachments = [])
+    private function sendEmail($to, $subject, $message, $attachments = [])
     {
         $mail = new pechkin(
             $this->settings->email->smtp,
@@ -112,7 +119,7 @@ class Message
             }
         }
 
-        return $mail->send($this->settings->email->mail, $to, $subject, $message);
+        return $mail->send(SELF::makeTo($this->settings->email->mail, $this->settings->email->signature), $to, $subject, $message);
     }
 
 }

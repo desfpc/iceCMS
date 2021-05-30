@@ -35,9 +35,15 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             return;
         }
 
+        //объекты для рассылки уведомлений
+        $message = new Message($this->settings, 'email');
+        $telegram = new Message($this->settings, 'telegram');
+
         //регистрация/авторизация пользователя (если нужно)
         if($this->authorize->autorized) {
             $userId = $this->authorize->user->id;
+            $user = new User($this->DB, $userId);
+            $user->getRecord();
         } else {
             if($this->values->email != '' && Strings::checkEmail($this->values->email)) {
                 //генерируем, распихиваем переданные параметры в свойство params, заносим пользюка
@@ -61,8 +67,19 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 $user = new user($this->DB);
                 if ($user->registerUser($params)) {
-                    //TODO отсылка сообщения с паролем пользователя
-                    $message = new Message($this->settings, ['email']);
+                    //отсылка сообщения о регистрации с паролем пользователя
+                    $message->send(
+                        Message::makeTo($user->params['email'], $user->params['full_name']),
+                        'Регистрация в интернет-магазине "'.$this->settings->site->title.'"',
+                        '<h1>Регистрация в интернет-магазине "'.$this->settings->site->title.'"</h1>
+                                <p>&nbsp;</p>
+                                <p>Уважаемый(ая), '.$user->params['full_name'].'</p>
+                                <p>Вы успешно зарегистрировались в интернет-магазине!</p>
+                                <p>&nbsp;</p>
+                                <p>Авторизационные данные:</p>
+                                <p>email: '.$user->params['email'].'</p>
+                                <p>пароль: '.$userPass.'</p>'
+                    );
 
                     $userId = $user->id;
                 } else {
@@ -94,6 +111,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         //запись детализации заказа
         $cartGoods = '';
+        $requestGoods = ''; //вывод товаров для уведомления письма
         foreach ($_SESSION['cart']['goods'] as $good) {
             if ($cartGoods != '') {
                 $cartGoods .= ',';
@@ -118,9 +136,46 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             ];
             $good = new StoreRequestGood();
             $good->createRecord($params);
+            $requestGoods .= '
+                              <p><strong>'.$material->params['anons'].'</strong> 
+                              '.$_SESSION['cart']['goods'][$material['id']]['formatedPrice'].' 
+                              '.$_SESSION['cart']['goods'][$material['id']]['count'].'шт 
+                              итого: <strong>'.$_SESSION['cart']['goods'][$material['id']]['formatedCost'].'</strong></p>';
         }
 
-        //TODO отсылка уведомлений
+        //отсылка уведомлений
+        $message->send(
+            $user->params['email'],
+            $user->params['full_name'],
+            'Заказ в интернет-магазине "'.$this->settings->site->title.'" №'.$request->id,
+            '<h1>Заказ в интернет-магазине "'.$this->settings->site->title.'"  №'.$request->id.'</h1>
+                     <p>&nbsp;</p>
+                     <p>Уважаемый(ая), '.$user->params['full_name'].'</p>
+                     <p>Вы сделали заказ в интернет-магазине!</p>
+                     <p>&nbsp;</p>
+                     <h2><strong>Данные заказа:</strong></h2>
+                     <p>email пользователя: '.$user->params['email'].'</p>
+                     <p>сумма заказа: <strong>'.$_SESSION['cart']['allFormatedCost'].'</strong></p>
+                     <p>&nbsp;</p>
+                     <h2>Заказанные товары:</h2>
+                     '.$requestGoods
+        );
+        $message->send(
+            $user->params['email'],
+            $user->params['full_name'],
+            'Заказ в интернет-магазине "'.$this->settings->site->title.'" №'.$request->id,
+            '<h1>Заказ в интернет-магазине "'.$this->settings->site->title.'"  №'.$request->id.'</h1>
+                     <p>&nbsp;</p>
+                     <p>Уважаемый(ая), '.$user->params['full_name'].'</p>
+                     <p>Вы сделали заказ в интернет-магазине!</p>
+                     <p>&nbsp;</p>
+                     <h2><strong>Данные заказа:</strong></h2>
+                     <p>email пользователя: '.$user->params['email'].'</p>
+                     <p>сумма заказа: <strong>'.$_SESSION['cart']['allFormatedCost'].'</strong></p>
+                     <p>&nbsp;</p>
+                     <h2>Заказанные товары:</h2>
+                     '.$requestGoods
+        );
 
         //TODO очистка формы, сессии и кук от данных заказа
 
