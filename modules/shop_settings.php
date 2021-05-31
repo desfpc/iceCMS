@@ -9,6 +9,8 @@
  *
  */
 
+use ice\Helpers\Strings;
+use ice\Models\Mat;
 use ice\Models\MatList;
 
 //секурность
@@ -40,4 +42,26 @@ if(!$res = $this->DB->query($query)) {
 
     $settings = new MatList($this->DB, $conditions, $sort, 1, 100);
     $this->moduleData->settings = $settings->records;
+
+    $this->getRequestValues(['mode, name, value']);
+
+    switch ($this->values->mode) {
+        //обработка добавления настройки
+        case 'add':
+            if (!empty($this->values->name) && !empty($this->values->value)) {
+                $mat = new Mat($this->DB);
+                $params = [
+                    'name' => $this->values->name,
+                    'anons' => $this->values->value,
+                    'id_char' => Strings::makeCharId($this->values->name),
+                    'material_type_id' => $settingsId,
+                    'language' => 1,
+                    'date_add' => 'CURRENT_TIMESTAMP',
+                    'user_id' => $this->authorize->user->id,
+                    'status_id' => 1
+                ];
+                $mat->createRecord($params);
+            }
+            break;
+    }
 }
