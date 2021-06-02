@@ -75,8 +75,8 @@ switch ($this->values->mode) {
             $this->values->material_type_id = (int)$this->values->material_type_id;
         }
 
-        $matType = new matType($this->DB, intval($this->values->material_type_id));
-        if (!$matType->getRecord(intval($this->values->material_type_id))) {
+        $matType = new matType($this->DB, (int)$this->values->material_type_id);
+        if (!$matType->getRecord((int)$this->values->material_type_id)) {
             //$this->warnings[] = 'Для создания материала выберите тип';
             $this->setFlash('errors', ['Для создания материала выберите его тип']);
             $this->redirect('/admin/materials_admin');

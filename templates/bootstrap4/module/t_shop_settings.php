@@ -50,9 +50,9 @@ $this->getRequestValues(['mode']);
                         <?php
                         foreach ($this->moduleData->settings as $setting) {
                             ?><tr>
-                                <td><?= $setting->params['id'] ?></td>
-                                <td><?= $setting->params['name'] ?></td>
-                                <td><?= $setting->params['anons'] ?></td>
+                                <td><?= $setting['id'] ?></td>
+                                <td><?= $setting['name'] ?></td>
+                                <td><?= $setting['anons'] ?></td>
                                 <td></td>
                             </tr><?php
                         }

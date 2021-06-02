@@ -119,13 +119,13 @@ class QueryBuilder
                 //в зависимости от типа колонки, рисуем кавычки на значение
                 if (mb_stripos($col['Type'], 'char', 0, 'UTF-8') !== false || mb_stripos($col['Type'], 'text', 0, 'UTF-8') !== false || mb_stripos($col['Type'], 'enum', 0, 'UTF-8') !== false) {
 
-                    if (is_null($this->params[$col['Field']])) {
+                    if (!isset($this->params[$col['Field']]) || is_null($this->params[$col['Field']])) {
                         $pout .= 'NULL';
                     } else {
                         $pout .= "'" . $this->DB->mysqli->real_escape_string($this->params[$col['Field']]) . "'";
                     }
                 } else {
-                    if (!isset($this->params[$col['Field']]) || is_null($this->params[$col['Field']])) {
+                    if (!isset($this->params[$col['Field']]) || is_null($this->params[$col['Field']]) || ($this->params[$col['Field']] == 'CURRENT_TIMESTAMP')) {
                         if ($col['Field'] == 'date_add' || $col['Field'] == 'date_event' || $col['Field'] == 'date_end' || $col['Field'] == 'date_edit') {
                             $pout .= 'NOW()';
                         } else {

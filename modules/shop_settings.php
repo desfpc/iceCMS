@@ -5,7 +5,7 @@
  * https://github.com/desfpc/iceCMS
  * @var ice\Web\Render $this
  *
- * TODO online commerce shop settings module
+ * online commerce shop settings module
  *
  */
 
@@ -40,10 +40,7 @@ if(!$res = $this->DB->query($query)) {
     //сортировки
     $sort[] = ['col' => 'id', 'sort' => 'desc'];
 
-    $settings = new MatList($this->DB, $conditions, $sort, 1, 100);
-    $this->moduleData->settings = $settings->records;
-
-    $this->getRequestValues(['mode, name, value']);
+    $this->getRequestValues(['mode', 'name', 'value', 'id']);
 
     switch ($this->values->mode) {
         //обработка добавления настройки
@@ -60,8 +57,41 @@ if(!$res = $this->DB->query($query)) {
                     'user_id' => $this->authorize->user->id,
                     'status_id' => 1
                 ];
-                $mat->createRecord($params);
+                if ($mat->createRecord($params)) {
+                    $this->moduleData->success[] = 'Настройка успешно добавлена';
+                } else {
+                    $this->moduleData->errors[] = 'Не удалось сохранить настройку';
+                }
+            }
+            break;
+        //обработка изменения настройки
+        case 'edit':
+            if (!empty($this->values->name) && !empty($this->values->value) && !empty($this->values->id)) {
+                $doSave = false;
+                $mat = new Mat($this->DB);
+                $mat->getRecord((int)$this->values->id);
+                if ($this->values->name !== $mat->params['name']) {
+                    $mat->params['name'] = $this->values->name;
+                    $mat->params['id_char'] = Strings::makeCharId($this->values->name);
+                    $doSave = true;
+                }
+                if ($this->values->value !== $mat->params['anons']) {
+                    $mat->params['anons'] = $this->values->value;
+                    $doSave = true;
+                }
+                if ($doSave) {
+                    if ($mat->updateRecord()) {
+                        $this->moduleData->success[] = 'Настройка успешно изменена';
+                    } else {
+                        $this->moduleData->errors[] = 'Не удалось сохранить настройку';
+                    }
+                } else {
+                    $this->moduleData->errors[] = 'Нечего менять';
+                }
             }
             break;
     }
+
+    $settings = new MatList($this->DB, $conditions, $sort, 1, 100);
+    $this->moduleData->settings = $settings->getRecords();
 }

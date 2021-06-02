@@ -35,6 +35,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             return;
         }
 
+        //TODO получение настроек магазина
+
+
         //объекты для рассылки уведомлений
         $message = new Message($this->settings, 'email');
         $telegram = new Message($this->settings, 'telegram');
