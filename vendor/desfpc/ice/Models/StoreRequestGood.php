@@ -23,6 +23,6 @@ class StoreRequestGood extends Obj
      */
     public function __construct(DB $DB, $id = null, $settings = null)
     {
-        $this->doConstruct($DB, 'store_requests_goods', $id, $settings);
+        $this->doConstruct($DB, 'store_request_goods', $id, $settings);
     }
 }

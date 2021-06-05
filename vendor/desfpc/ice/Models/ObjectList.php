@@ -141,7 +141,7 @@ class ObjectList
             $query = str_replace('%subQuery%', $query, $parentQuery);
         }
 
-        //visualijoper\visualijoper::visualijop($query);
+        //\visualijoper\visualijoper::visualijop($query);
 
         if ($this->cacher->has($this->getCacheKey($query))) {
             $records = $this->cacher->get($this->cacheKey, true);
@@ -189,8 +189,6 @@ class ObjectList
         return ($this->cacheKey);
 
     }
-
-    //удаление из кэша списка
 
     public function cacheRecords()
     {

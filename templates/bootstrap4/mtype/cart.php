@@ -15,6 +15,7 @@ use ice\Models\StoreRequest;
 use ice\Models\StoreRequestGood;
 use ice\Models\User;
 use ice\Tools\CSRF;
+use ice\Web\Redirect;
 
 $allCost = 0;
 $allCnt = 0;
@@ -23,8 +24,36 @@ $goodsOut = '';
 //получение переменных с формы
 $this->getRequestValues(['email','telegram','name','comment','_csrf']);
 
+//получение настроек магазина TODO кэширование id настроек
+$query = "SELECT id FROM material_types WHERE id_char = 'online-store-settings'";
+if ($res = $this->DB->query($query)) {
+    $settingsId = $res[0]['id'];
+
+    $conditions[] = [
+        'string' => false,
+        'type' => '=',
+        'col' => 'material_type_id',
+        'val' => $settingsId
+    ];
+    $sort[] = ['col' => 'id', 'sort' => 'ASC'];
+    $settings = new MatList($this->DB, $conditions, $sort, 1, 100);
+    $settings = $settings->getRecords();
+
+    /**
+     * @var array $storeSettings настройки интернет-магазина
+     */
+    $storeSettings = [];
+
+    //меняем ключи настроек на char_id
+    foreach ($settings as $value) {
+        $storeSettings[$value['id_char']] = $value;
+    }
+    unset($settings);
+}
+
 //сохранение заказа
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
+
     $allCost = (float)$_SESSION['cart']['allCost'];
     if (isset($_SESSION['cart'], $_SESSION['cart']['allCost'], $_SESSION['cart']['goods'])
         && $allCost > 0 && is_array($_SESSION['cart']['goods']) && count($_SESSION['cart']['goods']) > 0) {
@@ -35,20 +64,21 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             return;
         }
 
-        //TODO получение настроек магазина
-
-
         //объекты для рассылки уведомлений
         $message = new Message($this->settings, 'email');
         $telegram = new Message($this->settings, 'telegram');
 
         //регистрация/авторизация пользователя (если нужно)
-        if($this->authorize->autorized) {
+        if ($this->authorize->autorized) {
             $userId = $this->authorize->user->id;
             $user = new User($this->DB, $userId);
             $user->getRecord();
         } else {
-            if($this->values->email != '' && Strings::checkEmail($this->values->email)) {
+            if ($this->values->email != '' && Strings::checkEmail($this->values->email)) {
+
+                //TODO проверяем пользователя по email
+                $query = "";
+
                 //генерируем, распихиваем переданные параметры в свойство params, заносим пользюка
                 $userPass = Strings::randomPassword(8);
                 $params = [
@@ -72,7 +102,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                 if ($user->registerUser($params)) {
                     //отсылка сообщения о регистрации с паролем пользователя
                     $message->send(
-                        Message::makeTo($user->params['email'], $user->params['full_name']),
+                        $user->params['login_email'],
+                        $user->params['full_name'],
                         'Регистрация в интернет-магазине "'.$this->settings->site->title.'"',
                         '<h1>Регистрация в интернет-магазине "'.$this->settings->site->title.'"</h1>
                                 <p>&nbsp;</p>
@@ -80,7 +111,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <p>Вы успешно зарегистрировались в интернет-магазине!</p>
                                 <p>&nbsp;</p>
                                 <p>Авторизационные данные:</p>
-                                <p>email: '.$user->params['email'].'</p>
+                                <p>email: '.$user->params['login_email'].'</p>
                                 <p>пароль: '.$userPass.'</p>'
                     );
 
@@ -121,26 +152,28 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
             $cartGoods .= $good['id'];
         }
-        $conditions[] = [
+        $conditions = [[
             'string' => false,
             'type' => 'IN',
             'col' => 'id',
             'val' => $cartGoods
-        ];
+        ]];
         $materials = new MatList($this->DB, $conditions, [['col' => 'name', 'sort' => 'ASC']], 1, 1000);
         $goods = $materials->getRecords();
 
         foreach ($goods as $material) {
+
             $params = [
                 'request_id' => $request->id,
-                'good_id' => $material->id,
+                'good_id' => $material['id'],
                 'price' => $_SESSION['cart']['goods'][$material['id']]['cost'],
                 'count' => $_SESSION['cart']['goods'][$material['id']]['count']
             ];
-            $good = new StoreRequestGood();
+
+            $good = new StoreRequestGood($this->DB);
             $good->createRecord($params);
             $requestGoods .= '
-                              <p><strong>'.$material->params['anons'].'</strong> 
+                              <p><strong>'.$material['anons'].'</strong> 
                               '.$_SESSION['cart']['goods'][$material['id']]['formatedPrice'].' 
                               '.$_SESSION['cart']['goods'][$material['id']]['count'].'шт 
                               итого: <strong>'.$_SESSION['cart']['goods'][$material['id']]['formatedCost'].'</strong></p>';
@@ -148,7 +181,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         //отсылка уведомлений
         $message->send(
-            $user->params['email'],
+            $user->params['login_email'],
             $user->params['full_name'],
             'Заказ в интернет-магазине "'.$this->settings->site->title.'" №'.$request->id,
             '<h1>Заказ в интернет-магазине "'.$this->settings->site->title.'"  №'.$request->id.'</h1>
@@ -157,32 +190,37 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                      <p>Вы сделали заказ в интернет-магазине!</p>
                      <p>&nbsp;</p>
                      <h2><strong>Данные заказа:</strong></h2>
-                     <p>email пользователя: '.$user->params['email'].'</p>
+                     <p>email пользователя: '.$user->params['login_email'].'</p>
                      <p>сумма заказа: <strong>'.$_SESSION['cart']['allFormatedCost'].'</strong></p>
                      <p>&nbsp;</p>
                      <h2>Заказанные товары:</h2>
                      '.$requestGoods
         );
-        $message->send(
-            $user->params['email'],
-            $user->params['full_name'],
-            'Заказ в интернет-магазине "'.$this->settings->site->title.'" №'.$request->id,
-            '<h1>Заказ в интернет-магазине "'.$this->settings->site->title.'"  №'.$request->id.'</h1>
-                     <p>&nbsp;</p>
-                     <p>Уважаемый(ая), '.$user->params['full_name'].'</p>
-                     <p>Вы сделали заказ в интернет-магазине!</p>
+
+        if (!empty($storeSettings['E-mail-uvedomlenij'])) {
+            $message->send(
+                $storeSettings['E-mail-uvedomlenij']['anons'],
+                'Администратор '.$this->settings->site->title,
+                'Заказ в интернет-магазине "'.$this->settings->site->title.'" №'.$request->id,
+                '<h1>Заказ в интернет-магазине "'.$this->settings->site->title.'"  №'.$request->id.'</h1>
                      <p>&nbsp;</p>
                      <h2><strong>Данные заказа:</strong></h2>
-                     <p>email пользователя: '.$user->params['email'].'</p>
+                     <p>email пользователя: '.$user->params['login_email'].'</p>
                      <p>сумма заказа: <strong>'.$_SESSION['cart']['allFormatedCost'].'</strong></p>
                      <p>&nbsp;</p>
                      <h2>Заказанные товары:</h2>
                      '.$requestGoods
-        );
+            );
+        }
 
-        //TODO очистка формы, сессии и кук от данных заказа
+        //TODO отсылка Telegram уведомления
 
-        //TODO вывод рпезультата
+        //очистка сессии от данных заказа
+        unset($_SESSION['cart']);
+
+        //вывод рпезультата
+        $this->setFlash('success', ['Заказ успешно создан. Менеджер магазина свяжется с Вами для подтверждения заказа.']);
+        //new Redirect('/cart');
     }
 }
 
@@ -202,38 +240,40 @@ if(isset($_SESSION['cart'])){
             $cartGoods .= $good['id'];
         }
 
-        $conditions[] = [
+        $conditions = [[
             'string' => false,
             'type' => 'IN',
             'col' => 'id',
             'val' => $cartGoods
-        ];
+        ]];
         $materials = new MatList($this->DB, $conditions, [['col' => 'name', 'sort' => 'ASC']], 1, 1000);
         $goods = $materials->getRecords();
 
-        foreach ($goods as $material) {
-            $goodsOut .= '<tr>';
+        if (!empty($goods)) {
+            foreach ($goods as $material) {
+                $goodsOut .= '<tr>';
 
-            if ($material['favicon'] != '') {
-                $file = ['id' => $material['favicon']];
-                $favicon = File::formatIcon($this->DB, $file, true);
-            } else {
-                $favicon = '';
+                if ($material['favicon'] != '') {
+                    $file = ['id' => $material['favicon']];
+                    $favicon = File::formatIcon($this->DB, $file, true);
+                } else {
+                    $favicon = '';
+                }
+
+                $mtype = new MatType($this->DB, $material['material_type_id']);
+                $mtype->getRecord();
+                $mtype->getURL();
+
+                $url = $mtype->url . '/' . $material['id_char'];
+
+                $goodsOut.='<td>' . $favicon . '</td>';
+                $goodsOut.='<td><a href="' . $url . '">' . $material['name'] . '</a></td>';
+                $goodsOut.='<td>' . $_SESSION['cart']['goods'][$material['id']]['formatedPrice'] . '</td>';
+                $goodsOut.='<td><input type="text" data="' . $material['id'] . '" class="form-control cart-good-cnt" value="' . $_SESSION['cart']['goods'][$material['id']]['count'] . '"></td>';
+                $goodsOut.='<td><b class="cart_cost_' . $material['id'] . '">' . $_SESSION['cart']['goods'][$material['id']]['formatedCost'] . '</b></td>';
+
+                $goodsOut.= '</tr>';
             }
-
-            $mtype = new MatType($this->DB, $material['material_type_id']);
-            $mtype->getRecord();
-            $mtype->getURL();
-
-            $url = $mtype->url . '/' . $material['id_char'];
-
-            $goodsOut.='<td>' . $favicon . '</td>';
-            $goodsOut.='<td><a href="' . $url . '">' . $material['name'] . '</a></td>';
-            $goodsOut.='<td>' . $_SESSION['cart']['goods'][$material['id']]['formatedPrice'] . '</td>';
-            $goodsOut.='<td><input type="text" data="' . $material['id'] . '" class="form-control cart-good-cnt" value="' . $_SESSION['cart']['goods'][$material['id']]['count'] . '"></td>';
-            $goodsOut.='<td><b class="cart_cost_' . $material['id'] . '">' . $_SESSION['cart']['goods'][$material['id']]['formatedCost'] . '</b></td>';
-
-            $goodsOut.= '</tr>';
         }
     }
 
@@ -263,11 +303,11 @@ if(isset($_SESSION['cart'])){
         //определение полей для авторизации пользователя
         if($this->authorize->autorized) {
             $emailForm = false;
-            if($this->authorize->user->params['full_name'] != ''){
+            if ($this->authorize->user->params['full_name'] != '') {
                 $nameForm = false;
             }
             $contacts = $this->authorize->user->params['contacts'];
-            if($contacts != '') {
+            if ($contacts != '') {
                 if(($contacts = json_decode($contacts, true)) && !empty($contacts['telegram']) && $contacts['telegram'] != '') {
                     $telegramForm = false;
                 }

@@ -97,6 +97,8 @@ class QueryBuilder
 
         //visualijoper\visualijoper::visualijop($this->cols);
 
+        if (empty($this->cols)) throw new \Exception('Wrong DB Table "'.$this->table.'" Cols');
+
         foreach ($this->cols as $col) {
             $col = (array)$col;
 
@@ -112,9 +114,6 @@ class QueryBuilder
                 $pout .= 'NULL';
             } //вносим обычное значение
             else {
-
-                //visualijoper\visualijoper::visualijop($col['Type']);
-                //visualijoper\visualijoper::visualijop($this->params[$col['Field']]);
 
                 //в зависимости от типа колонки, рисуем кавычки на значение
                 if (mb_stripos($col['Type'], 'char', 0, 'UTF-8') !== false || mb_stripos($col['Type'], 'text', 0, 'UTF-8') !== false || mb_stripos($col['Type'], 'enum', 0, 'UTF-8') !== false) {
@@ -132,7 +131,8 @@ class QueryBuilder
                             $pout .= 'NULL';
                         }
                     } else {
-                        if ((mb_strpos($col['Type'], 'int', 0, 'UTF-8') === false) || (mb_strpos($col['Type'], 'real', 0, 'UTF-8') === false) && (!isset($this->params[$col['Field']]) || is_null($this->params[$col['Field']]) || $this->params[$col['Field']] === '')) {
+
+                        if (((mb_strpos($col['Type'], 'int', 0, 'UTF-8') === false) || (mb_strpos($col['Type'], 'real', 0, 'UTF-8') === false) || (mb_strpos($col['Type'], 'decimal', 0, 'UTF-8') === false)) && (!isset($this->params[$col['Field']]) || is_null($this->params[$col['Field']]) || $this->params[$col['Field']] === '')) {
                             $this->params[$col['Field']] = 'NULL';
                         }
 

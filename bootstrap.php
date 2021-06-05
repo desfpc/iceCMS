@@ -41,6 +41,9 @@ $iceClasses = [
     'Models/TemplateList',
     'Models/User',
     'Models/UserList',
+    'Models/StoreRequest',
+    'Models/StoreRequestGood',
+    'Models/StoreRequestList',
     'Web/Widget',
     'Web/Render',
     'Web/Form'
