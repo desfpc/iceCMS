@@ -60,7 +60,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         //проверка CSRF
         if (empty($this->values->_csrf) || !CSRF::checkCSFR('store_request', $this->values->_csrf)) {
-            $this->setFlash('error', ['Ошибка данных формы. Попробуйте отправить еще раз.']);
+            $this->setFlash('errors', ['Ошибка данных формы. Попробуйте отправить еще раз.']);
             return;
         }
 
@@ -76,8 +76,13 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         } else {
             if ($this->values->email != '' && Strings::checkEmail($this->values->email)) {
 
-                //TODO проверяем пользователя по email
-                $query = "";
+                //проверяем пользователя по email
+                $query = "SELECT count(id) cid FROM users WHERE login_email = '".$this->DB->mysqli->real_escape_string($this->values->email)."'";
+                if (($res = $this->DB->query($query)) && $res[0]['cid'] > 0) {
+                    //такой пользователь уже есть на сайте, просим его авторизироваться
+                    $this->setFlash('errors', ['Вы уже зарегистрированы на сайте. Пожалуйста авторизируйтесь для оформления заказа.']);
+                    new Redirect('/authorize');
+                }
 
                 //генерируем, распихиваем переданные параметры в свойство params, заносим пользюка
                 $userPass = Strings::randomPassword(8);
@@ -117,11 +122,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                     $userId = $user->id;
                 } else {
-                    $this->setFlash('error', ['Ошибка регистрации пользователя']);
+                    $this->setFlash('errors', ['Ошибка регистрации пользователя']);
                     return;
                 }
             } else {
-                $this->setFlash('error', ['Не введен или не валидный E-mail пользователя']);
+                $this->setFlash('errors', ['Не введен или не валидный E-mail пользователя']);
                 return;
             }
         }
@@ -139,7 +144,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         ];
         $request = new StoreRequest($this->DB);
         if(!$request->createRecord($params)) {
-            $this->setFlash('error', ['Ошибка при создании заказа']);
+            $this->setFlash('errors', ['Ошибка при создании заказа']);
             return;
         }
 
@@ -220,7 +225,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         //вывод рпезультата
         $this->setFlash('success', ['Заказ успешно создан. Менеджер магазина свяжется с Вами для подтверждения заказа.']);
-        //new Redirect('/cart');
+        new Redirect('/cart');
     }
 }
 

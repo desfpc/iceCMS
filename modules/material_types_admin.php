@@ -73,7 +73,7 @@ switch ($this->values->mode) {
         if ($extra->createRecord($extra->paramsFromValues($this->values))) {
             $this->setFlash('success', ['Дополнительное поле <strong>' . $this->values->name . '</strong> успешно создано']);
         } else {
-            $this->setFlash('error', ['Ошибка сохранения дополнительного поля']);
+            $this->setFlash('errors', ['Ошибка сохранения дополнительного поля']);
         }
 
         //visualijop($this);
