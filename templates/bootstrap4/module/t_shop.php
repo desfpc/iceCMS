@@ -11,6 +11,7 @@ use ice\Models\StoreRequestList;
 use ice\Helpers\Strings;
 use ice\Web\Widget;
 use ice\Models\RequestStatuses;
+use ice\Models\RequestPayments;
 
 $template_folder = $this->settings->path . '/templates/' . $this->settings->template . '';
 
@@ -45,6 +46,7 @@ $requests = new StoreRequestList($this->DB, $conditions, $sort, $page, $perpage)
 $requestsCnt = $requests->getCnt();
 $requests = $requests->getRecords();
 $statuses = new RequestStatuses();
+$payments = new RequestPayments();
 
 ?>
     <div class="container sitebody">
@@ -101,9 +103,9 @@ $statuses = new RequestStatuses();
                                         <br>'.$requestObj->params['user']['login_email'].$phone.'
                                      </td>
                                      <td style="background-color: '.$statuses->GetColor($requestObj->params['status']).'">'.$statuses->GetName($requestObj->params['status']).'</td>
-                                     <td>Оплата /<br>доставка</td>
-                                     <td>Заказ</td>
-                                     <td>Действия</td>
+                                     <td>оплата: <strong>'.$payments->GetName($requestObj->params['payment_method']).'</strong></td>
+                                     <td></td>
+                                     <td></td>
                                  </tr>';
                        }
                        echo '</tbody>';
