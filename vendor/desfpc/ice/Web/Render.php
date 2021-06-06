@@ -150,8 +150,6 @@ class Render
 
     }
 
-    //TODO функция разбора REST
-
     public function getRequestValues($valuesnames, $mode = 0)
     {
 
@@ -161,8 +159,6 @@ class Render
         $this->values = $rv->returnValues();
 
     }
-
-    //функция разбора юрла
 
     public function unsetValues()
     {
@@ -175,8 +171,6 @@ class Render
         }
         return true;
     }
-
-    //функция загрузки модуля
 
     public function showErrors()
     {

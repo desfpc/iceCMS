@@ -6,6 +6,7 @@
  * @var ice\Web\Render $this
  */
 
+use ice\Models\Mat;
 use ice\Models\StoreRequest;
 use ice\Models\StoreRequestList;
 use ice\Helpers\Strings;
@@ -47,6 +48,8 @@ $requestsCnt = $requests->getCnt();
 $requests = $requests->getRecords();
 $statuses = new RequestStatuses();
 $payments = new RequestPayments();
+
+\visualijoper\visualijoper::visualijop($this->materialTypes);
 
 ?>
     <div class="container sitebody">
@@ -104,7 +107,21 @@ $payments = new RequestPayments();
                                      </td>
                                      <td style="background-color: '.$statuses->GetColor($requestObj->params['status']).'">'.$statuses->GetName($requestObj->params['status']).'</td>
                                      <td>оплата: <strong>'.$payments->GetName($requestObj->params['payment_method']).'</strong></td>
-                                     <td></td>
+                                     <td>Стоимость: <strong>'.Mat::price($requestObj->params['price']).'</strong>
+                                        <hr />
+                                        <ul class="list-unstyled">
+                                            ';
+
+                           foreach ($requestObj->params['goods'] as $good) {
+                               $url = Mat::GetUrl($good, $this->materialTypes);
+                               echo '<li><a href="'.$url.'" target="_blank">'.$good['name'].' 
+                               '.$requestObj->params['goodsBuyParams'][$good['id']]['count'].'шт 
+                               '.Mat::price($requestObj->params['goodsBuyParams'][$good['id']]['price']).'</a></li>';
+                           }
+
+                           echo '
+                                        </ul>
+                                     </td>
                                      <td></td>
                                  </tr>';
                        }

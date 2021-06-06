@@ -13,18 +13,36 @@ namespace ice\Models;
 
 use ice\DB\DB;
 use ice\Helpers\Strings;
+use visualijoper\visualijoper;
 
+/**
+ * Class Mat
+ * @package ice\Models
+ */
 class Mat extends Obj
 {
 
     public $files = [];
     public $extraValues = [];
 
-    public function __construct(DB $DB, $id = null, $settings = null)
+    /**
+     * Mat constructor.
+     *
+     * @param DB $DB
+     * @param null|int $id
+     * @param null|array $settings
+     */
+    public function __construct(DB $DB, ?int $id = null, ?array $settings = null)
     {
         $this->doConstruct($DB, 'materials', $id, $settings);
     }
 
+    /**
+     * Price Formatter
+     *
+     * @param $price
+     * @return string
+     */
     public static function price($price)
     {
 
@@ -32,7 +50,11 @@ class Mat extends Obj
 
     }
 
-    public static function statusIcon($id)
+    /**
+     * @param int $id id статуса материала
+     * @return string
+     */
+    public static function statusIcon(int $id): string
     {
         $id = (int)$id;
         switch ($id) {
@@ -48,7 +70,11 @@ class Mat extends Obj
         }
     }
 
-    public static function statusName($id)
+    /**
+     * @param int $id id статуса материала
+     * @return string
+     */
+    public static function statusName(int $id): string
     {
         $id = (int)$id;
         switch ($id) {
@@ -64,6 +90,9 @@ class Mat extends Obj
         }
     }
 
+    /**
+     * @inheritDoc
+     */
     public function fullRecord()
     {
         $this->getMatTypeData();
@@ -72,6 +101,9 @@ class Mat extends Obj
         $this->getExtraValues();
     }
 
+    /**
+     * Формирование данных типа материала
+     */
     public function getMatTypeData()
     {
         $query = 'SELECT name, template_list, template_item, template_admin FROM material_types WHERE id = ' . $this->params['material_type_id'];
@@ -119,8 +151,9 @@ class Mat extends Obj
         }
     }
 
-    //функция дает иконку статуса материала
-
+    /**
+     * Формирование имя автора
+     */
     public function getUserName()
     {
         $query = 'SELECT full_name FROM users WHERE id = ' . $this->params['user_id'];
@@ -129,11 +162,11 @@ class Mat extends Obj
         }
     }
 
-    //функция дает название статуса материала TODO языки
-
+    /**
+     * Формирование списка файлов
+     */
     public function getFiles()
     {
-
         //получение списка файлов материала (прямой запрос, так как есть обязательная связка и нам надо поле индивидуальной сортировки)
         $query = 'SELECT f.*, m.ordernum 
         FROM files f, material_files m 
@@ -145,14 +178,13 @@ class Mat extends Obj
                 $this->files = $res;
             }
         }
-
     }
 
-    //подменяем создание объекта - прописываем железно целевую таблицу
-
+    /**
+     * Получение дополнительных параметров
+     */
     public function getExtraValues()
     {
-
         $conditions = [];
         $sort = [];
 
@@ -167,14 +199,16 @@ class Mat extends Obj
 
         $extraValues = new MatExtraValuesList($this->DB, $conditions, $sort, 1, 100);
         $this->extraValues = $extraValues->getRecords();
-
     }
 
-    //формирование списка параметров для редактирования/добавления запись из $this->values
-
+    /**
+     * Формирование параметров материала из REQUEST значений
+     *
+     * @param $values
+     * @return array
+     */
     public function paramsFromValues($values)
     {
-
         $params = $this->params;
         foreach ($this->cols as $col) {
             $valueName = $col['Field'];
@@ -196,9 +230,37 @@ class Mat extends Obj
                 }
             }
         }
-
         return $params;
+    }
 
+    /**
+     * Get Full Material URL
+     *
+     * @param array<string, mixed> $params
+     * @param array{types: array, childs: array} $types Material Types By Id (types) and Tree (childs)
+     * @return string
+     */
+    public static function GetUrl(array $params, array $types): string
+    {
+        $matType=$types['types'][$params['material_type_id']];
+        $url = '';
+        self::typesTree($matType['id'], $types, $url);
+        $url = $url.$params['id_char'];
+        return '/'.$url;
+    }
+
+    /**
+     * Обход дерева типов для постройки URL
+     *
+     * @param $type
+     * @param $types
+     * @param $url
+     */
+    private static function typesTree($type, $types, &$url) {
+        $url = $types['types'][$type]['id_char'].'/'.$url;
+        if($types['types'][$type]['parent_id'] != 0) {
+            self::typesTree($types['types'][$type]['parent_id'], $types, $url);
+        }
     }
 
 }
