@@ -62,8 +62,18 @@ $payments = new RequestPayments();
         <div class="row">
             <div class="col-9"><input type="text" class="form-control" placeholder="Поиск"></div>
             <div class="col-3">
-                <select class="form-control">
+                <select class="form-control" id="filterStatus">
                     <option value="all">Все статусы</option>
+                    <?php
+
+                    foreach ($statuses->GetList() as $status => $name) {
+                        if($this->values->status == $status) {
+                            $selected = ' SELECTED';
+                        } else { $selected = ''; }
+                        echo '<option value="'.$status.'"'.$selected.'>'.$name.'</option>';
+                    }
+
+                    ?>
                 </select>
             </div>
         </div>

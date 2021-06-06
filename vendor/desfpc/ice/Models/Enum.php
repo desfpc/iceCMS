@@ -46,6 +46,16 @@ abstract class Enum
     }
 
     /**
+     * Return Enums array
+     *
+     * @return string[]
+     */
+    public function GetList()
+    {
+        return $this->enums;
+    }
+
+    /**
      * Return Enum Name
      *
      * @param string $enum
