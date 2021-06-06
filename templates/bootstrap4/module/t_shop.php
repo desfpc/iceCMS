@@ -49,8 +49,6 @@ $requests = $requests->getRecords();
 $statuses = new RequestStatuses();
 $payments = new RequestPayments();
 
-\visualijoper\visualijoper::visualijop($this->materialTypes);
-
 ?>
     <div class="container sitebody">
         <div class="row">
