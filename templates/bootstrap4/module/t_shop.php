@@ -27,6 +27,9 @@ $this->jsready .= '';
 
 include_once($template_folder . '/partial/t_header.php');
 
+$statuses = new RequestStatuses();
+$payments = new RequestPayments();
+
 //Получение списка заказов
 $this->getRequestValues(['page','status','action','id','search']);
 //пейджинация
@@ -38,16 +41,33 @@ $page = (int)$this->values->page;
 if ($page < 1) {
     $page = 1;
 }
-$perpage = 2;
+$perpage = 20;
 $conditions = [];
+
+if($this->values->status != '' && $this->values->status != 'all' && !empty($statuses->GetList()[$this->values->status])) {
+    $conditions[] = [
+        'string' => true,
+        'type' => '=',
+        'col' => 'status',
+        'val' => $this->values->status
+    ];
+}
+
 $sort = [
     ['col' => 'date_add', 'sort' => 'DESC']
 ];
 $requests = new StoreRequestList($this->DB, $conditions, $sort, $page, $perpage);
 $requestsCnt = $requests->getCnt();
 $requests = $requests->getRecords();
-$statuses = new RequestStatuses();
-$payments = new RequestPayments();
+
+//JS для срабатывания фильтров
+$this->jsready .= "
+
+    $('#filterStatus').change(function(){
+        document.location.href='/admin/shop/?status='+$(this).val();
+    });
+
+";
 
 ?>
     <div class="container sitebody">
@@ -60,7 +80,7 @@ $payments = new RequestPayments();
             </div>
         </div>
         <div class="row">
-            <div class="col-9"><input type="text" class="form-control" placeholder="Поиск"></div>
+            <div class="col-9"><input type="text" class="form-control" placeholder="Поиск" id="filterSearch"></div>
             <div class="col-3">
                 <select class="form-control" id="filterStatus">
                     <option value="all">Все статусы</option>
