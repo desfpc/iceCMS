@@ -4,9 +4,10 @@
  * PHP framework and CMS based on it.
  * https://github.com/desfpc/iceCMS
  * @var ice\Web\Render $this
+ * @var string $template_folder
  */
 
-use ice\Models\Mat;
+use ice\Helpers\Strings;
 
 ?>
 <div class="form-group row">
@@ -18,10 +19,10 @@ use ice\Models\Mat;
             <input type="text" class="form-control datetimepicker" data-toggle="datetimepicker" id="date_event"
                    data-target="#date_event" name="date_event" aria-describedby="date_eventHelp"
                    placeholder="Дата события"
-                   value="<?= Mat::formatDate($this->moduleData->material->params['date_event']) ?>">
+                   value="<?= Strings::formatDate($this->moduleData->material->params['date_event']) ?>">
             <input type="text" class="form-control datetimepicker" data-toggle="datetimepicker" id="date_end"
                    data-target="#date_end" name="date_end" aria-describedby="date_endHelp" placeholder="Дата окончания"
-                   value="<?= Mat::formatDate($this->moduleData->material->params['date_end']) ?>">
+                   value="<?= Strings::formatDate($this->moduleData->material->params['date_end']) ?>">
         </div>
     </div><?php
 

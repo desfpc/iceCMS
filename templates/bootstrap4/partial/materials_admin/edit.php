@@ -7,6 +7,7 @@
  */
 
 use ice\Models\Mat;
+use ice\Helpers\Strings;
 
 $tmImageList = '[]';
 
@@ -23,7 +24,7 @@ $tmImageList = '[]';
     <div class="row">
         <div class="col-sm">
             <small>Автор: <strong><?= $this->moduleData->material->params['user_name'] ?></strong> &nbsp;|&nbsp;
-                Создано: <strong><?= Mat::formatDate($this->moduleData->material->params['date_add']) ?></strong> &nbsp;|&nbsp;
+                Создано: <strong><?= Strings::formatDate($this->moduleData->material->params['date_add']) ?></strong> &nbsp;|&nbsp;
                 Статус:
                 <strong><?= Mat::statusIcon($this->moduleData->material->params['status_id']) ?> <?= Mat::statusName($this->moduleData->material->params['status_id']) ?></strong>
                 &nbsp;|&nbsp;

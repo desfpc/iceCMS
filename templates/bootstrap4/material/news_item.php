@@ -6,13 +6,13 @@
  * @var ice\Web\Render $this
  */
 
-use ice\Models\Mat;
+use ice\Helpers\Strings;
 use ice\Web\Widget;
 
 $material = $this->moduleData->material->params; ?>
 <div class="row">
     <div class="col-sm-12">
-        <div class="newsItem__date"><?= Mat::formatDate($material['date_event']) ?></div>
+        <div class="newsItem__date"><?= Strings::formatDate($material['date_event']) ?></div>
         <div class="newsItem__content">
             <?php
 

@@ -72,8 +72,6 @@ class Mat extends Obj
         $this->getExtraValues();
     }
 
-    //расширяем стиандартный метод - к полям БД добавляем связанные данные
-
     public function getMatTypeData()
     {
         $query = 'SELECT name, template_list, template_item, template_admin FROM material_types WHERE id = ' . $this->params['material_type_id'];

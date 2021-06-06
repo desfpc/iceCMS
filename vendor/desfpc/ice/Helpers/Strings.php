@@ -119,4 +119,15 @@ class Strings
         }
         return implode($pass);
     }
+
+    /**
+     * Форматирование даты из БД
+     *
+     * @param string $date
+     * @return false|string
+     */
+    public static function formatDate($date)
+    {
+        return date('d.m.Y H:i', strtotime($date));
+    }
 }

@@ -15,11 +15,27 @@ use ice\DB\DB;
 
 class MatList extends ObjectList
 {
-    public function __construct(DB $DB, $conditions = null, $sort = null, $page = 1, $perpage = 20, $cachetime = 0, $settings = null)
+    /**
+     * MatList constructor.
+     *
+     * @param DB $DB
+     * @param array|null $conditions
+     * @param array|null $sort
+     * @param int $page
+     * @param int $perpage
+     * @param int $cachetime
+     * @param array|null $settings
+     */
+    public function __construct(DB $DB, ?array $conditions = null, ?array $sort = null, $page = 1, $perpage = 20, $cachetime = 0, $settings = null)
     {
         $this->doConstruct($DB, 'materials', $conditions, $sort, $page, $perpage, $cachetime, $settings);
     }
 
+    /**
+     * @inheritDoc
+     *
+     * @return string
+     */
     public function moreQuery()
     {
         $query = ',   (SELECT mt.name FROM material_types mt WHERE mt.id = dbtable.material_type_id) material_type_name,

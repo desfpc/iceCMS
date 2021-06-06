@@ -374,11 +374,45 @@ CREATE TABLE `users`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `us_email_idx`(`login_email`) USING BTREE,
   UNIQUE INDEX `us_phote_idx`(`login_phone`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES (10, 'admin@admin.local', '01', 'admin', 'Site administrator', NULL, 1, '$2y$10$/8iSwC.kqQfag6IXv0TCWuCCcnfuR4q3FitKw.JtQ8Z4OCZyWvl.a', '2021-01-28 08:30:02', NULL, NULL, 2, NULL);
+INSERT INTO `users` VALUES (1, 'admin@admin.local', '01', 'admin', 'Site administrator', NULL, 1, '$2y$10$/8iSwC.kqQfag6IXv0TCWuCCcnfuR4q3FitKw.JtQ8Z4OCZyWvl.a', '2021-01-28 08:30:02', NULL, NULL, 2, NULL);
+
+-- ----------------------------
+-- Table structure for store_requests
+-- ----------------------------
+DROP TABLE IF EXISTS `store_requests`;
+CREATE TABLE `store_requests` (
+  `id` INT(10) NOT NULL AUTO_INCREMENT,
+  `user_id` INT(10) NOT NULL DEFAULT '0',
+  `date_add` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_edit` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `status` ENUM('created','in_work','ready','completed','cancelled') NOT NULL DEFAULT 'created' CHARACTER SET utf8 COLLATE utf8_general_ci,
+  `payment_method` ENUM('on_delivery') NOT NULL DEFAULT 'on_delivery' CHARACTER SET utf8 COLLATE utf8_general_ci,
+  `price` DECIMAL(11,2) NULL DEFAULT NULL,
+  `comment` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `store_requests_user_idx` (`user_id`) USING BTREE,
+  INDEX `store_requests_status_idx` (`status`) USING BTREE,
+  CONSTRAINT `store_requests_user_idx` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON UPDATE CASCADE ON DELETE CASCADE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for store_request_goods
+-- ----------------------------
+DROP TABLE IF EXISTS `store_request_goods`;
+CREATE TABLE `store_request_goods` (
+  `request_id` INT(10) NOT NULL,
+  `good_id` INT(10) NOT NULL,
+  `price` DECIMAL(10,2) NOT NULL DEFAULT '0.00',
+  `count` INT(10) NOT NULL,
+  PRIMARY KEY (`request_id`, `good_id`) USING BTREE,
+  INDEX `FK_store_request_goods_materials` (`good_id`) USING BTREE,
+  CONSTRAINT `FK_store_request_goods_materials` FOREIGN KEY (`good_id`) REFERENCES `ice`.`materials` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT `FK_store_request_goods_store_requests` FOREIGN KEY (`request_id`) REFERENCES `ice`.`store_requests` (`id`) ON UPDATE CASCADE ON DELETE CASCADE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;

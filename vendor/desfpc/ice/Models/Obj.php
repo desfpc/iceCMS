@@ -19,7 +19,7 @@ use ice\Settings\Settings;
 class Obj
 {
 
-    public $DB;
+    public DB $DB;
     public $cols;
     public $params;
     public $id;
@@ -91,12 +91,6 @@ class Obj
                 }
             }
         }
-    }
-
-    //йформатирование даты из БД
-    public static function formatDate($date)
-    {
-        return date('d.m.Y H:i', strtotime($date));
     }
 
     public function paramsFromPost(){

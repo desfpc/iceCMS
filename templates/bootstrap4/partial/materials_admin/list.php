@@ -4,11 +4,13 @@
  * PHP framework and CMS based on it.
  * https://github.com/desfpc/iceCMS
  * @var ice\Web\Render $this
+ * @var string $template_folder
  */
 
 use ice\Models\File;
 use ice\Models\Mat;
 use ice\Web\Widget;
+use ice\Helpers\Strings;
 
 ?>
 <div class="row">
@@ -58,7 +60,7 @@ use ice\Web\Widget;
                                 <td>' . $favicon . '</td>
                                 <td>' . $material['name'] . '</td>
                                 <td>' . $material['material_type_name'] . '</td>
-                                <td><small>' . Mat::formatDate($material['date_add']) . '</small></td>
+                                <td><small>' . Strings::formatDate($material['date_add']) . '</small></td>
                                 <td><a href="/admin/materials_admin/?mode=edit&id=' . $material['id'] . '">
             <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Редактировать">
                 <i class="material-icons md-16 md-light">edit</i>

@@ -46,7 +46,9 @@ $iceClasses = [
     'Models/StoreRequestList',
     'Web/Widget',
     'Web/Render',
-    'Web/Form'
+    'Web/Form',
+    'Models/Enum',
+    'Models/RequestStatuses'
 ];
 
 foreach ($iceClasses as $iceClass) {

@@ -1,6 +1,7 @@
 <?php
 
 use ice\Models\File;
+use ice\Helpers\Strings;
 
 ?>
 <h2>Файлы:</h2>
@@ -41,7 +42,7 @@ use ice\Models\File;
                                 <td>' . $fileIcon . '</td>
                                 <td>' . $file['name'] . '</td>
                                 <td>' . $file['filename'] . '</td>
-                                <td>' . File::formatDate($file['date_add']) . '</td>
+                                <td>' . Strings::formatDate($file['date_add']) . '</td>
                                 <td>' . File::formateSize($file['size']) . '</td>
                                 <td></td>
                             </tr>';

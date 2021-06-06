@@ -6,7 +6,7 @@
  * @var ice\Web\Render $this
  */
 
-use ice\Models\File;
+use ice\Helpers\Strings;
 
 $template_folder = $this->settings->path . '/templates/' . $this->settings->template . '';
 
@@ -55,11 +55,11 @@ include_once($template_folder . '/partial/t_header.php');
                         foreach ($this->moduleData->files as $file) {
                             echo '<tr>
                                 <td>' . $file['id'] . '</td>
-                                <td>' . File::formatIcon($this->DB, $file, true) . '</td>
+                                <td>' . Strings::formatIcon($this->DB, $file, true) . '</td>
                                 <td>' . $file['name'] . '</td>
                                 <td>' . $file['filename'] . '</td>
-                                <td>' . File::formatDate($file['date_add']) . '</td>
-                                <td>' . File::formateSize($file['size']) . '</td>
+                                <td>' . Strings::formatDate($file['date_add']) . '</td>
+                                <td>' . Strings::formateSize($file['size']) . '</td>
                                 <td></td>
                                 <td></td>
                             </tr>';
