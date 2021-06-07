@@ -41,6 +41,21 @@ class RequestStatuses extends Enum
             'ready' => '#aaffff',
             'completed' => '#aaffaa',
             'cancelled' => '#aaaaaa'
-        ]);
+        ],
+        [
+            'created' => 'btn-light',
+            'in_work' => 'btn-warning',
+            'ready' => 'btn-info',
+            'completed' => 'btn-success',
+            'cancelled' => 'btn-danger'
+        ],
+        [
+            'created' => 'shopping_cart',
+            'in_work' => 'work',
+            'ready' => 'local_shipping',
+            'completed' => 'done',
+            'cancelled' => 'delete'
+        ]
+        );
     }
 }

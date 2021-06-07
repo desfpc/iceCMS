@@ -33,16 +33,31 @@ abstract class Enum
     protected ?array $colors = [];
 
     /**
+     * @var array<string, string>|null сss класс кнопки
+     */
+    protected ?array $btnClasses = [];
+
+    /**
+     * @var array<string, string>|null иконка
+     */
+    protected ?array $icons = [];
+
+    /**
      * Enum constructor.
      *
      * @param array<string, string> $enums
      * @param array<string, string[]> $actions
+     * @param array<string, string>|null $colors
+     * @param array<string, string>|null $btnClasses
+     * @param array<string, string>|null $icons
      */
-    public function __construct(array $enums, array $actions, ?array $colors = null)
+    public function __construct(array $enums, array $actions, ?array $colors = null, ?array $btnClasses = null, ?array $icons = null)
     {
         $this->enums = $enums;
         $this->actions = $actions;
         $this->colors = $colors;
+        $this->btnClasses = $btnClasses;
+        $this->icons = $icons;
     }
 
     /**
@@ -50,7 +65,7 @@ abstract class Enum
      *
      * @return string[]
      */
-    public function GetList()
+    public function getList()
     {
         return $this->enums;
     }
@@ -61,7 +76,7 @@ abstract class Enum
      * @param string $enum
      * @return string
      */
-    public function GetName(string $enum): string
+    public function getName(string $enum): string
     {
         //TODO use Translator class
         return $this->enums[$enum];
@@ -71,9 +86,9 @@ abstract class Enum
      * Return String Array of actions(from enum to enum array)
      *
      * @param string $enum
-     * @return false|string[]
+     * @return bool|string[]
      */
-    public function GetActions(string $enum): ?array
+    public function getActions(string $enum)
     {
         if(!empty($this->actions[$enum])) {
             return $this->actions[$enum];
@@ -87,10 +102,38 @@ abstract class Enum
      * @param string $enum
      * @return false|string
      */
-    public function GetColor(string $enum): ?string
+    public function getColor(string $enum): ?string
     {
         if(!empty($this->colors[$enum])) {
             return $this->colors[$enum];
+        }
+        return false;
+    }
+
+    /**
+     * Return Enum Btn Class
+     *
+     * @param string $enum
+     * @return string|null
+     */
+    public function getBtnClass(string $enum): ?string
+    {
+        if(!empty($this->btnClasses[$enum])) {
+            return $this->btnClasses[$enum];
+        }
+        return false;
+    }
+
+    /**
+     * Return Icon
+     *
+     * @param string $enum
+     * @return string|null
+     */
+    public function getIcon(string $enum): ?string
+    {
+        if(!empty($this->icons[$enum])) {
+            return $this->icons[$enum];
         }
         return false;
     }

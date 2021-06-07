@@ -81,9 +81,29 @@ class ObjectList
         //type - =/<>/</>/in/not in/is/is not/like/not like/
         //string - true/false
         if (is_array($this->conditions) && count($this->conditions) > 0) {
+            $orCount = 0;
+            $queryConditions = [
+                'AND' => '',
+                'OR' => ''
+            ];
             foreach ($this->conditions as $condition) {
                 if ($condition['string']) {
                     $condition['val'] = "'" . $this->DB->mysqli->real_escape_string($condition['val']) . "'";
+                }
+
+                if(!empty($condition['logic']) && $condition['logic'] == 'OR') {
+                    $logic = 'OR';
+                } else {
+                    $logic = 'AND';
+                }
+
+                $logicPrint = $logic;
+
+                if($logic == 'OR') {
+                    ++$orCount;
+                    if($orCount == 1) {
+                        $logicPrint='';
+                    }
                 }
 
                 switch ($condition['type']) {
@@ -91,14 +111,22 @@ class ObjectList
                     case 'IN':
                     case 'LIKE':
                     case 'NOT LIKE':
-                        $query .= ' AND ' . $condition['col'] . ' ' . $condition['type'] . ' (' . $condition['val'] . ')';
+                        $queryConditions[$logic] .= ' '.$logicPrint.' ' . $condition['col'] . ' ' . $condition['type'] . ' (' . $condition['val'] . ')';
                         break;
 
                     default:
-                        $query .= ' AND ' . $condition['col'] . ' ' . $condition['type'] . ' ' . $condition['val'];
+                        $queryConditions[$logic] .= ' '.$logicPrint.' ' . $condition['col'] . ' ' . $condition['type'] . ' ' . $condition['val'];
                         break;
                 }
             }
+
+            if ($queryConditions['OR'] == '') {
+                $query .= $queryConditions['AND'];
+            }
+            else {
+                $query .= $queryConditions['AND'].' AND ('.$queryConditions['OR'].')';
+            }
+
         }
 
         if (!$cnt) {

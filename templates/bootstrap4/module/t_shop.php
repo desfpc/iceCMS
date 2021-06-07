@@ -30,8 +30,20 @@ include_once($template_folder . '/partial/t_header.php');
 $statuses = new RequestStatuses();
 $payments = new RequestPayments();
 
-//Получение списка заказов
-$this->getRequestValues(['page','status','action','id','search']);
+
+$this->getRequestValues(['page','status','action','id','search','to_status','request_id']);
+
+//действия над заказом
+if ($this->values->to_status != '' && $this->values->request_id != '') {
+    $query = "UPDATE store_requests 
+SET status = '".$this->DB->mysqli->real_escape_string($this->values->to_status)."', date_edit = NOW()
+WHERE id = ".$this->DB->mysqli->real_escape_string($this->values->request_id);
+    if ($res = $this->DB->query($query))
+    {
+       $this->moduleData->success[] = 'Статус заказа успешно изменен';
+    }
+}
+
 //пейджинация
 if (!isset($this->values->page)) {
     $this->values->page = 1;
@@ -42,15 +54,45 @@ if ($page < 1) {
     $page = 1;
 }
 $perpage = 20;
+
+//Получение списка заказов
 $conditions = [];
 
-if($this->values->status != '' && $this->values->status != 'all' && !empty($statuses->GetList()[$this->values->status])) {
+if($this->values->status !== '' && $this->values->status !== 'all' && !empty($statuses->getList()[$this->values->status])) {
     $conditions[] = [
         'string' => true,
         'type' => '=',
         'col' => 'status',
         'val' => $this->values->status
     ];
+}
+
+if($this->values->search !== '') {
+    $realSearch = (float)$this->values->search;
+    if ($realSearch == $this->values->search && $realSearch !== (float)0) {
+        $conditions[] = [
+            'logic' => 'OR',
+            'string' => false,
+            'type' => '=',
+            'col' => 'price',
+            'val' => $realSearch
+        ];
+        $conditions[] = [
+            'logic' => 'OR',
+            'string' => false,
+            'type' => '=',
+            'col' => 'id',
+            'val' => (int)$realSearch
+        ];
+    } else {
+        $conditions[] = [
+            'logic' => 'AND',
+            'string' => false,
+            'type' => 'LIKE',
+            'col' => 'LOWER(comment)',
+            'val' => "LOWER('%".$this->values->search."%')"
+        ];
+    }
 }
 
 $sort = [
@@ -60,11 +102,27 @@ $requests = new StoreRequestList($this->DB, $conditions, $sort, $page, $perpage)
 $requestsCnt = $requests->getCnt();
 $requests = $requests->getRecords();
 
+
+
 //JS для срабатывания фильтров
 $this->jsready .= "
 
+    var search = '".urlencode($this->values->search)."';
+    var status = '".$this->values->status."';
+
     $('#filterStatus').change(function(){
-        document.location.href='/admin/shop/?status='+$(this).val();
+        document.location.href='/admin/shop/?status='+$(this).val()+'&search='+search;
+    });
+    
+    $('#filterSearch').change(function(){
+        document.location.href='/admin/shop/?search='+$(this).val()+'&status='+status;
+    });
+    
+    $('.btn-store-admin').click(function(){
+        //alert($(this).attr('to_status') + $(this).attr('request_id'));
+        if(confirm('Сменить статус заказа '+$(this).attr('request_id')+' на '+$(this).attr('request_name'))) {
+            document.location.href='/admin/shop/?search='+search+'&status='+$(this).attr('to_status')+'&to_status='+$(this).attr('to_status')+'&request_id='+$(this).attr('request_id');
+        }
     });
 
 ";
@@ -80,13 +138,13 @@ $this->jsready .= "
             </div>
         </div>
         <div class="row">
-            <div class="col-9"><input type="text" class="form-control" placeholder="Поиск" id="filterSearch"></div>
+            <div class="col-9"><input type="text" class="form-control" placeholder="Поиск" id="filterSearch" value="<?= $this->values->search ?>"></div>
             <div class="col-3">
                 <select class="form-control" id="filterStatus">
                     <option value="all">Все статусы</option>
                     <?php
 
-                    foreach ($statuses->GetList() as $status => $name) {
+                    foreach ($statuses->getList() as $status => $name) {
                         if($this->values->status == $status) {
                             $selected = ' SELECTED';
                         } else { $selected = ''; }
@@ -100,7 +158,7 @@ $this->jsready .= "
         &nbsp;
         <div class="row">
             <div class="col">
-                <table class="table">
+                <table class="table table-striped">
                     <thead class="thead-dark">
                         <tr>
                             <th style="width: 60px;">ID</th>
@@ -109,7 +167,7 @@ $this->jsready .= "
                             <th>Статус</th>
                             <th>Оплата /<br>доставка</th>
                             <th>Заказ</th>
-                            <th style="width: 104px;">Действия</th>
+                            <th style="width: 104px;">Новый статус</th>
                         </tr>
                     </thead>
                     <?php
@@ -133,8 +191,13 @@ $this->jsready .= "
                                         <a target="_parent" href="/admin/users_admin/?mode=edit&id='.$requestObj->params['user']['id'].'">'.$requestObj->params['user']['full_name'].'</a>
                                         <br>'.$requestObj->params['user']['login_email'].$phone.'
                                      </td>
-                                     <td style="background-color: '.$statuses->GetColor($requestObj->params['status']).'">'.$statuses->GetName($requestObj->params['status']).'</td>
-                                     <td>оплата: <strong>'.$payments->GetName($requestObj->params['payment_method']).'</strong></td>
+                                     <td style="background-color: '.$statuses->GetColor($requestObj->params['status']).'">'.$statuses->getName($requestObj->params['status']).'</td>
+                                     <td>
+                                        оплата: <strong>'.$payments->getName($requestObj->params['payment_method']).'</strong>
+                                        <hr>
+                                        комментарий: 
+                                        <br>'.$request['comment'].'
+                                     </td>
                                      <td>Стоимость: <strong>'.Mat::price($requestObj->params['price']).'</strong>
                                         <hr />
                                         <ul class="list-unstyled">
@@ -147,10 +210,28 @@ $this->jsready .= "
                                '.Mat::price($requestObj->params['goodsBuyParams'][$good['id']]['price']).'</a></li>';
                            }
 
+                           $toStatuses = $statuses->getActions($request['status']);
+
                            echo '
                                         </ul>
                                      </td>
-                                     <td></td>
+                                     <td>
+                                        ';
+
+                           if (!empty($toStatuses)) {
+                               foreach ($toStatuses as $action) {
+                                   $icon = $statuses->getIcon($action);
+                                   if (!is_null($icon)) {
+                                       $icon = '<i class="material-icons md-16">'.$icon.'</i>';
+                                   }
+                                   else {
+                                       $icon = '';
+                                   }
+                                   echo '<button class="btn btn-store-admin '.$statuses->getBtnClass($action).'" to_status="'.$action.'" request_id="'.$request['id'].'" request_name="'.$statuses->getName($action).'">'.$icon.' '.$statuses->getName($action).'</button>';
+                               }
+                           }
+
+                           echo '          </td>
                                  </tr>';
                        }
                        echo '</tbody>';
