@@ -152,9 +152,9 @@ $this->jsready .= "
         </div>
         <div class="modal-fullscreen" id="request-edit-form">
             <div class="container">
-                <div class="row">
-                    <div class="col">
-                        <form method="post" action="/cart" id="edit-form">
+                <form method="post" action="/cart" id="edit-form">
+                    <div class="row">
+                        <div class="col">
                             <div class="close-btn"><i class="material-icons md-24">close</i></div>
                             <h2>Форма редактирования заказа <span id="edit-form__header-id"></span></h2>
                             <table class="table">
@@ -171,9 +171,17 @@ $this->jsready .= "
 
                                 </tbody>
                             </table>
-                        </form>
+                        </div>
                     </div>
-                </div>
+                    <div class="form-group row">
+                        <label for="name" class="col-sm-2 col-form-label text-right"><strong>Статус</strong></label>
+                        <div class="col-sm-10">
+                            <select>
+                                
+                            </select>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
         <div class="row">
