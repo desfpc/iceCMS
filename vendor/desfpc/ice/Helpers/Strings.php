@@ -11,6 +11,10 @@
 
 namespace ice\Helpers;
 
+/**
+ * Class Strings
+ * @package ice\Helpers
+ */
 class Strings
 {
     /**

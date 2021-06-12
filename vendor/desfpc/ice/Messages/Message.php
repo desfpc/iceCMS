@@ -14,6 +14,10 @@ namespace ice\Messages;
 use ice\Settings\Settings;
 use pechkin\pechkin;
 
+/**
+ * Class Message
+ * @package ice\Messages
+ */
 class Message
 {
 

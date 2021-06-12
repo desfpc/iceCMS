@@ -11,6 +11,10 @@
 
 namespace ice\Helpers;
 
+/**
+ * Class Numbers
+ * @package ice\Helpers
+ */
 class Numbers
 {
 

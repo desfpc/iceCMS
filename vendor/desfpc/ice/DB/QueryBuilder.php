@@ -11,6 +11,10 @@
 
 namespace ice\DB;
 
+/**
+ * Class QueryBuilder
+ * @package ice\DB
+ */
 class QueryBuilder
 {
 
@@ -19,6 +23,14 @@ class QueryBuilder
     public $table;
     private $DB;
 
+    /**
+     * QueryBuilder constructor.
+     *
+     * @param DB $DB
+     * @param $cols
+     * @param $params
+     * @param $table
+     */
     public function __construct(DB $DB, $cols, $params, $table)
     {
         $this->params = $params;
@@ -27,7 +39,12 @@ class QueryBuilder
         $this->DB = $DB;
     }
 
-    public function update()
+    /**
+     * Создание Update SQL строки
+     *
+     * @return string
+     */
+    public function update(): string
     {
         $out = 'UPDATE ' . $this->table . ' SET';
 
@@ -88,7 +105,13 @@ class QueryBuilder
         return $out;
     }
 
-    public function insert()
+    /**
+     * Создание Insert SQL строки
+     *
+     * @return string
+     * @throws \Exception
+     */
+    public function insert(): string
     {
         $out = 'INSERT INTO ' . $this->table . ' (';
 

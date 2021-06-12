@@ -13,16 +13,27 @@ namespace ice\Models;
 
 use ice\DB\DB;
 
+/**
+ * Class File
+ * @package ice\Models
+ */
 class File extends Obj
 {
-
-    //подменяем создание объекта - прописываем железно целевую таблицу
+    /**
+     * File constructor.
+     *
+     * @param DB $DB
+     * @param null $id
+     * @param null $settings
+     */
     public function __construct(DB $DB, $id = null, $settings = null)
     {
         $this->doConstruct($DB, 'files', $id, $settings);
     }
 
     /**
+     * Формирование фавиконки для файла
+     *
      * @param $DB
      * @param $file
      * @param false $link
@@ -61,7 +72,14 @@ class File extends Obj
 
     }
 
-    public function getFileCacheUrl($x, $y)
+    /**
+     * формирование строки URL файла кэша по размерам (ширина, высота)
+     *
+     * @param $x
+     * @param $y
+     * @return string
+     */
+    public function getFileCacheUrl($x, $y): string
     {
         $folder = $x . 'x' . $y;
         $dirpatch = $this->params['url'] . $folder . '/';
@@ -71,7 +89,12 @@ class File extends Obj
         return $dirpatch . '/' . $this->id;
     }
 
-    public function getFileUrl()
+    /**
+     * формирование строки URL оригинала файла
+     *
+     * @return string
+     */
+    public function getFileUrl(): string
     {
         $dirpatch = $this->params['url'];
         if ($this->params['extension'] != '') {
@@ -81,6 +104,8 @@ class File extends Obj
     }
 
     /**
+     * форматированная строка размера файла
+     *
      * @param int $size
      * @return string
      */
@@ -103,6 +128,16 @@ class File extends Obj
 
     }
 
+    /**
+     * Загрузка файла на сервер, возвращает false либо id файла
+     *
+     * @param $paramName
+     * @param string $type
+     * @param false $private
+     * @param null $userId
+     * @param false $materialConnect
+     * @return bool|int
+     */
     public function upload($paramName, $type = 'file', $private = false, $userId = null, $materialConnect = false)
     {
 
@@ -242,6 +277,12 @@ class File extends Obj
 
     }
 
+    /**
+     * получение расширения файла
+     *
+     * @param $filename
+     * @return mixed|string
+     */
     public static function getFileExtension($filename)
     {
         $path_info = pathinfo($filename);
@@ -251,6 +292,11 @@ class File extends Obj
         return $path_info['extension'];
     }
 
+    /**
+     * созджание кэшей файла-изображения по настройкам (ширина, высота ...)
+     *
+     * @return bool|int
+     */
     public function createImageCaches()
     {
 
@@ -273,6 +319,11 @@ class File extends Obj
         return false;
     }
 
+    /**
+     * создание конкретного кэша изображения
+     *
+     * @param $cache
+     */
     public function createImageCache($cache)
     {
 
@@ -286,6 +337,17 @@ class File extends Obj
 
     }
 
+    /**
+     * сохранение файла изображения с заданными размерами и форматом
+     *
+     * @param $newx
+     * @param $newy
+     * @param $extension
+     * @param int $crop
+     * @param int $watermark
+     * @param int $wx
+     * @param int $wy
+     */
     public function SaveImageSize($newx, $newy, $extension, $crop = 0, $watermark = 0, $wx = 0, $wy = 0)
     {
 
@@ -366,7 +428,12 @@ class File extends Obj
 
     }
 
-    public function getFilePath()
+    /**
+     * получение полного пути к файлу в ОС
+     *
+     * @return string
+     */
+    public function getFilePath(): string
     {
 
         if ($this->params['extension'] != '') {
@@ -376,7 +443,14 @@ class File extends Obj
 
     }
 
-    public function getFileCachePath($x, $y)
+    /**
+     * получение полного пути в ОС к файлу - кэшу изображения по его размерам
+     *
+     * @param $x
+     * @param $y
+     * @return string
+     */
+    public function getFileCachePath($x, $y): string
     {
 
         $folder = $x . 'x' . $y;

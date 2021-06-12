@@ -11,6 +11,10 @@
 
 namespace ice\Helpers;
 
+/**
+ * Class Arrays
+ * @package ice\Helpers
+ */
 class Arrays
 {
 

@@ -13,9 +13,12 @@ namespace ice\DB;
 
 use redka\redka;
 
+/**
+ * Class Cacher
+ * @package ice\DB
+ */
 class Cacher
 {
-
     public $key;
     public $value;
     public $expired;
@@ -27,6 +30,7 @@ class Cacher
 
     /**
      * Cacher constructor.
+     *
      * @param string $host
      * @param int $port
      */
@@ -72,7 +76,7 @@ class Cacher
      * Поиск ключей в кэше
      *
      * @param string $pattern
-     * @return array|false|int|string|null
+     * @return mixed
      */
     public function findKeys($pattern = '*')
     {
@@ -86,8 +90,8 @@ class Cacher
      * Получение значения по ключу
      *
      * @param $key
-     * @param false $decode
-     * @return array|false|int|mixed|string|null
+     * @param bool $decode
+     * @return mixed
      */
     public function get($key, $decode = false)
     {

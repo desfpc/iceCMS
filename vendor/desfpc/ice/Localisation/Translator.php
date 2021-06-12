@@ -11,9 +11,19 @@
 
 namespace ice\Localisation;
 
+/**
+ * Class Translator
+ * @package ice\Localisation
+ */
 class Translator
 {
-
+    /**
+     * перевод строки на переданный язык по ключу
+     *
+     * @param $language
+     * @param $key
+     * @return false|mixed
+     */
     public static function translate($language,$key){
 
         $keyArr = explode('/',$key);
@@ -50,9 +60,7 @@ class Translator
                 return $langArr;
             }
         }
-
         return false;
-
     }
 
 }

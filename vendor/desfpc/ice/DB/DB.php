@@ -15,6 +15,10 @@ use ice\Settings\Settings;
 use stdClass;
 use Throwable;
 
+/**
+ * Class DB
+ * @package ice\DB
+ */
 class DB
 {
     public $settings;
@@ -24,6 +28,10 @@ class DB
     public $status = 0;
     public $connected = 0;
 
+    /**
+     * DB constructor.
+     * @param Settings $settings
+     */
     public function __construct(Settings $settings)
     {
         $this->status = new stdClass();
@@ -38,8 +46,12 @@ class DB
         $this->connect();
     }
 
-    //соединение с БД
-    public function connect()
+    /**
+     * соединение с БД
+     *
+     * @return bool
+     */
+    public function connect(): bool
     {
 
         $this->errors->flag = '1';
@@ -88,7 +100,15 @@ class DB
 
     }
 
-    //выполнение запроса к БД
+    /**
+     * выполнение запроса к БД
+     *
+     * @param $query
+     * @param bool $free
+     * @param false $cnt
+     * @param false $forced
+     * @return array|bool
+     */
     public function query($query, $free = true, $cnt = false, $forced = false)
     {
 
@@ -148,8 +168,13 @@ class DB
         return false;
     }
 
-    //выполнение мультизапроса к БД
-    public function multiQuery($query)
+    /**
+     * выполнение мультизапроса к БД
+     *
+     * @param $query
+     * @return bool
+     */
+    public function multiQuery($query): bool
     {
         if ($this->status->flag) {
             switch ($this->settings->type) {
