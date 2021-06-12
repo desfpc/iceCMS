@@ -82,9 +82,8 @@ if ($this->authorize->secure == 1) {
                             </div>
                         </div>
                         <div class="links">
-                            <p><a href="/account-profile">Личный кабинет</a></p>
-                            <p><a href="/orderlist">Список заказов</a></p>
-                            <p><a href="/wishlist">Список желаний</a></p>
+                            <p><a href="/personal-area">Личный кабинет</a></p>
+                            <p><a href="/personal-area/orderlist">Список заказов</a></p>
                             <hr>
                             <p><a href="/exit">Выход</a></p>
                         </div>

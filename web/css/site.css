@@ -802,3 +802,51 @@ a.good:hover {
     padding: 2px 2px 2px 4px;
     text-align: left;
 }
+.btn-store-admin_small {
+    font-size: 12px;
+    padding: 2px;
+    text-align: center;
+}
+.modal-fullscreen {
+    display: none;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    text-align: center;
+    vertical-align: middle;
+    overflow: hidden;
+}
+.modal-fullscreen:after {
+    content: '';
+    position: relative;
+    width: 0;
+    height: 100%;
+    display: inline-block;
+    vertical-align: middle;
+}
+.modal-fullscreen .container {
+    vertical-align: middle;
+    position: relative;
+    width: auto;
+    height: auto;
+    display: inline-block;
+    background: #fff;
+    max-width: 99%;
+    max-height: 99%;
+    overflow: auto;
+}
+.modal-fullscreen .close-btn {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    float: right;
+    cursor: pointer;
+    margin-top: 14px;
+}
+.modal-fullscreen .close-btn .material-icons.md-24 {
+    padding-bottom: 0;
+}

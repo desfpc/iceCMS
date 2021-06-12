@@ -119,12 +119,25 @@ $this->jsready .= "
     });
     
     $('.btn-store-admin').click(function(){
-        //alert($(this).attr('to_status') + $(this).attr('request_id'));
         if(confirm('Сменить статус заказа '+$(this).attr('request_id')+' на '+$(this).attr('request_name'))) {
             document.location.href='/admin/shop/?search='+search+'&status='+$(this).attr('to_status')+'&to_status='+$(this).attr('to_status')+'&request_id='+$(this).attr('request_id');
         }
     });
-
+    
+    $('.btn-store-print').click(function(){
+        
+    });
+    
+    $('.btn-store-edit').click(function(){
+        $('#request-edit-form').css('opacity','0');
+        $('#request-edit-form').show().animate({opacity: 1},200);
+    });
+    
+    $('.modal-fullscreen .close-btn').click(function(){
+        $('.modal-fullscreen').animate({opacity: 0},200,function() {
+            $('.modal-fullscreen').hide();
+        });
+    });
 ";
 
 ?>
@@ -135,6 +148,32 @@ $this->jsready .= "
                 //выводим ошибки
                 include_once($template_folder . '/partial/t_alert.php');
                 ?>
+            </div>
+        </div>
+        <div class="modal-fullscreen" id="request-edit-form">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <form method="post" action="/cart" id="edit-form">
+                            <div class="close-btn"><i class="material-icons md-24">close</i></div>
+                            <h2>Форма редактирования заказа <span id="edit-form__header-id"></span></h2>
+                            <table class="table">
+                                <thead class="thead-dark">
+                                <tr>
+                                    <th style="width: 60px;">ID</th>
+                                    <th style="width: 48px;"></th>
+                                    <th>Товар</th>
+                                    <th>Кол-во</th>
+                                    <th>Стоимость</th>
+                                </tr>
+                                </thead>
+                                <tbody class="edit-form__products">
+
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="row">
@@ -161,7 +200,7 @@ $this->jsready .= "
                 <table class="table table-striped">
                     <thead class="thead-dark">
                         <tr>
-                            <th style="width: 60px;">ID</th>
+                            <th style="width: 71px;">ID</th>
                             <th>Даты</th>
                             <th>Пользователь</th>
                             <th>Статус</th>
@@ -184,14 +223,29 @@ $this->jsready .= "
                                $phone = '';
                            }
 
+                           $icon = $statuses->getIcon($requestObj->params['status']);
+                           if (!is_null($icon)) {
+                               $icon = '<i class="material-icons md-16">'.$icon.'</i> ';
+                           }
+                           else {
+                               $icon = '';
+                           }
+
                            echo '<tr>
-                                     <td>'.$requestObj->params['id'].'</td>
+                                     <td>
+                                     <strong>'.$requestObj->params['id'].'</strong>
+                                     <hr>
+                                     <button class="btn btn-store-admin_small btn-store-print btn-info" request_id="'.$requestObj->params['id'].'"
+                                        data-toggle="tooltip" data-placement="top" title="" data-original-title="Печатная форма"><i class="material-icons md-16">print</i></button>
+                                     <button class="btn btn-store-admin_small btn-store-edit btn-warning" request_id="'.$requestObj->params['id'].'"
+                                        data-toggle="tooltip" data-placement="top" title="" data-original-title="Форма редактирования"><i class="material-icons md-16">create</i></button>
+                                     </td>
                                      <td><strong>'.Strings::formatDate($requestObj->params['date_add']).'</strong><br>'.Strings::formatDate($requestObj->params['date_edit']).'</td>
                                      <td>
                                         <a target="_parent" href="/admin/users_admin/?mode=edit&id='.$requestObj->params['user']['id'].'">'.$requestObj->params['user']['full_name'].'</a>
                                         <br>'.$requestObj->params['user']['login_email'].$phone.'
                                      </td>
-                                     <td style="background-color: '.$statuses->GetColor($requestObj->params['status']).'">'.$statuses->getName($requestObj->params['status']).'</td>
+                                     <td style="background-color: '.$statuses->GetColor($requestObj->params['status']).'">'.$icon.$statuses->getName($requestObj->params['status']).'</td>
                                      <td>
                                         оплата: <strong>'.$payments->getName($requestObj->params['payment_method']).'</strong>
                                         <hr>
