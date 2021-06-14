@@ -129,6 +129,7 @@ $this->jsready .= "
     });
     
     $('.btn-store-edit').click(function(){
+        
         $('#request-edit-form').css('opacity','0');
         $('#request-edit-form').show().animate({opacity: 1},200);
     });
@@ -138,7 +139,56 @@ $this->jsready .= "
             $('.modal-fullscreen').hide();
         });
     });
+    
+    $('#new_material_id')
+        .selectpicker({
+            liveSearch: true
+        })
+        .ajaxSelectPicker({
+        ajax: {
+            url: '/ajax/?action=getstoreproduct',
+            data: function () {
+                var params = {
+                    query: '{{{q}}}'
+                };
+               
+                return params;
+            }
+        },
+        locale: {
+            emptyTitle: 'Поиск товара...'
+        },
+        preprocessData: function(data){
+        
+        console.log(data);
+        
+            var types = [];
+            if(data.hasOwnProperty('types')){
+                var len = data.types.length;
+                for(var i = 0; i < len; i++){
+                    var curr = data.types[i];
+                    types.push(
+                        {
+                            'value': curr.id,
+                            'text': curr.name,
+                            'disabled': false
+                        }
+                    );
+                }
+            }
+            return types;
+        },
+        preserveSelected: false
+    });
 ";
+
+$this->jscripts->addScript('/js/bootstrap-select.js');
+$this->jscripts->addScript('/js/defaults-ru_RU.js');
+$this->jscripts->addScript('/js/ajax-bootstrap-select.js');
+$this->jscripts->addScript('/js/ajax-bootstrap-select.ru-RU.min.js');
+
+$this->styles->addStyle('/css/bootstrap-select.css');
+$this->styles->addStyle('/css/ajax-bootstrap-select.css');
 
 ?>
     <div class="container sitebody">
@@ -151,7 +201,7 @@ $this->jsready .= "
             </div>
         </div>
         <div class="modal-fullscreen" id="request-edit-form">
-            <div class="container">
+            <div class="container" style="min-width: 80%; text-align: left;">
                 <form method="post" action="/cart" id="edit-form">
                     <div class="row">
                         <div class="col">
@@ -174,13 +224,29 @@ $this->jsready .= "
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="name" class="col-sm-2 col-form-label text-right"><strong>Статус</strong></label>
+                        <label for="new_material_id" class="col-sm-2 col-form-label text-right"><strong>Добавить товар в заказ</strong></label>
                         <div class="col-sm-10">
-                            <select>
-                                
+                            <select class="form-control selectpicker" data-live-search="true" id="new_material_id" name="new_material_id" aria-describedby="status_idHelp" placeholder="Добавить товар в заказ">
                             </select>
                         </div>
                     </div>
+                    <div class="form-group row">
+                        <label for="name" class="col-sm-2 col-form-label text-right"><strong>Статус</strong></label>
+                        <div class="col-sm-10">
+                            <select class="form-control">
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="name" class="col-sm-2 col-form-label text-right"><strong>Тип оплаты</strong></label>
+                        <div class="col-sm-10">
+                            <select class="form-control">
+
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success"><i class="material-icons md-24 md-light">edit</i> Изменить</button>
                 </form>
             </div>
         </div>

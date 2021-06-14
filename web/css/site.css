@@ -838,6 +838,7 @@ a.good:hover {
     max-width: 99%;
     max-height: 99%;
     overflow: auto;
+    padding: 15px;
 }
 .modal-fullscreen .close-btn {
     position: relative;
@@ -845,7 +846,6 @@ a.good:hover {
     height: 24px;
     float: right;
     cursor: pointer;
-    margin-top: 14px;
 }
 .modal-fullscreen .close-btn .material-icons.md-24 {
     padding-bottom: 0;

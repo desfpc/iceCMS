@@ -158,11 +158,35 @@ switch ($this->values->action) {
 
         break;
 
+    //получение товара интернет магазина
+    case 'getstoreproduct':
+
+        $this->getRequestValues(['query']);
+        $escaped_query = $this->DB->mysqli->real_escape_string($this->values->query);
+
+        $query = "SELECT m.id, m.name, m.goodcode FROM materials m 
+            WHERE m.status_id = 1 AND m.material_type_id IN (SELECT t.id FROM material_types t WHERE t.shop_ifgood = 1)
+            AND (LOWER(m.goodcode) LIKE LOWER('%" . $escaped_query . "%') || LOWER(m.name) LIKE LOWER('%" . $escaped_query . "%'))";
+
+        if (!$res = $this->DB->query($query)) {
+            $out = false;
+        } else {
+            foreach ($res as $row) {
+                $out[] = [
+                    'id' => $row['id'],
+                    'name' => $row['name']
+                ];
+            }
+        }
+
+        $this->moduleData->res = ['types' => $out];
+
+        break;
+
     //получаем тип материала по наименованию или буквенному идентификатору
     case 'getmattype':
 
         $this->getRequestValues(['query']);
-
         $escaped_query = $this->DB->mysqli->real_escape_string($this->values->query);
 
         $query = "SELECT * FROM material_types 
