@@ -130,8 +130,18 @@ $this->jsready .= "
     
     $('.btn-store-edit').click(function(){
         
-        $('#request-edit-form').css('opacity','0');
-        $('#request-edit-form').show().animate({opacity: 1},200);
+        $.ajax({
+            method: \"POST\",
+            url: \"/?menu=ajax&action=store&type=getRequest&id=\"+$(this).attr('request_id'),
+            dataType: \"json\"
+        }).done(function ( res ) {
+            console.log(res);
+            
+            
+            
+            $('#request-edit-form').css('opacity','0');
+            $('#request-edit-form').show().animate({opacity: 1},200); 
+        });
     });
     
     $('.modal-fullscreen .close-btn').click(function(){

@@ -11,6 +11,7 @@
 
 use ice\Web\HeaderBuilder;
 use ice\Models\Mat;
+use ice\Models\StoreRequest;
 
 $this->headers = new HeaderBuilder();
 $this->headers->standartHeaders();
@@ -44,6 +45,25 @@ function makeCartAllCost() {
 }
 
 switch ($this->values->action) {
+
+    //работа с заказом интернет магазина
+    case 'store':
+
+        $this->getRequestValues(['type','id']);
+
+        $id = (int)$this->values->id;
+        $request = new StoreRequest($this->DB,$id);
+        if(!$request->getRecord($id)){
+            die(json_encode(['success' => false, 'message' => 'Wrong Request ID']));
+        }
+
+        switch ($this->values->type) {
+            case 'getRequest':
+                $this->moduleData->res = ['request' => $request->params];
+                break;
+        }
+
+        break;
 
     //работа с корзиной
     case 'cart':
