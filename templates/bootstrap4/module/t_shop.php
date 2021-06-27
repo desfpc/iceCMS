@@ -135,9 +135,20 @@ $this->jsready .= "
             url: \"/?menu=ajax&action=store&type=getRequest&id=\"+$(this).attr('request_id'),
             dataType: \"json\"
         }).done(function ( res ) {
-            console.log(res);
+            console.log( res.request );
             
+            $('.edit-form__products').html('');
             
+            res.request.goods.forEach(function(good){
+                console.log ( good );
+                $('.edit-form__products').append('<tr>' +
+                '   <td>' + good.id + '</td>' +
+                '   <td><a target=\"_blank\" href=\"' + good.url + '\">' + good.name + '</a></td>' +
+                '   <td>' + res.request.goodsBuyParams[good.id].count + '</td>' +
+                '   <td>' + res.request.goodsBuyParams[good.id].price + '</td>' +
+                '   <td></td>' +
+                '</tr>');
+            });
             
             $('#request-edit-form').css('opacity','0');
             $('#request-edit-form').show().animate({opacity: 1},200); 
@@ -221,10 +232,10 @@ $this->styles->addStyle('/css/ajax-bootstrap-select.css');
                                 <thead class="thead-dark">
                                 <tr>
                                     <th style="width: 60px;">ID</th>
-                                    <th style="width: 48px;"></th>
                                     <th>Товар</th>
                                     <th>Кол-во</th>
                                     <th>Стоимость</th>
+                                    <th>Действия</th>
                                 </tr>
                                 </thead>
                                 <tbody class="edit-form__products">

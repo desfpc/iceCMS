@@ -57,6 +57,13 @@ switch ($this->values->action) {
             die(json_encode(['success' => false, 'message' => 'Wrong Request ID']));
         }
 
+        $goodsVsURL = [];
+        foreach ($request->params['goods'] as $good) {
+            $url = Mat::GetUrl($good, $this->materialTypes);
+            $goodsVsURL[] = array_merge($good, ['url' => $url]);
+        }
+        $request->params['goods'] = $goodsVsURL;
+
         switch ($this->values->type) {
             case 'getRequest':
                 $this->moduleData->res = ['request' => $request->params];
