@@ -109,6 +109,7 @@ $this->jsready .= "
 
     var search = '".urlencode($this->values->search)."';
     var status = '".$this->values->status."';
+    var requestId = 0;
 
     $('#filterStatus').change(function(){
         document.location.href='/admin/shop/?status='+$(this).val()+'&search='+search;
@@ -128,11 +129,24 @@ $this->jsready .= "
         
     });
     
-    $('.btn-store-edit').click(function(){
+    function changeRequest() {
         
+    }
+    
+    function addToRequest(goodId) {
+        changeRequest();
+    }
+    
+    function deleteFromRequest(goodId) {
+        
+        changeRequest();
+    }
+    
+    $('.btn-store-edit').click(function(){
+        requestId = $(this).attr('request_id');
         $.ajax({
             method: \"POST\",
-            url: \"/?menu=ajax&action=store&type=getRequest&id=\"+$(this).attr('request_id'),
+            url: \"/?menu=ajax&action=store&type=getRequest&id=\"+requestId,
             dataType: \"json\"
         }).done(function ( res ) {
             console.log( res.request );
@@ -141,17 +155,29 @@ $this->jsready .= "
             
             res.request.goods.forEach(function(good){
                 console.log ( good );
-                $('.edit-form__products').append('<tr>' +
+                $('.edit-form__products').append('<tr id=\"rGood_' + requestId + '_' + good.id +'\">' +
                 '   <td>' + good.id + '</td>' +
                 '   <td><a target=\"_blank\" href=\"' + good.url + '\">' + good.name + '</a></td>' +
-                '   <td>' + res.request.goodsBuyParams[good.id].count + '</td>' +
-                '   <td>' + res.request.goodsBuyParams[good.id].price + '</td>' +
-                '   <td></td>' +
+                '   <td><input class=\"form-control rGood__count\" type=\"text\" value=\"' + res.request.goodsBuyParams[good.id].count + '\"></td>' +
+                '   <td><input class=\"form-control rGood__price\" type=\"text\" value=\"' + res.request.goodsBuyParams[good.id].price + '\"></td>' +
+                '   <td><button type=\"button\" class=\"btn btn-danger btn-sm rGood__del\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"\" data-original-title=\"Удалить\">' +
+                '           <i class=\"material-icons md-16 md-light\">delete</i>' +
+                '       </button>' +
+                '</td>' +
                 '</tr>');
             });
             
             $('#request-edit-form').css('opacity','0');
-            $('#request-edit-form').show().animate({opacity: 1},200); 
+            $('#request-edit-form').show().animate({opacity: 1},200);
+            $('.rGood__count, .rGood__price').change(function(){
+                changeRequest();
+                });
+            $('.rGood__del').click(function(){
+                const parentRow = $(this).parent().parent();
+                const goodId = parentRow.prop('id').replace('rGood_' + requestId + '_', '');
+                console.log(goodId);
+                deleteFromRequest(goodId);
+                });
         });
     });
     
@@ -233,9 +259,9 @@ $this->styles->addStyle('/css/ajax-bootstrap-select.css');
                                 <tr>
                                     <th style="width: 60px;">ID</th>
                                     <th>Товар</th>
-                                    <th>Кол-во</th>
-                                    <th>Стоимость</th>
-                                    <th>Действия</th>
+                                    <th style="width: 100px;">Кол-во</th>
+                                    <th style="width: 150px;">Стоимость</th>
+                                    <th style="width: 100px;">Действия</th>
                                 </tr>
                                 </thead>
                                 <tbody class="edit-form__products">
