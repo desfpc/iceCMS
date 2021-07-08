@@ -129,17 +129,26 @@ $this->jsready .= "
         
     });
     
-    function changeRequest() {
-        
+    function reloadRequest() {
+        var allCnt = 0;
+        var allPrice = 0; 
+        $('.rGood').each(function(){
+            var goodCnt = Number($(this).find('.rGood__count').val());
+            var goodPrice = Number($(this).find('.rGood__price').val());
+            allCnt += goodCnt;
+            allPrice += goodCnt * goodPrice;
+        });
+        $('#edit-form-itogo__count').html(allCnt);
+        $('#edit-form-itogo__price').html(number_format(allPrice));
     }
     
     function addToRequest(goodId) {
-        changeRequest();
+        reloadRequest();
     }
     
     function deleteFromRequest(goodId) {
-        
-        changeRequest();
+        $('#rGood_' + requestId + '_' + goodId).remove();
+        reloadRequest();
     }
     
     $('.btn-store-edit').click(function(){
@@ -155,7 +164,7 @@ $this->jsready .= "
             
             res.request.goods.forEach(function(good){
                 console.log ( good );
-                $('.edit-form__products').append('<tr id=\"rGood_' + requestId + '_' + good.id +'\">' +
+                $('.edit-form__products').append('<tr class=\"rGood\" id=\"rGood_' + requestId + '_' + good.id +'\">' +
                 '   <td>' + good.id + '</td>' +
                 '   <td><a target=\"_blank\" href=\"' + good.url + '\">' + good.name + '</a></td>' +
                 '   <td><input class=\"form-control rGood__count\" type=\"text\" value=\"' + res.request.goodsBuyParams[good.id].count + '\"></td>' +
@@ -167,10 +176,17 @@ $this->jsready .= "
                 '</tr>');
             });
             
+            $('.edit-form__products').append('<tr id=\"edit-form-itogo\">' +
+            '   <td colspan=2><strong>Итого</strong></td>' +
+            '   <td id=\"edit-form-itogo__count\"></td>' +
+            '   <td id=\"edit-form-itogo__price\"></td>' +
+            '   <td></td>' +
+            '</tr>');
+            
             $('#request-edit-form').css('opacity','0');
             $('#request-edit-form').show().animate({opacity: 1},200);
             $('.rGood__count, .rGood__price').change(function(){
-                changeRequest();
+                reloadRequest();
                 });
             $('.rGood__del').click(function(){
                 const parentRow = $(this).parent().parent();
@@ -178,6 +194,7 @@ $this->jsready .= "
                 console.log(goodId);
                 deleteFromRequest(goodId);
                 });
+            reloadRequest();    
         });
     });
     
@@ -206,9 +223,6 @@ $this->jsready .= "
             emptyTitle: 'Поиск товара...'
         },
         preprocessData: function(data){
-        
-        console.log(data);
-        
             var types = [];
             if(data.hasOwnProperty('types')){
                 var len = data.types.length;
@@ -227,6 +241,11 @@ $this->jsready .= "
         },
         preserveSelected: false
     });
+    
+    $('#new_material_id').change(function(){
+        console.log($('#new_material_id').val());
+    });
+    
 ";
 
 $this->jscripts->addScript('/js/bootstrap-select.js');
