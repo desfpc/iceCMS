@@ -96,7 +96,6 @@ class Render
 
     public function moduleAccess()
     {
-
         if ($this->authorize->autorized) {
             if ((int)$this->authorize->user->params['role']['secure'] === 1) {
                 return true;

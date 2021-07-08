@@ -17,38 +17,55 @@ use ice\Models\User;
 
 class Authorize
 {
+    /** @var bool authorized flag */
+    public $autorized = false;
+    /** @var null|User authorized User obj */
+    public ?User $user = null;
+    /** @var null|string[] errors array */
+    public $errors = null;
+    /** @var bool|int|string */
+    public $secure = false;
 
-    public $autorized;
-    public $user;
-    public $errors;
-    public $secure;
-
+    /**
+     * Authorize class constructor
+     *
+     * @param DB $DB
+     * @param null|string $login
+     * @param null|string $pass
+     */
     public function __construct(DB $DB, $login = null, $pass = null)
     {
-        $this->autorized = false;
-        $this->user = null;
-        $this->errors = null;
-        $this->secure = false;
-
         $this->doAuthorize($DB, $login, $pass);
     }
 
-    public function doAuthorize($DB, $login, $pass)
+    /**
+     * Authorization method
+     *
+     * @param $DB
+     * @param string $login
+     * @param string $pass
+     * @return bool
+     */
+    public function doAuthorize($DB, ?string $login, ?string $pass): bool
     {
         $user = new User($DB);
         if ($user->authorizeUser($pass, $login)) {
             $this->user = $user;
             $this->autorized = true;
             $this->secure = $user->params['role']['secure'];
-
             return true;
         }
 
-        $this->errors = array('Не верное сочетание логина и пароля');
+        $this->errors = ['Не верное сочетание логина и пароля'];
         return false;
 
     }
 
+    /**
+     * DeAuthorization method
+     *
+     * @return void
+     */
     public function deAuthorize()
     {
         if (!is_null($this->user)) {
