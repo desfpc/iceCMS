@@ -14,11 +14,15 @@ namespace ice\Models;
 use ice\DB\Cacher;
 use ice\DB\DB;
 
+/**
+ * Class ObjectList
+ * @package ice\Models
+ */
 class ObjectList
 {
 
     public $dbtable;//таблица записей
-    public $DB;
+    public DB $DB;
     public $conditions;//условия вывода записей
     public $settings;//глобальные настройки
     public $cachetime;//время кэширования результатов запроса
@@ -29,13 +33,35 @@ class ObjectList
     public $cacher;
     public $cacheKey;
 
-    //функция для расширения в списках по конкретным объектам
-
+    /**
+     * ObjectList constructor.
+     *
+     * @param DB $DB
+     * @param $dbtable
+     * @param null $conditions
+     * @param null $sort
+     * @param int $page
+     * @param int $perpage
+     * @param int $cachetime
+     * @param null $settings
+     */
     public function __construct(DB $DB, $dbtable, $conditions = null, $sort = null, $page = 1, $perpage = 20, $cachetime = 0, $settings = null)
     {
         $this->doConstruct($DB, $dbtable, $conditions, $sort, $page, $perpage, $cachetime, $settings);
     }
 
+    /**
+     * Метод-конструктор (для использования в дочерних классах с передачей имени таблицы)
+     *
+     * @param DB $DB
+     * @param $dbtable
+     * @param null $conditions
+     * @param null $sort
+     * @param null $page
+     * @param null $perpage
+     * @param int $cachetime
+     * @param null $settings
+     */
     public function doConstruct(DB $DB, $dbtable, $conditions = null, $sort = null, $page = null, $perpage = null, $cachetime = 0, $settings = null)
     {
         $this->DB = $DB;
@@ -54,13 +80,26 @@ class ObjectList
         }
     }
 
+    /**
+     * Получения кол-ва записей
+     *
+     * @param null $baseQuery
+     * @param null $parentQuery
+     * @return false
+     */
     public function getCnt($baseQuery = null, $parentQuery = null)
     {
         return $this->prepareRecords($baseQuery, $parentQuery, true);
     }
 
-    //получение кол-ва записей
-
+    /**
+     * Подготовка SQL запроса
+     *
+     * @param null $baseQuery
+     * @param null $parentQuery
+     * @param false $cnt
+     * @return false|array<int, array<string, mixed>>
+     */
     public function prepareRecords($baseQuery = null, $parentQuery = null, $cnt = false)
     {
         //формирование запроса
@@ -195,15 +234,22 @@ class ObjectList
         return $records;
     }
 
-    //получение записей
-
+    /**
+     * Метод для расширения запроса в дочерних классах
+     *
+     * @return string
+     */
     public function moreQuery()
     {
         return '';
     }
 
-    //кэширование списка
-
+    /**
+     * Формирование ключа кэша
+     *
+     * @param $query
+     * @return string
+     */
     public function getCacheKey($query)
     {
         //ключ начало
@@ -218,6 +264,9 @@ class ObjectList
 
     }
 
+    /**
+     * Кэширование записей
+     */
     public function cacheRecords()
     {
         if (!is_null($this->cachetime) && $this->cachetime > 0) {
@@ -225,15 +274,24 @@ class ObjectList
         }
     }
 
+    /**
+     * Получение записей
+     *
+     * @param null $baseQuery
+     * @param null $parentQuery
+     * @return false
+     */
     public function getRecords($baseQuery = null, $parentQuery = null)
     {
         return $this->prepareRecords($baseQuery, $parentQuery, false);
     }
 
+    /**
+     * Удаление кэша записей
+     */
     public function uncacheRecords()
     {
         $this->getCacheKey(null);
-
         $keys = $this->cacher->findKeys($this->cacheKey . '*');
 
         if (is_array($keys) && count($keys) > 0) {
@@ -242,5 +300,4 @@ class ObjectList
             }
         }
     }
-
 }

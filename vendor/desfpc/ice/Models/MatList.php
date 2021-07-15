@@ -47,4 +47,44 @@ class MatList extends ObjectList
         return $query;
     }
 
+    /**
+     * Выводит все активные записи-материалы по имени типа материала
+     *
+     * @param string $type
+     * @return false
+     */
+    public function getTypeActiveRecords(string $type)
+    {
+        //получение ID типа материала
+        $type = $this->DB->mysqli->real_escape_string($type);
+        $query = "SELECT id FROM material_types WHERE id_char = '$type'";
+        if (!$res = $this->DB->query($query)){
+            return false;
+        }
+        $typeId = $res[0]['id'];
+
+        //выборка списка товаров в заказе
+        $this->conditions = [
+            [
+                'string' => false,
+                'type' => '=',
+                'col' => 'material_type_id',
+                'val' => $typeId
+            ],
+            [
+                'string' => false,
+                'type' => '=',
+                'col' => 'status_id',
+                'val' => 1
+            ]
+        ];
+        //сортировка результата запроса
+        $this->sort = [
+            ['col' => 'material_type_name', 'sort' => 'ASC'],
+            ['col' => 'name', 'sort' => 'ASC']
+        ];
+        $this->page = 1;
+        $this->perpage = null;
+        return $this->getRecords();
+    }
 }

@@ -139,6 +139,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             'date_edit' => null,
             'status' => 'created',
             'payment_method' => 'on_delivery',
+            'delivery' => 'from_stock',
             'price' => $allCost,
             'comment' => $this->values->comment
         ];

@@ -9,8 +9,10 @@
  *
  */
 
+use ice\Models\StoreRequestGood;
 use ice\Web\HeaderBuilder;
 use ice\Models\Mat;
+use ice\Models\MatList;
 use ice\Models\StoreRequest;
 
 $this->headers = new HeaderBuilder();
@@ -21,8 +23,10 @@ $this->moduleData = new stdClass();
 
 $this->getRequestValue('action');
 
-
-function makeCartAllCost() {
+/**
+ * @return array
+ */
+function makeCartAllCost():array {
     $allCost = 0;
     $allCnt = 0;
     foreach ($_SESSION['cart']['goods'] as $good){
@@ -44,16 +48,78 @@ function makeCartAllCost() {
     ];
 }
 
-switch ($this->values->action) {
+/**
+ * @param array $storeSettings
+ * @param string[] $param
+ * @return array
+ */
+function storeSettingsParamToArray(array $storeSettings, array $params):array {
 
+    foreach ($params as $param) {
+        $storeSettingsPayments = explode(';',$storeSettings[$param]);
+        $storeSettings[$param] = [];
+        foreach ($storeSettingsPayments as $key => $value) {
+            if ($value !== '') {
+                $tempArr = explode(':', $value);
+                $storeSettings[$param][$tempArr[0]] = $tempArr[1];
+            }
+        }
+    }
+    return $storeSettings;
+}
+
+switch ($this->values->action) {
     //работа с заказом интернет магазина
     case 'store':
 
-        $this->getRequestValues(['type','id']);
+        //секурность
+        if (!$this->moduleAccess()) {
+            return;
+        }
 
+        $this->getRequestValues(['type','id']);
         $id = (int)$this->values->id;
 
         switch ($this->values->type) {
+            case 'setRequest':
+                $requestBody = file_get_contents('php://input');
+                if(!$requestBody = json_decode($requestBody)) {
+                    die(json_encode(['success' => false, 'message' => 'Wrong JSON string']));
+                }
+                $requestBody->requestId = (int)$requestBody->requestId;
+                $request = new StoreRequest($this->DB,$requestBody->requestId);
+                if (!$request->getRecord($requestBody->requestId)){
+                    die(json_encode(['success' => false, 'message' => 'Wrong Request ID']));
+                }
+                if (empty($requestBody->goods)) {
+                    die(json_encode(['success' => false, 'message' => 'Wrong Goods']));
+                }
+                $query = 'DELETE FROM store_request_goods WHERE request_id = ' . $requestBody->requestId;
+                if (!$this->DB->query($query)) {
+                    die(json_encode(['success' => false, 'message' => 'Server Error']));
+                }
+                $allprice = 0;
+                foreach ($requestBody->goods as $good) {
+                    if (is_object($good)) {
+                        $requestGood = new StoreRequestGood($this->DB);
+                        $params = [
+                            'request_id' => $requestBody->requestId,
+                            'good_id' => $good->id,
+                            'price' => $good->price,
+                            'count' => $good->material_count
+                        ];
+                        $requestGood->createRecord($params);
+                        $allprice += $good->price*$good->material_count;
+                    }
+                }
+                $request->params['date_edit'] = 'NOW()';
+                $request->params['payment_method'] = $requestBody->paymentMethod;
+                $request->params['delivery'] = $requestBody->delivery;
+                $request->params['price'] = $allprice;
+                $request->updateRecord();
+
+                $this->moduleData->res = ['success' => true, 'message' => 'Success saved'];
+                break;
             case 'getRequest':
                 $request = new StoreRequest($this->DB,$id);
                 if(!$request->getRecord($id)){
@@ -66,7 +132,19 @@ switch ($this->values->action) {
                     $goodsVsURL[] = array_merge($good, ['url' => $url]);
                 }
                 $request->params['goods'] = $goodsVsURL;
-                $this->moduleData->res = ['request' => $request->params];
+
+                $matList = new MatList($this->DB);
+                $storeSettings = $matList->getTypeActiveRecords('online-store-settings');
+                $tempSettings = [];
+                foreach ($storeSettings as $item) {
+                    $tempSettings[str_replace('-','_',$item['id_char'])] = $item['anons'];
+                }
+                $storeSettings = $tempSettings;
+                //$storeSettings = array_column($storeSettings, 'anons', 'id_char');
+                $storeSettings = storeSettingsParamToArray($storeSettings, ['Sposoby_oplaty','Sposoby_dostavki']);
+
+
+                $this->moduleData->res = ['request' => $request->params, 'storeSettings' => $storeSettings];
                 break;
             case 'getNewGood':
                 $mat = new Mat($this->DB);

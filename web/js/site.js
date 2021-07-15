@@ -77,9 +77,6 @@ $(function () {
 
     //cart change count
     $('.cart-good-cnt').keyup(function () {
-        //console.log($(this).val());
-        //console.log($(this).attr('data'));
-
         let id = $(this).attr('data');
         let val = $(this).val();
 

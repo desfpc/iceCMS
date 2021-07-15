@@ -110,6 +110,7 @@ $this->jsready .= "
     var search = '".urlencode($this->values->search)."';
     var status = '".$this->values->status."';
     var requestId = 0;
+    var requestObj = {};
 
     $('#filterStatus').change(function(){
         document.location.href='/admin/shop/?status='+$(this).val()+'&search='+search;
@@ -127,6 +128,34 @@ $this->jsready .= "
     
     $('.btn-store-print').click(function(){
         
+    });
+    
+    $('.editRequestBtn').click(function(){
+        requestObj.requestId = requestId;
+        requestObj.paymentMethod = $('.paymentMethodSelect').val();
+        requestObj.delivery = $('.deliveryTypeSelect').val();
+        requestObj.goods = [];
+        $('.rGood').each(function(){
+            const goodCnt = Number($(this).find('.rGood__count').val());
+            const goodPrice = Number($(this).find('.rGood__price').val());
+            const goodId = $(this).attr('id').replace('rGood_' + requestId + '_','');
+            requestObj.goods[goodId] = {
+                id: goodId,
+                material_count: goodCnt,
+                price: goodPrice
+            };
+        });
+        
+        $.ajax({
+            method: \"POST\",
+            url: \"/?menu=ajax&action=store&type=setRequest&id=\"+requestId,
+            data: JSON.stringify(requestObj),
+            dataType: \"json\"
+        }).done(function ( res ) {
+            if(res.success === true) {
+                document.location.reload();
+            }
+        });
     });
     
     function reloadRequest() {
@@ -173,12 +202,11 @@ $this->jsready .= "
             url: \"/?menu=ajax&action=store&type=getRequest&id=\"+requestId,
             dataType: \"json\"
         }).done(function ( res ) {
-            console.log( res.request );
+            console.log( res );
             
             $('.edit-form__products').html('');
             
             res.request.goods.forEach(function(good){
-                console.log ( good );
                 $('.edit-form__products').append('<tr class=\"rGood\" id=\"rGood_' + requestId + '_' + good.id +'\">' +
                 '   <td>' + good.id + '</td>' +
                 '   <td><a target=\"_blank\" href=\"' + good.url + '\">' + good.name + '</a></td>' +
@@ -197,6 +225,22 @@ $this->jsready .= "
             '   <td id=\"edit-form-itogo__price\"></td>' +
             '   <td></td>' +
             '</tr>');
+            
+            (Object.entries(res.storeSettings.Sposoby_dostavki)).forEach(function(delivery){
+                if(delivery[0] === res.request.delivery) {
+                    $('.deliveryTypeSelect').append('<option value=\"' + delivery[0] + '\" SELECTED>' + delivery[1] + '</option>');
+                } else {
+                    $('.deliveryTypeSelect').append('<option value=\"' + delivery[0] + '\">' + delivery[1] + '</option>');
+                }
+            });
+            
+            (Object.entries(res.storeSettings.Sposoby_oplaty)).forEach(function(payment){
+                if(payment[0] === res.request.payment_method) {
+                    $('.paymentMethodSelect').append('<option value=\"' + payment[0] + '\" SELECTED>' + payment[1] + '</option>');
+                } else {
+                    $('.paymentMethodSelect').append('<option value=\"' + payment[0] + '\">' + payment[1] + '</option>');
+                }
+            });
             
             storeInit();    
         });
@@ -248,27 +292,26 @@ $this->jsready .= "
     
     $('#new_material_id').change(function(){
         const id = $('#new_material_id').val();
-        if(id !== undefined && id !== '') 
-        {
-        console.log(id);
-        $.ajax({
-            method: \"POST\",
-            url: \"/?menu=ajax&action=store&type=getNewGood&id=\"+id,
-            dataType: \"json\"
-        }).done(function (res) {
-            console.log(res);
-            const row = '<tr class=\"rGood\" id=\"rGood_' + requestId + '_' + res.params.id + '\">' +
-            '<td>' + res.params.id + '</td><td><a target=\"_blank\" href=\"' + res.params.url + '\">' + res.params.name + '</a></td>' +
-            '<td><input class=\"form-control rGood__count\" type=\"text\" value=\"1\"></td>' +
-            '<td><input class=\"form-control rGood__price\" type=\"text\" value=\"' + res.params.price + '\"></td>' +
-            '<td><button type=\"button\" class=\"btn btn-danger btn-sm rGood__del\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"\" data-original-title=\"Удалить\">' +
-            '<i class=\"material-icons md-16 md-light\">delete</i></button></td></tr>';
-            $(row).insertBefore('#edit-form-itogo');
-            storeInit();
+        if(id !== undefined && id !== '')
+            {
+            console.log(id);
+            $.ajax({
+                method: \"POST\",
+                url: \"/?menu=ajax&action=store&type=getNewGood&id=\"+id,
+                dataType: \"json\"
+            }).done(function (res) {
+                console.log(res);
+                const row = '<tr class=\"rGood\" id=\"rGood_' + requestId + '_' + res.params.id + '\">' +
+                '<td>' + res.params.id + '</td><td><a target=\"_blank\" href=\"' + res.params.url + '\">' + res.params.name + '</a></td>' +
+                '<td><input class=\"form-control rGood__count\" type=\"text\" value=\"1\"></td>' +
+                '<td><input class=\"form-control rGood__price\" type=\"text\" value=\"' + res.params.price + '\"></td>' +
+                '<td><button type=\"button\" class=\"btn btn-danger btn-sm rGood__del\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"\" data-original-title=\"Удалить\">' +
+                '<i class=\"material-icons md-16 md-light\">delete</i></button></td></tr>';
+                $(row).insertBefore('#edit-form-itogo');
+                storeInit();
+            });
+            }
         });
-        }
-    });
-    
 ";
 
 $this->jscripts->addScript('/js/bootstrap-select.js');
@@ -313,29 +356,23 @@ $this->styles->addStyle('/css/ajax-bootstrap-select.css');
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="new_material_id" class="col-sm-2 col-form-label text-right"><strong>Добавить товар в заказ</strong></label>
+                        <label for="new_material_id" class="col-sm-2 col-form-label text-right"><strong>Добавить товар</strong></label>
                         <div class="col-sm-10">
                             <select class="form-control selectpicker" data-live-search="true" id="new_material_id" name="new_material_id" aria-describedby="status_idHelp" placeholder="Добавить товар в заказ">
                             </select>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="name" class="col-sm-2 col-form-label text-right"><strong>Статус</strong></label>
-                        <div class="col-sm-10">
-                            <select class="form-control">
-
-                            </select>
+                        <label for="name" class="col-sm-2 col-form-label text-right"><strong>Доставка</strong></label>
+                        <div class="col-sm-4">
+                            <select class="form-control deliveryTypeSelect"></select>
+                        </div>
+                        <label for="name" class="col-sm-2 col-form-label text-right"><strong>Оплата</strong></label>
+                        <div class="col-sm-4">
+                            <select class="form-control paymentMethodSelect"></select>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label for="name" class="col-sm-2 col-form-label text-right"><strong>Тип оплаты</strong></label>
-                        <div class="col-sm-10">
-                            <select class="form-control">
-
-                            </select>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-success"><i class="material-icons md-24 md-light">edit</i> Изменить</button>
+                    <button type="button" class="btn btn-success editRequestBtn"><i class="material-icons md-24 md-light">edit</i> Изменить</button>
                 </form>
             </div>
         </div>

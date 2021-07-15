@@ -15,6 +15,7 @@ use ice\DB\Cacher;
 use ice\DB\DB;
 use ice\DB\QueryBuilder;
 use ice\Settings\Settings;
+use visualijoper\visualijoper;
 
 class Obj
 {
@@ -171,6 +172,8 @@ class Obj
 
         $qbuilder = new QueryBuilder($this->DB, $this->cols, $this->params, $this->dbtable);
         $query = $qbuilder->update();
+
+        //visualijoper::visualijop($query);
 
         //die($query);
 

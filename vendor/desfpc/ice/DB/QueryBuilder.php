@@ -60,7 +60,11 @@ class QueryBuilder
                 $sout .= ' ' . $col['Field'] . '=';
 
                 //в зависимости от типа колонки, рисуем ковычки на значение
-                if (mb_stripos($col['Type'], 'char', 0, 'UTF-8') !== false || mb_stripos($col['Type'], 'text', 0, 'UTF-8') !== false) {
+                if (
+                    mb_stripos($col['Type'], 'char', 0, 'UTF-8') !== false ||
+                    mb_stripos($col['Type'], 'text', 0, 'UTF-8') !== false ||
+                    mb_stripos($col['Type'], 'enum', 0, 'UTF-8') !== false
+                ) {
                     if (is_null($this->params[$col['Field']])) {
                         $sout .= 'NULL';
                     } else {
