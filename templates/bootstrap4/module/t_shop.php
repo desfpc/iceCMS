@@ -151,6 +151,21 @@ $this->jsready .= "
         reloadRequest();
     }
     
+    function storeInit() {
+        $('#request-edit-form').css('opacity','0');
+        $('#request-edit-form').show().animate({opacity: 1},200);
+        $('.rGood__count, .rGood__price').change(function(){
+            reloadRequest();
+            });
+        $('.rGood__del').click(function(){
+            const parentRow = $(this).parent().parent();
+            const goodId = parentRow.prop('id').replace('rGood_' + requestId + '_', '');
+            console.log(goodId);
+            deleteFromRequest(goodId);
+            });
+        reloadRequest();
+    }
+    
     $('.btn-store-edit').click(function(){
         requestId = $(this).attr('request_id');
         $.ajax({
@@ -183,18 +198,7 @@ $this->jsready .= "
             '   <td></td>' +
             '</tr>');
             
-            $('#request-edit-form').css('opacity','0');
-            $('#request-edit-form').show().animate({opacity: 1},200);
-            $('.rGood__count, .rGood__price').change(function(){
-                reloadRequest();
-                });
-            $('.rGood__del').click(function(){
-                const parentRow = $(this).parent().parent();
-                const goodId = parentRow.prop('id').replace('rGood_' + requestId + '_', '');
-                console.log(goodId);
-                deleteFromRequest(goodId);
-                });
-            reloadRequest();    
+            storeInit();    
         });
     });
     
@@ -243,7 +247,26 @@ $this->jsready .= "
     });
     
     $('#new_material_id').change(function(){
-        console.log($('#new_material_id').val());
+        const id = $('#new_material_id').val();
+        if(id !== undefined && id !== '') 
+        {
+        console.log(id);
+        $.ajax({
+            method: \"POST\",
+            url: \"/?menu=ajax&action=store&type=getNewGood&id=\"+id,
+            dataType: \"json\"
+        }).done(function (res) {
+            console.log(res);
+            const row = '<tr class=\"rGood\" id=\"rGood_' + requestId + '_' + res.params.id + '\">' +
+            '<td>' + res.params.id + '</td><td><a target=\"_blank\" href=\"' + res.params.url + '\">' + res.params.name + '</a></td>' +
+            '<td><input class=\"form-control rGood__count\" type=\"text\" value=\"1\"></td>' +
+            '<td><input class=\"form-control rGood__price\" type=\"text\" value=\"' + res.params.price + '\"></td>' +
+            '<td><button type=\"button\" class=\"btn btn-danger btn-sm rGood__del\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"\" data-original-title=\"Удалить\">' +
+            '<i class=\"material-icons md-16 md-light\">delete</i></button></td></tr>';
+            $(row).insertBefore('#edit-form-itogo');
+            storeInit();
+        });
+        }
     });
     
 ";

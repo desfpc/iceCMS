@@ -52,21 +52,29 @@ switch ($this->values->action) {
         $this->getRequestValues(['type','id']);
 
         $id = (int)$this->values->id;
-        $request = new StoreRequest($this->DB,$id);
-        if(!$request->getRecord($id)){
-            die(json_encode(['success' => false, 'message' => 'Wrong Request ID']));
-        }
-
-        $goodsVsURL = [];
-        foreach ($request->params['goods'] as $good) {
-            $url = Mat::GetUrl($good, $this->materialTypes);
-            $goodsVsURL[] = array_merge($good, ['url' => $url]);
-        }
-        $request->params['goods'] = $goodsVsURL;
 
         switch ($this->values->type) {
             case 'getRequest':
+                $request = new StoreRequest($this->DB,$id);
+                if(!$request->getRecord($id)){
+                    die(json_encode(['success' => false, 'message' => 'Wrong Request ID']));
+                }
+
+                $goodsVsURL = [];
+                foreach ($request->params['goods'] as $good) {
+                    $url = Mat::GetUrl($good, $this->materialTypes);
+                    $goodsVsURL[] = array_merge($good, ['url' => $url]);
+                }
+                $request->params['goods'] = $goodsVsURL;
                 $this->moduleData->res = ['request' => $request->params];
+                break;
+            case 'getNewGood':
+                $mat = new Mat($this->DB);
+                if(!$mat->getRecord($id)){
+                    die(json_encode(['success' => false, 'message' => 'Wrong Good ID ' . $id]));
+                }
+                $mat->params['url'] = Mat::GetUrl($mat->params, $this->materialTypes);
+                $this->moduleData->res = $mat;
                 break;
         }
 
