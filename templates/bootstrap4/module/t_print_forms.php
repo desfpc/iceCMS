@@ -22,6 +22,10 @@ $templateFolder = $this->settings->path . '/templates/' . $this->settings->templ
     <title><?= $this->moduleData->title ?></title>
     <style>
         @media screen, print {
+            @page {
+                size: auto;   /* auto is the initial value */
+                margin: 0;  /* this affects the margin in the printer settings */
+            }
             html {
                 padding: 0;
                 margin: 0;
@@ -29,7 +33,7 @@ $templateFolder = $this->settings->path . '/templates/' . $this->settings->templ
             body {
                 color: #000;
                 background-color: #fff;
-                margin: .2in .55in; /*отступы от края страницы, для красоты*/
+                margin: 1cm; /*отступы от края страницы, для красоты*/
                 padding: 0;
                 font: 10pt "Helvetica Neue", Arial, Verdana;
                 box-sizing: border-box;
