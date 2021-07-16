@@ -14,7 +14,9 @@ use ice\Models\Mat;
 use ice\Models\MatList;
 
 //секурность
-if (!$this->moduleAccess()) return;
+if (!$this->moduleAccess()) {
+    return;
+}
 
 $this->moduleData = new stdClass();
 

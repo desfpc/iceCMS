@@ -16,7 +16,7 @@ use ice\Models\MatTypeList;
 //секурность
 if (!$this->moduleAccess()) {
     return;
-};
+}
 
 $this->moduleData = new stdClass();
 

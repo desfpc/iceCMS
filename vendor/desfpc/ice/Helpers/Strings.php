@@ -25,14 +25,12 @@ class Strings
      */
     public static function makeCharId($text): string
     {
-
         $id_char = Strings::Transliterate($text);
         $id_char = str_replace('"', '-quot-', $id_char);
         $id_char = trim(preg_replace('/-{2,}/', '-', $id_char), '-');
         $id_char = str_replace(' ', '_', $id_char);
 
         return $id_char;
-
     }
 
     /**

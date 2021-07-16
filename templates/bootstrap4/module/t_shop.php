@@ -127,7 +127,7 @@ $this->jsready .= "
     });
     
     $('.btn-store-print').click(function(){
-        
+        window.open('/print_forms/?type=storeRequest&id=' + $(this).attr('request_id'));
     });
     
     $('.editRequestBtn').click(function(){

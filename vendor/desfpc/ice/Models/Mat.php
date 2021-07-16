@@ -40,14 +40,19 @@ class Mat extends Obj
     /**
      * Price Formatter
      *
-     * @param $price
+     * @param float $price
+     * @param bool $currency
      * @return string
      */
-    public static function price($price)
+    public static function price(float $price, bool $currency = true)
     {
-
-        return number_format($price, 2, '<small>,', '&nbsp;') . '&nbsp;₽</small>';
-
+        if ($currency) {
+            $cur = '&nbsp;₽';
+        }
+        else {
+            $cur = '';
+        }
+        return number_format($price, 2, '<small>,', '&nbsp;') . $cur . '</small>';
     }
 
     /**

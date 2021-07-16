@@ -18,7 +18,7 @@ use ice\Web\Form;
 //секурность
 if (!$this->moduleAccess()) {
     return;
-};
+}
 
 $this->moduleData = new stdClass();
 
