@@ -18,7 +18,7 @@ if (!$this->authorize->autorized) {
 
 $this->moduleData = new stdClass();
 
-$this->moduleData->title = 'Личный кабинет';
-$this->moduleData->H1 = 'Личный кабинет';
+$this->moduleData->title = 'Личный кабинет - '.$this->settings->site->title;
+$this->moduleData->H1 = 'Личный кабинет '.$this->authorize->user->params['login_email'];
 $this->moduleData->errors = [];
 $this->moduleData->success = [];

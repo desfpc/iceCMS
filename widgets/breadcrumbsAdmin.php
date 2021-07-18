@@ -26,8 +26,12 @@ if (is_array($this->params) && count($this->params) > 0) {
         if ($i == $cnt) {
             $text .= '<li class="breadcrumb-item active" aria-current="page">' . $param['name'] . '</li>';
         } elseif (isset($param['dir']) && $param['dir'] != '') {
-            $dirs .= $param['dir'] . '/';
-            $text .= '<li class="breadcrumb-item"><a href="' . $dirs . $url . '">' . $param['name'] . '</a></li>';
+            if ($param['dir'] == 'none') {
+                $text .= '<li class="breadcrumb-item"><a href="/">' . $param['name'] . '</a></li>';
+            } else {
+                $dirs .= $param['dir'] . '/';
+                $text .= '<li class="breadcrumb-item"><a href="' . $dirs . $url . '">' . $param['name'] . '</a></li>';
+            }
         } else {
             if ($url == '') {
                 $url .= '?';

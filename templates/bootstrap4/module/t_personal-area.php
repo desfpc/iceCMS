@@ -15,11 +15,19 @@ include_once($template_folder . '/partial/t_jsandcss.php');
 
 //js document.load
 include_once($template_folder . '/partial/t_jsreadyglobal.php');
-$this->jsready .= '
+$this->jsready .= '';
 
-    $(".form-group").has("input#regLogin").hide();
-
-';
+$this->moduleData->breadcrumbs = [
+    [
+        'name' => 'Главная',
+        'dir' => 'none'
+    ],
+    [
+        'name' => 'Личный кабинет',
+        'param' => 'menu',
+        'value' => 'personal-area'
+    ]
+];
 
 include_once($template_folder . '/partial/t_header.php');
 
@@ -36,6 +44,15 @@ include_once($template_folder . '/partial/t_header.php');
         </div>
         <div class="row">
             <?php \visualijoper\visualijoper::visualijop($this->authorize->user); ?>
+            <div class="col-md-3">
+                <div class="hMenu">
+                    <a href="/personal-area" class="hMenu_link hMenu_link_active" aria-current="true">
+                        Настройки
+                    </a>
+                    <a href="/personal-area/orderlist" class="hMenu_link">Список заказов</a>
+                </div>
+            </div>
+            <div class="col-md-9"></div>
         </div>
     </div>
 <?php include_once($template_folder . '/partial/t_footer.php');
