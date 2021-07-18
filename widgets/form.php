@@ -210,7 +210,7 @@ function makeParamId($input,$paramIdFormula){
     return str_replace('%paramName%',$input['name'],$paramIdFormula);
 }
 
-function makeInputParams($input,$paramIdFormula,$noClass=false,$noValue=false){
+function makeInputParams($parent, $input,$paramIdFormula,$noClass=false,$noValue=false){
 
     $params = '';
 
@@ -234,7 +234,7 @@ function makeInputParams($input,$paramIdFormula,$noClass=false,$noValue=false){
             $class.=' '.$input['class'];
         }
 
-        if(key_exists($input['name'],$this->params['errors'])){
+        if(key_exists($input['name'], $parent->params['errors'])){
             $class.=' is-invalid';
         }
 
@@ -246,7 +246,6 @@ function makeInputParams($input,$paramIdFormula,$noClass=false,$noValue=false){
     }
 
     return $params;
-
 }
 
 function makeLabelAndDiv($input){
@@ -299,10 +298,10 @@ if(is_array($formArr) && count($formArr) > 0){
 
     //строим csrf поля
     if(isset($formArr['csrf_key'])){
-        $out.='<input type="hidden" name="csrf_key" value="'.$formArr['csrf_key'].'">';
+        $out.='<input type="hidden" name="_csrf_key" value="'.$formArr['csrf_key'].'">';
     }
     if(isset($formArr['csrf_token'])){
-        $out.='<input type="hidden" name="csrf_token" value="'.$formArr['csrf_token'].'">';
+        $out.='<input type="hidden" name="_csrf" value="'.$formArr['csrf_token'].'">';
     }
 
     if(!isset($formArr['paramIdFormula'])){
@@ -316,7 +315,7 @@ if(is_array($formArr) && count($formArr) > 0){
         foreach ($formArr['hiddens'] as $item){
             $out.='<input type="hidden"';
 
-            $out.=makeInputParams($item, $paramIdFormula);
+            $out.=makeInputParams($this, $item, $paramIdFormula);
 
             $out.='>';
         }
@@ -353,7 +352,7 @@ if(is_array($formArr) && count($formArr) > 0){
                             $out.=$divs[0];
 
                             $out.='<input type="'.$type.'" ';
-                            $out.=makeInputParams($col, $paramIdFormula).'>';
+                            $out.=makeInputParams($this, $col, $paramIdFormula).'>';
 
                             $out.=$divs[1];
 
@@ -366,7 +365,7 @@ if(is_array($formArr) && count($formArr) > 0){
                             $out.=$divs[0];
 
                             $out.='<select ';
-                            $out.=makeInputParams($col, $paramIdFormula).'>';
+                            $out.=makeInputParams($this, $col, $paramIdFormula).'>';
 
                             if(isset($col['options']) && is_array($col['options']) && count($col['options'])>0){
 
@@ -412,7 +411,7 @@ if(is_array($formArr) && count($formArr) > 0){
 
                             if(isset($col['inputs']) && is_array($col['inputs']) && count($col['inputs'])>0){
                                 foreach ($col['inputs'] as $input){
-                                    $out.='<input type="text" '.makeInputParams($input, $paramIdFormula).'>';
+                                    $out.='<input type="text" '.makeInputParams($this, $input, $paramIdFormula).'>';
                                 }
                             }
 
@@ -442,7 +441,7 @@ if(is_array($formArr) && count($formArr) > 0){
                                     $option['name'] = $col['name'];
 
                                     $out.='<div class="form-check">
-  <input class="form-check-input" type="radio" '.makeInputParams($option,$paramIdFormula).'>
+  <input class="form-check-input" type="radio" '.makeInputParams($this, $option,$paramIdFormula).'>
   <label class="form-check-label" for="exampleRadios1">
     '.$option['label'].'
   </label>
@@ -462,7 +461,7 @@ if(is_array($formArr) && count($formArr) > 0){
 
                             $out.='<div class="custom-control switch form-group '.$divClass.'">';
 
-                            $out.='<input type="checkbox" class="danger" '.makeInputParams($col, $paramIdFormula, true).'>
+                            $out.='<input type="checkbox" class="danger" '.makeInputParams($this, $col, $paramIdFormula, true).'>
                             <span class="slider round"></span>';
 
                             if(isset($col['label'])){
@@ -480,7 +479,7 @@ if(is_array($formArr) && count($formArr) > 0){
 
                             $out.='<div class="form-group form-check '.$divClass.'">';
 
-                            $out.='<input type="checkbox" class="form-check-input" '.makeInputParams($col, $paramIdFormula, true).'>';
+                            $out.='<input type="checkbox" class="form-check-input" '.makeInputParams($this, $col, $paramIdFormula, true).'>';
 
                             if(isset($col['label'])){
                                 $out.='<label class="form-check-label" for="exampleCheck1">'.$col['label'].'</label>';
@@ -501,7 +500,7 @@ if(is_array($formArr) && count($formArr) > 0){
                                 $out.='<label for="'.$col['id'].'" class="col-form-label">'.$col['label'].'</label>';
                             }
 
-                            $out.='<textarea '.makeInputParams($col, $paramIdFormula, false, true).'>'.$col['value'].'</textarea>';
+                            $out.='<textarea '.makeInputParams($this, $col, $paramIdFormula, false, true).'>'.$col['value'].'</textarea>';
 
                             $out.='</div>';
 

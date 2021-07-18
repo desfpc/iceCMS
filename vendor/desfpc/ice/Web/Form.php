@@ -5,7 +5,7 @@
  * PHP framework and CMS based on it.
  * https://github.com/desfpc/iceCMS
  *
- * Form Class
+ * TODO Form Class
  *
  */
 
@@ -14,6 +14,10 @@ namespace ice\Web;
 use ice\Models\Obj;
 use visualijoper\visualijoper;
 
+/**
+ * Class Form
+ * @package ice\Web
+ */
 class Form
 {
 
@@ -34,6 +38,12 @@ class Form
         'target'
     ];
 
+    /**
+     * Form constructor.
+     *
+     * @param array $form
+     * @param array $params
+     */
     public function __construct($form = [], $params = [])
     {
         $this->setFormSettings($form);
@@ -42,26 +52,42 @@ class Form
         return true;
     }
 
+    /**
+     * Устанавливает параметры объекта
+     *
+     * @param array $params
+     */
     public function setFormParams(array $params){
         if(count($params) > 0){
             $this->params = $params;
         }
     }
 
+    /**
+     * Устанавливает настройки объекта
+     *
+     * @param array $form
+     * @return bool
+     */
     public function setFormSettings(array $form){
-        if(count($form) > 0){
+        if(!empty($form)){
             $this->form = $form;
         }
         return true;
     }
 
-    //формирование массива полей формы (разбитие параметров по строкам)
+    //TODO формирование массива полей формы (разбитие параметров по строкам)
     public function makeFormRows(array $rows):array
     {
 
     }
 
-    //формирование массива полей формы из объекта (для быстрого создания массива для виджета формы)
+    /**
+     * формирование массива полей формы из объекта (для быстрого создания массива для виджета формы)
+     *
+     * @param Obj $obj
+     * @return false
+     */
     public function makeFromObj(Obj $obj)
     {
         if(isset($obj->cols) && is_array($obj->cols) && count($obj->cols) > 0){
@@ -119,7 +145,7 @@ class Form
 
         }
 
-        visualijoper::visualijop($this->params);
+        //visualijoper::visualijop($this->params);
 
         return false;
     }

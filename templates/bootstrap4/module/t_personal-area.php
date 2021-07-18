@@ -6,6 +6,9 @@
  * @var ice\Web\Render $this
  */
 
+use ice\Web\Widget;
+use ice\Helpers\Strings;
+
 $template_folder = $this->settings->path . '/templates/' . $this->settings->template . '';
 
 //подключаем стили и скрипты
@@ -16,18 +19,6 @@ include_once($template_folder . '/partial/t_jsandcss.php');
 //js document.load
 include_once($template_folder . '/partial/t_jsreadyglobal.php');
 $this->jsready .= '';
-
-$this->moduleData->breadcrumbs = [
-    [
-        'name' => 'Главная',
-        'dir' => 'none'
-    ],
-    [
-        'name' => 'Личный кабинет',
-        'param' => 'menu',
-        'value' => 'personal-area'
-    ]
-];
 
 include_once($template_folder . '/partial/t_header.php');
 
@@ -52,7 +43,22 @@ include_once($template_folder . '/partial/t_header.php');
                     <a href="/personal-area/orderlist" class="hMenu_link">Список заказов</a>
                 </div>
             </div>
-            <div class="col-md-9"></div>
+            <div class="col-md-9">
+                <table class="table table-striped">
+                    <tr>
+                        <td>E-mail: </td>
+                        <td><strong><?= $this->authorize->user->params['login_email'] ?></strong></td>
+                    </tr>
+                    <tr>
+                        <td>Дата регистрации: </td>
+                        <td><strong><?= Strings::formatDate($this->authorize->user->params['date_add']) ?></strong></td>
+                    </tr>
+                </table>
+                <hr />
+                <?php
+                $form = new Widget($this->DB, 'form', $this->settings);
+                $form->show($this->moduleData->formArr); ?>
+            </div>
         </div>
     </div>
 <?php include_once($template_folder . '/partial/t_footer.php');
