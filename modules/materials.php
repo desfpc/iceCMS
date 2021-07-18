@@ -16,8 +16,8 @@ $this->moduleData = new stdClass();
 
 $this->moduleData->title = $this->settings->site->title;
 $this->moduleData->H1 = '';
-$this->moduleData->errors = array();
-$this->moduleData->success = array();
+$this->moduleData->errors = [];
+$this->moduleData->success = [];
 
 //парсим URL, определяем текущий тип материала и материал
 $this->parser->parseURL($this->path_info['call_parts']);

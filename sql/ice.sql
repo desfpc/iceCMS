@@ -266,6 +266,7 @@ INSERT INTO `modules` VALUES (17, 'shop_settings', 'Настройки мага�
 INSERT INTO `modules` VALUES (18, 'ajax', 'Вывод данных для ajax запросов', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `modules` VALUES (19, 'templates', 'Шаблоны материалов', 1, NULL, NULL, NULL, 3);
 INSERT INTO `modules` VALUES (20, 'print_forms', 'Печатные формы', 1, NULL, NULL, NULL, NULL);
+INSERT INTO `modules` VALUES (21, 'personal-area', 'Личный кабинет', NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for mtype_files
