@@ -9,8 +9,10 @@
  *
  */
 
+use ice\Models\User;
 use ice\Web\Redirect;
 use ice\Tools\CSRF;
+use ice\Helpers\Strings;
 //use ice\Web\Form;
 
 const FROM_ID = 'personal_area';
@@ -37,6 +39,61 @@ $this->moduleData->breadcrumbs = [
         'value' => 'personal-area'
     ]
 ];
+
+//изменение пользователя
+try {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $this->getRequestValues(['tel','sex','old_pass','new_pass','_csrf']);
+
+        //проверка CSRF
+        if (empty($this->values->_csrf) || !CSRF::checkCSFR(FROM_ID, $this->values->_csrf)) {
+            $error = 'Ошибка данных формы. Попробуйте отправить еще раз.';
+            $this->setFlash('errors', [$error]);
+            throw new Exception($error);
+        }
+
+        $user = new User($this->DB);
+        $user->getRecord($this->authorize->user->params['id']);
+
+        //формирование нового пароля
+        if ($this->values->old_pass !== '' && $this->values->new_pass) {
+            if ($this->values->new_pass === $this->values->old_pass) {
+                $error = 'Ошибка - новый пароль должен отличаться от старого';
+                $this->setFlash('errors', [$error]);
+                throw new Exception($error);
+            }
+            if (!password_verify($this->values->old_pass, $this->authorize->user->params['password'])) {
+                $error = 'Ошибка - не верный старый пароль';
+                $this->setFlash('errors', [$error]);
+                throw new Exception($error);
+            }
+            //генерируем хэш пароля
+            if (!Strings::validatePassword($this->values->new_pass)) {
+                $error = 'Ошибка - слишком простой новой пароль! Пароль должен быть не короче 8-ми символов, содержать цифры, заглавные и прописные буквы.';
+                $this->setFlash('errors', ['Ошибка - слишком простой новой пароль! Пароль должен быть не короче 8-ми символов, содержать цифры, заглавные и прописные буквы.']);
+                throw new Exception($error);
+            }
+            $newPass = password_hash($this->values->new_pass, PASSWORD_DEFAULT);
+            $user->params['password'] = $newPass;
+        }
+
+        //обновление данных пользователя
+        $this->values->tel = Strings::telForSave($this->values->tel);
+
+        $user->params['login_phone'] = $this->values->tel;
+        $user->params['sex'] = $this->values->sex;
+        if ($user->updateRecord()) {
+            $this->setFlash('success', ['Данные успешно изменены']);
+            $this->authorize->user->params = $user->params;
+        } else {
+            $error = 'Ошибка сохранения данных - попробуйте позже';
+            $this->setFlash('errors', ['Ошибка сохранения данных - попробуйте позже']);
+            throw new Exception($error);
+        }
+    }
+} catch (Exception $e) {
+    //errror... ok...
+}
 
 $csfr = new CSRF($this->settings,FROM_ID);
 

@@ -132,4 +132,47 @@ class Strings
     {
         return date('d.m.Y H:i', strtotime($date));
     }
+
+    /**
+     * Валидация пароля (проверка на сложность)
+     * 1) проверка на длинну (не менее 8 символов)
+     * 2) проверка на наличае заглавных En или Ру букв
+     * 3) проверка на наличае прописных En или Ру букв
+     * 4) проверка на наличае цифр
+     *
+     * @param string $password
+     * @return bool
+     */
+    public static function validatePassword(string $password): bool
+    {
+        if (mb_strlen($password, 'UTF-8') < 8) {
+            return false;
+        }
+        if (!preg_match('@[A-ZА-ЯЁ]@', $password)) {
+            return false;
+        }
+        if (!preg_match('@[a-zа-яё]@', $password)) {
+            return false;
+        }
+        if (!preg_match('@[0-9]@', $password)) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Преобразовывает строку с телефоном
+     *
+     * @param string $tel
+     * @return string
+     */
+    public static function telForSave(string $tel): string
+    {
+        $tel = str_replace('+7','8',$tel);
+        $tel = str_replace(' ','',$tel);
+        $tel = str_replace('+','',$tel);
+        $tel = str_replace('(','',$tel);
+        $tel = str_replace(')','',$tel);
+        return $tel;
+    }
 }
