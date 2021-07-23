@@ -210,11 +210,19 @@ class Settings
             return false;
         }
 
-        $query = 'SELECT name, secure FROM modules ORDER BY secure ASC, name ASC';
+        $query = 'SELECT id, name, secure, parent_id FROM modules ORDER BY secure ASC, name ASC';
         if ($res = $connection->query($query)) {
+            $parents = array_column($res, 'name', 'id');
             foreach ($res as $row) {
 
-                $lowerName = mb_strtolower($row['name'], 'UTF8');
+                //TODO сделать любую вложенность модулей, протестировать
+                if(empty($row['parent_id'])) {
+                    $lowerName = mb_strtolower($row['name'], 'UTF8');
+                }
+                else {
+                    $lowerName = mb_strtolower($parents[$row['parent_id']], 'UTF8') . '/' .
+                        mb_strtolower($row['name'], 'UTF8');
+                }
 
                 //административные модули
                 if ($row['secure'] == 1) {
@@ -229,7 +237,7 @@ $setup[\'routes\'][\'' . $lowerName . '\'] = \'' . $row['name'] . '\';';
         }
 
         //заносим текущие роуты
-        if (isset($this->routes) && !is_null($this->routes) && count($this->routes) > 0) {
+        if (isset($this->routes) && !empty($this->routes)) {
             foreach ($this->routes as $key => $value) {
                 $fileContent .= "
 \$setup['routes']['$key'] = '$value';";

@@ -34,7 +34,6 @@ include_once($template_folder . '/partial/t_header.php');
             </div>
         </div>
         <div class="row">
-            <?php \visualijoper\visualijoper::visualijop($this->authorize->user); ?>
             <div class="col-md-3">
                 <div class="hMenu">
                     <a href="/personal-area" class="hMenu_link hMenu_link_active" aria-current="true">

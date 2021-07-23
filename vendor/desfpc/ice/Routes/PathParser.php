@@ -76,7 +76,6 @@ class PathParser
 
     public function parseURL($call_parts)
     {
-
         $mtypes = [];
         $mtype = null;
         $material = null;
