@@ -69,13 +69,34 @@ if (is_array($files) && count($files) > 0) {
 
 //Загрузка пользовательских классов
 if (!isset($modelsDir)) {
-    $modelsDir = './models';
+    $modelsDir = './classes';
 }
-$files = scandir($modelsDir);
-if (is_array($files) && count($files) > 0) {
-    foreach ($files as $file) {
-        if (($file !== '.') && ($file !== '..')) {
-            include_once($modelsDir . '/' . $file);
+
+if (!file_exists($modelsDir) && !mkdir($modelsDir, 0750) && !is_dir($modelsDir)) {
+    throw new \RuntimeException(sprintf('Directory "%s" was not created', $modelsDir));
+}
+
+/**
+ * подключает пользовательские классы
+ *
+ * @param string $dir
+ * @return void
+ */
+function includeUserClasses(string $dir) {
+    if (is_dir($dir)) {
+        $files = scandir($dir);
+        if (is_array($files) && count($files) > 0) {
+            foreach ($files as $file) {
+                if (($file !== '.') && ($file !== '..')) {
+                    if(is_dir($dir . '/' . $file)) {
+                        includeUserClasses($dir . '/' . $file);
+                    }
+                    else {
+                        include_once($dir . '/' . $file);
+                    }
+                }
+            }
         }
     }
 }
+includeUserClasses($modelsDir);

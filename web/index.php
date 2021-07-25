@@ -16,7 +16,7 @@ require_once ('../vendor/autoload.php');
 //require_once('../classes/visualijoper_remote/visualijoper.php');//призываем библиотеку визуализации Visualijoper - перенесено в composer
 //require_once('../classes/pechkin_remote/pechkin.php');//класс для отправки email - перенесено в composer
 $iceDir = '../vendor/desfpc/ice';//директория с классами CMS
-$modelsDir = '../models';//директория пользовательских моделей
+$modelsDir = '../classes';//директория пользовательских моделей и прочих классов
 require_once('../bootstrap.php');//подключение классов ice CMS
 
 //подключаем настройки, если их нет - редиректим на setup.php
