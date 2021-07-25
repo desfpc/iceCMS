@@ -60,25 +60,15 @@ if ($this->authorize->secure == 1) {
         $navigation = new Widget($this->DB, 'navigationMenu', $this->settings);
         $navigation->show($this->materialTypes);
 
-        ?>
-        <div class="col-lg-2" style="margin-bottom: 18px; text-align: right;">
-            <div class="normalblock border rounded-circle header-round">
-                <i class="material-icons md-24 md-dark">search</i>
-            </div>
-            <div class="normalblock border rounded-circle header-round person-round passive">
-                <i class="material-icons md-24 md-dark">person</i>
-                <div class="person-info">
+        if ($this->authorize->autorized) {
+            $personForm = '<div class="person-info">
                     <i class="close material-icons md-24 md-grey">close</i>
-                    <?php
-                    //выводим инфо пользователя, ссылки на личный кабинет и выход
-                    if ($this->authorize->autorized) {
-                        ?>
                         <div class="user-name-block">
                             <div class="border rounded-circle photo">
                                 <i class="material-icons md-24 md-dark">person</i>
                             </div>
                             <div class="name">
-                                <?= $this->authorize->user->params['full_name'] ?>
+                                ' . $this->authorize->user->params['full_name'] . '
                             </div>
                         </div>
                         <div class="links">
@@ -87,22 +77,21 @@ if ($this->authorize->secure == 1) {
                             <hr>
                             <p><a href="/exit">Выход</a></p>
                         </div>
-                        <?php
-                    } //выводим форму авторизации и ссылки на регистрацию
-                    else {
-                        ?>
-                        <form id="smallRegForm" action="/authorize" method="post">
-                            <input type="email" class="form-control" id="auEmail" name="auEmail"
-                                   aria-describedby="auEmailHelp" placeholder="Введите email" required="" value="">
-                            <input type="password" class="form-control" id="auPass" name="auPass"
-                                   placeholder="введите Пароль" required="">
-                            <input type="hidden" name="action" value="login">
-                            <button type="submit" class="btn btn-primary">Авторизироваться</button>
-                        </form>
-                        <?
-                    }
-                    ?>
-                </div>
+                </div>';
+            $morePersonClass = '';
+        } else {
+            $personForm = '';
+            $morePersonClass = ' person-authorize-link';
+        }
+
+        ?>
+        <div class="col-lg-2" style="margin-bottom: 18px; text-align: right;">
+            <div class="normalblock border rounded-circle header-round">
+                <i class="material-icons md-24 md-dark">search</i>
+            </div>
+            <div class="normalblock border rounded-circle header-round person-round passive<?= $morePersonClass ?>">
+                <i class="material-icons md-24 md-dark">person</i>
+                <?= $personForm ?>
             </div><?php
 
             $allCost = 0; //полная стоимость заказа

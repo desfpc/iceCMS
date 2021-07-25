@@ -268,6 +268,7 @@ INSERT INTO `modules` VALUES (19, 'templates', 'Шаблоны материал�
 INSERT INTO `modules` VALUES (20, 'print_forms', 'Печатные формы', 1, NULL, NULL, NULL, NULL);
 INSERT INTO `modules` VALUES (21, 'personal-area', 'Личный кабинет', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `modules` VALUES (22, 'orderlist', 'Список заказов', NULL, NULL, NULL, NULL, 21);
+INSERT INTO `modules` VALUES (23, 'password-recovery', 'Восстановление пароля', NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for mtype_files

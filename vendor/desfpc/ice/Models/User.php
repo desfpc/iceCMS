@@ -12,7 +12,13 @@
 namespace ice\Models;
 
 use ice\DB\DB;
+use ice\Helpers\Strings;
+use ice\Settings\Settings;
 
+/**
+ * Class User
+ * @package ice\Models
+ */
 class User extends Obj
 {
 
@@ -34,12 +40,66 @@ class User extends Obj
         'sex' => 'Пол'
     ];
 
-    public function __construct(DB $DB, $id = null, $settings = null)
+    /**
+     * User constructor
+     *
+     * @param DB $DB
+     * @param null $id
+     * @param Settings|null $settings
+     */
+    public function __construct(DB $DB, $id = null, ?Settings $settings = null)
     {
         $this->doConstruct($DB, 'users', $id, $settings);
     }
-    
-    public function registerUser(array $params)
+
+    /**
+     * Get User by Email
+     *
+     * @param DB $DB
+     * @param string $email
+     * @param Settings|null $settings
+     * @return User|null
+     */
+    public static function getByEmail(DB $DB, string $email, ?Settings $settings = null): ?User
+    {
+        //получение пользователя
+        $query = 'SELECT id FROM users WHERE status_id = 1 AND login_email = \'' . $DB->mysqli->real_escape_string($email) . '\'';
+        if ($res = $DB->query($query)) {
+            if (count($res) > 0) {
+                return (new User($DB, $res[0]['id'], $settings));
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Set random password to User
+     *
+     * @return bool|string
+     */
+    public function setRandomPass()
+    {
+        $newPass = Strings::randomPassword(8);
+        $passHash = password_hash($newPass, PASSWORD_DEFAULT);
+        if (!$this->params) {
+            $this->getRecord();
+        }
+
+        $query = 'UPDATE users SET password = \'' . $passHash . '\' WHERE id = ' . $this->id;
+        if ($res = $this->DB->query($query)) {
+            $this->uncacheRecord();
+            return $newPass;
+        }
+        return false;
+    }
+
+    /**
+     * Register new User
+     *
+     * @param array<string, mixed> $params
+     * @return bool
+     */
+    public function registerUser(array $params): bool
     {
         //проверяем необходимые параметры
         if (isset($params['login_email']) && isset($params['password_input'])) {
@@ -68,14 +128,18 @@ class User extends Obj
                 $this->errors[] = 'Не удалось зарегистрировать пользователя';
                 return true;
             }
-
         }
-
         return false;
-
     }
 
-    public function authorizeUser($pass, $email)
+    /**
+     * User Authorization
+     *
+     * @param ?string $pass
+     * @param ?string $email
+     * @return false|int
+     */
+    public function authorizeUser(?string $pass, ?string $email)
     {
         if ((is_null($pass) || $pass == '') && (is_null($email) || $email == '')) {
             //еси еть php сессия
@@ -114,19 +178,35 @@ class User extends Obj
         return false;
     }
 
-    public function deauthorizeUser()
+    /**
+     * Deauthorize User
+     *
+     * @return bool
+     */
+    public function deauthorizeUser(): bool
     {
         unset($_SESSION['authorize']);
         $this->id = null;
         return true;
     }
 
-    public function disableUser()
+    /**
+     * Disable User
+     *
+     * @return bool
+     */
+    public function disableUser(): bool
     {
         return $this->changeUserStatus(2);
     }
 
-    public function changeUserStatus($status)
+    /**
+     * Change User Status
+     *
+     * @param int $status
+     * @return bool
+     */
+    public function changeUserStatus(int $status): bool
     {
         if ($this->isGotten) {
             $query = 'UPDATE users SET status_id = ' . $status . ' WHERE id = ' . $this->params['id'];
@@ -141,18 +221,31 @@ class User extends Obj
         return false;
     }
 
-    public function enableUser()
+    /**
+     * Enable User
+     *
+     * @return bool
+     */
+    public function enableUser(): bool
     {
         return $this->changeUserStatus(1);
     }
 
-    //метод для переработки в конкретном объекте
-
+    /**
+     * More actions for getting full User record
+     *
+     * @return void
+     */
     public function fullRecord()
     {
         $this->getRole();
     }
 
+    /**
+     * Get User Role
+     *
+     * @return void
+     */
     public function getRole()
     {
         $query = 'SELECT * from user_roles WHERE id = ' . $this->params['user_role'];

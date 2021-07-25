@@ -56,7 +56,7 @@ class Authorize
             return true;
         }
 
-        $this->errors = ['Не верное сочетание логина и пароля'];
+        $this->errors = ['Не верное сочетание логина и пароля. Забыли пароль? <a href="/password-recovery">Восстановить</a>.'];
         return false;
 
     }

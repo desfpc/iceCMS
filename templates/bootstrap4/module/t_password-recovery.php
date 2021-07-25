@@ -42,19 +42,14 @@ if ($this->authorize->autorized) {
             </div>
         </div>
         <?php if ($showform) { ?>
-            <form id="regForm" action="/authorize" method="post">
+            <form id="regForm" action="/password-recovery" method="post">
                 <div class="form-group">
                     <label for="auEmail">Email адрес</label>
                     <input type="email" class="form-control" id="auEmail" name="auEmail" aria-describedby="auEmailHelp"
-                           placeholder="Введите email" required value="<?= $this->values->auEmail; ?>">
+                           placeholder="Введите email" required value="<?= $this->values->auEmail ?>">
                 </div>
-                <div class="form-group">
-                    <label for="auPass">Пароль</label>
-                    <input type="password" class="form-control" id="auPass" name="auPass" placeholder="введите Пароль"
-                           required>
-                </div>
-                <p>&nbsp;</p><input type="hidden" name="action" value="login">
-                <button type="submit" class="btn btn-primary">Авторизироваться</button> <a type="button" class="btn btn-secondary" href="/password-recovery">Восстановление пароля</a>
+                <p>&nbsp;</p>
+                <button type="submit" class="btn btn-primary">Восстановить пароль</button> <a type="button" class="btn btn-secondary" href="/authorize">Авторизация</a>
             </form>
         <?php } ?>
     </div>

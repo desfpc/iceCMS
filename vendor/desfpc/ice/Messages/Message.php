@@ -92,7 +92,7 @@ class Message
             }
         }
 
-        if($errors) return false;
+        if(!empty($errors)) return false;
         return true;
     }
 

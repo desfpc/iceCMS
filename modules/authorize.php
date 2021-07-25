@@ -27,6 +27,9 @@ switch ($this->values->action) {
 
         if ($this->authorize->doAuthorize($this->DB, $this->values->auEmail, $this->values->auPass)) {
             $this->moduleData->success[] = 'Вы успешно авторизировались!';
+            $this->setFlash('success', $this->moduleData->success);
+            $this->redirect('/personal-area');
+
         } else {
             $this->moduleData->errors = $this->authorize->errors;
         }

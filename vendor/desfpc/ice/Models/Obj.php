@@ -43,7 +43,6 @@ class Obj
     //непосредственно construct - сделано, что бы не указывать имя таблицы в дочерних классах при переопледелении __construct
     public function doConstruct(DB $DB, $dtable, $id = null, Settings $settings = null)
     {
-
         $this->errors = [];
         $this->settings = $settings;
 
@@ -96,23 +95,18 @@ class Obj
 
     public function paramsFromPost(){
         $post = $_REQUEST;
-
         $params = [];
-
         foreach ($this->cols as $col){
             if(isset($post[$col['Field']])){
                 $params[$col['Field']] = $post[$col['Field']];
             }
         }
-
         return $params;
-
     }
 
     //заполенние полей объекта(таблицы) из values
     public function paramsFromValues($values)
     {
-
         $params = [];
         foreach ($this->cols as $col) {
             $valueName = $col['Field'];
@@ -122,9 +116,7 @@ class Obj
                 }
             }
         }
-
         return $params;
-
     }
 
     //создание записи в БД
@@ -172,10 +164,6 @@ class Obj
 
         $qbuilder = new QueryBuilder($this->DB, $this->cols, $this->params, $this->dbtable);
         $query = $qbuilder->update();
-
-        //visualijoper::visualijop($query);
-
-        //die($query);
 
         if ($res = $this->DB->query($query)) {
             $this->uncacheRecord();

@@ -42,11 +42,16 @@ $(function () {
     $('.person-round').click(function () {
 
         let round = $(this);
-        if (round.hasClass('passive')) {
-            round.children('.person-info').show(300, function () {
-                round.removeClass('passive');
-                round.addClass('active');
-            });
+
+        if (round.hasClass('person-authorize-link')) {
+            document.location.href = '/authorize';
+        } else {
+            if (round.hasClass('passive')) {
+                round.children('.person-info').show(300, function () {
+                    round.removeClass('passive');
+                    round.addClass('active');
+                });
+            }
         }
     });
 
