@@ -84,7 +84,10 @@ class Render
 
         $key = $parser->getMTTCacheKey();
         if ($this->cacher->has($key)) {
-            return $parser->getMTTCache($key);
+            $cache = $parser->getMTTCache($key);
+            if (!empty($cache)) {
+                return $cache;
+            }
         }
 
         $materialTypes = new MatTypeList($this->DB, null, null, 1, null, 0, null);
