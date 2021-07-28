@@ -221,10 +221,10 @@ CREATE TABLE `materials`  (
 -- ----------------------------
 -- Records of materials
 -- ----------------------------
-INSERT INTO `materials` VALUES (1, 'E-mail уведомлений', 'E-mail-uvedomlenij', 11, 1, 'store@ice.cms', NULL, NULL, '2021-06-02 19:34:06', '2021-06-02 19:34:06', '2021-06-02 19:34:06', '2021-06-02 19:34:06', 10, 1, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `materials` VALUES (2, 'Telegram уведомлений', 'Telegram-uvedomlenij', 11, 1, '+79991112233', NULL, NULL, '2021-06-02 19:37:25', '2021-06-02 19:37:25', '2021-06-02 19:37:25', '2021-06-02 19:37:25', 10, 1, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `materials` VALUES (3, 'Способы оплаты', 'Sposoby-oplaty', 11, 1, 'on_delivery:при получении;', NULL, NULL, '2021-06-02 19:39:13', '2021-06-02 19:39:13', '2021-06-02 19:39:13', '2021-06-02 19:39:13', 10, 1, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `materials` VALUES (4, 'Способы доставки', 'Sposoby-dostavki', 11, 1, 'from_stock:самовывоз;', NULL, NULL, '2021-06-02 19:43:30', '2021-06-02 19:43:30', '2021-06-02 19:43:30', '2021-06-02 19:43:30', 10, 1, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `materials` VALUES (1, 'E-mail уведомлений', 'E-mail-uvedomlenij', 10, 1, 'store@ice.cms', NULL, NULL, '2021-06-02 19:34:06', '2021-06-02 19:34:06', '2021-06-02 19:34:06', '2021-06-02 19:34:06', 10, 1, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `materials` VALUES (2, 'Telegram уведомлений', 'Telegram-uvedomlenij', 10, 1, '+79991112233', NULL, NULL, '2021-06-02 19:37:25', '2021-06-02 19:37:25', '2021-06-02 19:37:25', '2021-06-02 19:37:25', 10, 1, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `materials` VALUES (3, 'Способы оплаты', 'Sposoby-oplaty', 10, 1, 'on_delivery:при получении;', NULL, NULL, '2021-06-02 19:39:13', '2021-06-02 19:39:13', '2021-06-02 19:39:13', '2021-06-02 19:39:13', 10, 1, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `materials` VALUES (4, 'Способы доставки', 'Sposoby-dostavki', 10, 1, 'from_stock:самовывоз;', NULL, NULL, '2021-06-02 19:43:30', '2021-06-02 19:43:30', '2021-06-02 19:43:30', '2021-06-02 19:43:30', 10, 1, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for modules
