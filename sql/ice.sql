@@ -394,11 +394,11 @@ CREATE TABLE `store_requests` (
   `user_id` INT(10) NOT NULL DEFAULT '0',
   `date_add` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
   `date_edit` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `status` ENUM('created','in_work','ready','completed','cancelled') NOT NULL DEFAULT 'created' CHARACTER SET utf8 COLLATE utf8_general_ci,
-  `payment_method` ENUM('on_delivery') NOT NULL DEFAULT 'on_delivery' CHARACTER SET utf8 COLLATE utf8_general_ci,
-  `delivery` ENUM('from_stock') NOT NULL DEFAULT 'from_stock' CHARACTER SET utf8 COLLATE utf8_general_ci,
+  `status` ENUM('created','in_work','ready','completed','cancelled') NOT NULL DEFAULT 'created',
+  `payment_method` ENUM('on_delivery') NOT NULL DEFAULT 'on_delivery',
+  `delivery` ENUM('from_stock') NOT NULL DEFAULT 'from_stock',
   `price` DECIMAL(11,2) NULL DEFAULT NULL,
-  `comment` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `comment` TEXT NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `store_requests_user_idx` (`user_id`) USING BTREE,
   INDEX `store_requests_status_idx` (`status`) USING BTREE,
@@ -416,8 +416,8 @@ CREATE TABLE `store_request_goods` (
   `count` INT(10) NOT NULL,
   PRIMARY KEY (`request_id`, `good_id`) USING BTREE,
   INDEX `FK_store_request_goods_materials` (`good_id`) USING BTREE,
-  CONSTRAINT `FK_store_request_goods_materials` FOREIGN KEY (`good_id`) REFERENCES `ice`.`materials` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
-  CONSTRAINT `FK_store_request_goods_store_requests` FOREIGN KEY (`request_id`) REFERENCES `ice`.`store_requests` (`id`) ON UPDATE CASCADE ON DELETE CASCADE
+  CONSTRAINT `FK_store_request_goods_materials` FOREIGN KEY (`good_id`) REFERENCES `materials` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT `FK_store_request_goods_store_requests` FOREIGN KEY (`request_id`) REFERENCES `store_requests` (`id`) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;
